@@ -6,11 +6,12 @@ import PrivateRoute from './components/PrivateRoute';
 import { Store } from './reducers/rootReducer';
 import { isAuthenticated } from './selectors/loginSelectors';
 
+import DashboardPage from './components/DashboardPage';
 import Header from './components/Header';
 import LoginPage from './components/LoginPage';
 import NotFoundPage from './components/NotFoundPage';
-import UsersPage from './components/UsersPage';
 import UserPage from './components/UserPage';
+import UsersPage from './components/UsersPage';
 
 interface AppProps {
   isAuth: boolean;
@@ -26,8 +27,13 @@ class App extends React.Component<AppProps> {
           {isAuth && <Header />}
           <Switch>
             <Route exact={true} path="/login" component={LoginPage} />
+            <Route exact={true} path="/dashboard" component={DashboardPage} />
             <PrivateRoute exact={true} path="/users" component={UsersPage} />
-            <PrivateRoute exact={true} path="/user/:userID" component={(props:any) => <UserPage {...props} />} />
+            <PrivateRoute
+              exact={true}
+              path="/user/:userID"
+              component={(props: any) => <UserPage {...props} />}
+            />
             <Redirect exact={true} from="/" to="/users" />
             <Route component={NotFoundPage} />
           </Switch>
