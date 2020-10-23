@@ -1,10 +1,11 @@
+import firestore from 'firebase/firestore';
 import React, { Component } from 'react';
 import ReactTable from 'react-table-v6';
 import 'react-table-v6/react-table.css';
-import './styles/customStyle.css';
 import Firebase from './Firebase';
-import firestore from 'firebase/firestore';
 import { db } from './Firebase/firebase';
+import './styles/customStyle.css';
+import app from 'firebase/app';
 
 class UserList extends Component {
   constructor(props) {
@@ -16,6 +17,8 @@ class UserList extends Component {
 
   componentDidMount = () => {
     console.log('lllllll');
+
+    const firebase = new Firebase();
     db.collection('studies')
       .get()
       .then(querySnapshot => {

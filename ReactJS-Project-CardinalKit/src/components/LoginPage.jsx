@@ -33,13 +33,13 @@ export class LoginPage extends React.Component {
     this.setState({ [event.target.name]: event.target.value });
   };
 
-  sendMail = res => {
+  sendMail = (email, code) => {
     window.Email.send({
       SecureToken: 'b432cf0c-5911-4601-a8e2-374473f6dbf4',
-      To: 'praveen.kumarb392@gmail.com',
+      To: email,
       From: 'cbkmar92@gmail.com',
-      Subject: 'Test mail',
-      Body: 'Content shows',
+      Subject: 'Verfication code',
+      Body: 'Your verification code ' + code,
     }).then(message => alert(message));
   };
 
@@ -50,7 +50,10 @@ export class LoginPage extends React.Component {
     firebase
       .doSignInWithEmailAndPassword(email, password)
       .then(res => {
-        this.sendMail(res);
+        var verifyCode = Math.floor(Math.random() * 9999 + 1);
+        localStorage.setItem('verify-code', verifyCode);
+        this.props.history.push('/verify_code');
+        this.sendMail(email, verifyCode);
       })
       .then(res => {
         console.log(res, 'verfication');
@@ -72,6 +75,8 @@ export class LoginPage extends React.Component {
     if (isAuth) {
       return <Redirect to={{ pathname: '/', state: { from: location } }} />;
     }
+
+    console.log(this.props);
 
     return (
       <div className="flex items-center min-h-screen p-6 bg-gray-50 dark:bg-gray-900">
