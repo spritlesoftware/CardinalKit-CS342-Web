@@ -12,11 +12,14 @@ const config = {
   appId: process.env.REACT_APP_ID || "1:267563013930:web:99eeeff653b0f07accb053",
   iOSAppBundleId: process.env.IOS_APP_ID || "edu.stanford.cs342.sample-study", //as setup on your iOS project
 };
+const firebaseApp = app.initializeApp(config)
+const db = firebaseApp.firestore()
+
 
 class Firebase {
   constructor() {
     if (!app.apps.length) {
-        app.initializeApp(config);
+      app.initializeApp(config);
     }
 
     /* Helper */
@@ -108,4 +111,6 @@ class Firebase {
 
 }
 
+
+export { db }
 export default Firebase;
