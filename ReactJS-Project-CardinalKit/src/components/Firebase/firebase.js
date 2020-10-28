@@ -10,15 +10,17 @@ const config = {
   storageBucket: process.env.REACT_APP_STORAGE_BUCKET || 'cs342-master-sample.appspot.com',
   messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID || '267563013930',
   appId: process.env.REACT_APP_ID || '1:267563013930:web:99eeeff653b0f07accb053',
-  iOSAppBundleId: process.env.IOS_APP_ID || 'edu.stanford.cs342.sample-study', // as setup on your iOS project
+  // iOSAppBundleId: process.env.IOS_APP_ID || 'edu.stanford.cs342.sample-study', // as setup on your iOS project
+  iOSAppBundleId: process.env.IOS_APP_ID || 'com.siva.cardinalkit-example', // as setup on your iOS project
 };
 const firebaseApp = app.initializeApp(config);
 const db = firebaseApp.firestore();
 
 class Firebase {
   constructor() {
+    const admin = require('firebase-admin');
     if (!app.apps.length) {
-      app.initializeApp(config);
+      admin.initializeApp(config);
     }
 
     /* Helper */
@@ -52,7 +54,7 @@ class Firebase {
 
   doSignInWithTwitter = () => this.auth.signInWithPopup(this.twitterProvider);
 
-  doSignOut = () => this.auth.signOut();
+  doSignOut = () => this.auth.signOut()
 
   doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
 

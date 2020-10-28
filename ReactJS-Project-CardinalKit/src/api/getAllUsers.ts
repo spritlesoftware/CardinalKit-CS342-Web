@@ -3,7 +3,7 @@ import app from 'firebase/app';
 
 export function getAllFirebaseUsers(): Promise<app.firestore.QuerySnapshot> {
   const firebase = new Firebase();
-  return firebase.users().get().then(function(doc) {
+  return firebase.users().get().then(function (doc) {
       return doc;
   }).catch(function(error) {
       console.log("Error getting document:", error);

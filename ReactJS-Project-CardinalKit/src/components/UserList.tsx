@@ -1,13 +1,16 @@
 import firestore from 'firebase/firestore';
 import React, { Component } from 'react';
-import ReactTable from 'react-table-v6';
-import 'react-table-v6/react-table.css';
+import ReactTable from "react-table-6";
+import "react-table-6/react-table.css";
 import Firebase from './Firebase';
 import { db } from './Firebase/firebase';
 import './styles/customStyle.css';
 import app from 'firebase/app';
+import { getAllFirebaseUsers } from '../api/getAllUsers';
+import SideBar from './SideBar';
+import Header from './Header';
 
-class UserList extends Component {
+class UserList extends Component<{}, {users: any[]}> {
   constructor(props) {
     super(props);
     this.state = {
@@ -16,20 +19,38 @@ class UserList extends Component {
   }
 
   componentDidMount = () => {
-    console.log('lllllll');
-
-    const firebase = new Firebase();
     db.collection('studies')
+      .doc('com.siva.cardinalkit-example')
+      .collection('users')
       .get()
       .then(querySnapshot => {
-        const data = querySnapshot.docs.map(doc => doc.data());
+        const data = querySnapshot.docs.map(doc => doc.id);
         console.log(data); // array of cities objects
-      });
-    // .get()
-    // .then(doc => {
-    //   console.log(doc, 'data');
-    // });
+        this.setState({
+          users: [...data]
+        })
+      })
+      .then(() => {
+        this.getSurveyDetails()
+      })
+
+
   };
+
+  getSurveyDetails = () => {
+    const { users } = this.state
+    users.forEach((userId) => {
+      db.collection('studies')
+        .doc('com.siva.cardinalkit-example')
+        .collection('users')
+        .doc(userId)
+        .collection('serveys')
+        .get()
+        .then((querySnapshot) => {
+          console.log(querySnapshot)
+        });
+    })
+  }
 
   render() {
     const data = [
@@ -174,7 +195,7 @@ class UserList extends Component {
             </table>
           </div>
         </div>
-      </div>
+        </div>
     );
   }
 }

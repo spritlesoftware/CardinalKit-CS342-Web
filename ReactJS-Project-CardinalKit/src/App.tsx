@@ -19,6 +19,8 @@ interface AppProps {
   isAuth: boolean;
 }
 
+
+
 class App extends React.Component<AppProps> {
   render() {
     const { isAuth } = this.props;
@@ -27,11 +29,11 @@ class App extends React.Component<AppProps> {
       <Router>
         <div>
           <div className="flex h-screen bg-gray-50 dark:bg-gray-900">
-            {isAuth && (
+            {/* {isAuth && (
               <>
                 <SideBar />
               </>
-            )}
+            )} */}
             <div className="flex flex-col flex-1 w-full">
               {isAuth && <Header />}
               <main className="h-full overflow-y-auto">

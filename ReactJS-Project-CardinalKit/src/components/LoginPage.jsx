@@ -6,6 +6,8 @@ import { connect } from 'react-redux';
 
 import { loginUser } from '../actions/loginActions';
 import { getLoginState, isAuthenticated } from '../selectors/loginSelectors';
+import app from 'firebase/app';
+
 
 import { Button, ButtonColor, ButtonType } from '../ui/Button';
 import Firebase from './Firebase';
@@ -26,12 +28,20 @@ export class LoginPage extends React.Component {
       erroMsg: '',
       userEmail: '',
       userPassword: '',
+      loggedIn: false,
     };
   }
 
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
+
+  setVerificationCode = () => {
+    var verifyCode = Math.floor(Math.random() * 9999 + 1);
+    localStorage.setItem('verify-code', verifyCode);
+    this.props.history.push('/verify_code');
+    return verifyCode
+  }
 
   sendMail = (email, code) => {
     window.Email.send({
@@ -40,7 +50,7 @@ export class LoginPage extends React.Component {
       From: 'cbkmar92@gmail.com',
       Subject: 'Verfication code',
       Body: 'Your verification code ' + code,
-    }).then(message => alert(message));
+    }).then(message => alert(message))
   };
 
   signInWithEmailAndPasswordHandler = (event, email, password) => {
@@ -50,13 +60,15 @@ export class LoginPage extends React.Component {
     firebase
       .doSignInWithEmailAndPassword(email, password)
       .then(res => {
-        var verifyCode = Math.floor(Math.random() * 9999 + 1);
-        localStorage.setItem('verify-code', verifyCode);
-        this.props.history.push('/verify_code');
+        const verifyCode = this.setVerificationCode()
         this.sendMail(email, verifyCode);
+        this.setState({
+          loggedIn: true
+        })
       })
       .then(res => {
         console.log(res, 'verfication');
+
       })
       .catch(error => {
         this.setState({ erroMsg: 'Error signing in with password and email!' });
@@ -64,24 +76,33 @@ export class LoginPage extends React.Component {
       });
   };
 
-  handleSubmit = event => {
+
+
+  handleSubmit = (event) => {
     console.log('submit');
-    this.props.onSubmitForm(event);
+    this.props.onSubmitForm(event)
+    this.setState({
+      loggedIn: true
+    })
+    const verifyCode = this.setVerificationCode()
+    this.sendMail(app.auth().currentUser.email, verifyCode)
+
   };
 
   render() {
     const { isAuth, location, loading } = this.props;
     console.log(isAuth, 'isAuth');
-    if (isAuth) {
-      return <Redirect to={{ pathname: '/', state: { from: location } }} />;
-    }
 
-    console.log(this.props);
+    if (this.state.loggedIn) {
+      return <Redirect to = {{ pathname: '/verify_code' }}/>
+    }
 
     return (
       <div className="flex items-center min-h-screen p-6 bg-gray-50 dark:bg-gray-900">
         <div className="flex-1 h-full max-w-4xl mx-auto overflow-hidden bg-white rounded-lg shadow-xl dark:bg-gray-800">
-          <form onSubmit={this.handleSubmit}>
+          <form onSubmit={() => {
+            this.handleSubmit()
+           }}>
             <div className="flex flex-col overflow-y-auto md:flex-row">
               <div className="h-32 md:h-auto md:w-1/2">
                 <img

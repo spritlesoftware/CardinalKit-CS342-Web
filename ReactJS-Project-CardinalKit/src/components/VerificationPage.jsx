@@ -2,20 +2,20 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import app from 'firebase/app';
-import * as admin from 'firebase-admin';
+// import * as admin from 'firebase-admin';
 
 class VerificationPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       userCode: null,
+
     };
   }
 
   onSubmitHandler = () => {
     if (this.state.userCode == localStorage.getItem('verify-code')) {
       const currentUser = app.auth().currentUser;
-      console.log(currentUser.uid, 'currentUser');
       this.props.history.push('/users');
       // admin
       //   .auth()
@@ -41,6 +41,7 @@ class VerificationPage extends React.Component {
               placeholder="Enter your verification code"
               type="number"
               value={this.state.userCode}
+
               onChange={e => this.setState({ userCode: e.target.value })}
             />
           </label>
