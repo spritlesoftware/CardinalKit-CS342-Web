@@ -47,10 +47,12 @@ export class LoginPage extends React.Component {
     window.Email.send({
       SecureToken: 'b432cf0c-5911-4601-a8e2-374473f6dbf4',
       To: email,
-      From: 'cbkmar92@gmail.com',
+      From: process.env.REACT_APP_FROM_EMAIL,
       Subject: 'Verfication code',
       Body: 'Your verification code ' + code,
-    }).then(message => alert(message))
+    }).then(() => {
+      console.log(process.env)
+    })
   };
 
   signInWithEmailAndPasswordHandler = (event, email, password) => {
@@ -80,29 +82,25 @@ export class LoginPage extends React.Component {
 
   handleSubmit = (event) => {
     console.log('submit');
+    const firebase = new Firebase();
     this.props.onSubmitForm(event)
-    this.setState({
-      loggedIn: true
-    })
-    const verifyCode = this.setVerificationCode()
-    this.sendMail(app.auth().currentUser.email, verifyCode)
-
+    firebase.doSignInWithGoogle()
+      .then(() => {
+        console.log("logged in")
+        const verifyCode = this.setVerificationCode()
+        this.sendMail(app.auth().currentUser.email, verifyCode)
+        this.props.history.push('/verify_code')
+      })
   };
 
   render() {
     const { isAuth, location, loading } = this.props;
     console.log(isAuth, 'isAuth');
 
-    if (this.state.loggedIn) {
-      return <Redirect to = {{ pathname: '/verify_code' }}/>
-    }
-
     return (
       <div className="flex items-center min-h-screen p-6 bg-gray-50 dark:bg-gray-900">
         <div className="flex-1 h-full max-w-4xl mx-auto overflow-hidden bg-white rounded-lg shadow-xl dark:bg-gray-800">
-          <form onSubmit={() => {
-            this.handleSubmit()
-           }}>
+          <form>
             <div className="flex flex-col overflow-y-auto md:flex-row">
               <div className="h-32 md:h-auto md:w-1/2">
                 <img
@@ -168,7 +166,8 @@ export class LoginPage extends React.Component {
                   <a href="../index.html" />
                   <Button
                     className="flex items-center justify-center w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-white text-gray-700 transition-colors duration-150 border border-gray-300 rounded-lg dark:text-gray-400 active:bg-transparent hover:border-gray-500 focus:border-gray-500 active:text-gray-500 focus:outline-none focus:shadow-outline-gray"
-                    type={ButtonType.Submit}
+                    // type={ButtonType.Submit}
+                    onClick={() => {this.handleSubmit()}}
                     selected={loading}
                     color={ButtonColor.Blue}
                   >

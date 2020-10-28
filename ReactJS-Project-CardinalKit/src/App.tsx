@@ -24,6 +24,7 @@ interface AppProps {
 class App extends React.Component<AppProps> {
   render() {
     const { isAuth } = this.props;
+    console.log(isAuth, "is- auth")
 
     return (
       <Router>
@@ -38,6 +39,9 @@ class App extends React.Component<AppProps> {
               {isAuth && <Header />}
               <main className="h-full overflow-y-auto">
                 <Switch>
+                  <Route exact={true} path="/">
+                    <Redirect to = {{ pathname: '/login' }}/>
+                  </Route>
                   <Route exact={true} path="/login" component={LoginPage} />
                   <Route exact={true} path="/dashboard" component={DashboardPage} />
                   <Route exact={true} path="/users" component={UsersPage} />
