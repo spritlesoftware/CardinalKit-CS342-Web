@@ -50,8 +50,6 @@ export class LoginPage extends React.Component {
       From: process.env.REACT_APP_FROM_EMAIL,
       Subject: 'Verfication code',
       Body: 'Your verification code ' + code,
-    }).then(() => {
-      console.log(process.env)
     })
   };
 
@@ -83,7 +81,6 @@ export class LoginPage extends React.Component {
   handleSubmit = (event) => {
     console.log('submit');
     const firebase = new Firebase();
-    this.props.onSubmitForm(event)
     firebase.doSignInWithGoogle()
       .then(() => {
         console.log("logged in")

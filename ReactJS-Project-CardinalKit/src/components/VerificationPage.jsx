@@ -9,14 +9,18 @@ class VerificationPage extends React.Component {
     super(props);
     this.state = {
       userCode: null,
-
+      verified_code: false
     };
   }
 
   onSubmitHandler = () => {
+    this.setState({
+      userCode: document.getElementById('verificationCode')
+    })
     if (this.state.userCode == localStorage.getItem('verify-code')) {
-      const currentUser = app.auth().currentUser;
-      this.props.history.push('/users');
+      this.setState({
+        verified_code: true
+      })
       // admin
       //   .auth()
       //   .updateUser(currentUser.uid, { emailVerified: true })
@@ -30,6 +34,10 @@ class VerificationPage extends React.Component {
   };
 
   render() {
+    if (this.state.verified_code) {
+      return <Redirect to={{pathname: "/users"}} />
+    }
+
     return (
       <div className="container px-6 mx-auto grid">
         <h4 className="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">Verfy Code</h4>
@@ -40,6 +48,7 @@ class VerificationPage extends React.Component {
               className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
               placeholder="Enter your verification code"
               type="number"
+              id="verificationCode"
               onChange={e => this.setState({ userCode: e.target.value })}
             />
           </label>

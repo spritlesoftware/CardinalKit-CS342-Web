@@ -24,7 +24,6 @@ interface AppProps {
 class App extends React.Component<AppProps> {
   render() {
     const { isAuth } = this.props;
-    console.log(isAuth, "is- auth")
 
     return (
       <Router>
