@@ -16,6 +16,7 @@ export const isAuthenticated = createSelector(
   [getAuthToken],
   (authToken: string | null) => {
     if (authToken && authToken !== '') {
+      console.log(authToken, 'authToken')
       return true;
     } else {
       return false;

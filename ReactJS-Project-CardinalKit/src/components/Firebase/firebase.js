@@ -1,6 +1,7 @@
 import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
+const admin = require('firebase-admin');
 
 const config = {
   apiKey: process.env.REACT_APP_API_KEY || 'AIzaSyCVzML6v4C16HNjUZN_xnEX5RWJmDq3YUU',
@@ -18,7 +19,6 @@ const db = firebaseApp.firestore();
 
 class Firebase {
   constructor() {
-    const admin = require('firebase-admin');
     if (!app.apps.length) {
       admin.initializeApp(config);
     }

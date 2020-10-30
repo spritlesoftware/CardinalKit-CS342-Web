@@ -12,6 +12,9 @@ interface UserPageProps {
 }
 
 export default class UserPage extends React.PureComponent<UserPageProps> {
+
+
+
   render() {
     const userID = this.props.match.params.userID;
 

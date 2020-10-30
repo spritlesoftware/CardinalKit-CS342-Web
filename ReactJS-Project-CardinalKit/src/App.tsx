@@ -24,6 +24,7 @@ interface AppProps {
 class App extends React.Component<AppProps> {
   render() {
     const { isAuth } = this.props;
+    console.log(isAuth, "isAuth")
 
     return (
       <Router>
@@ -45,9 +46,9 @@ class App extends React.Component<AppProps> {
                   <Route exact={true} path="/dashboard" component={DashboardPage} />
                   <Route exact={true} path="/users" component={UsersPage} />
                   <Route exact={true} path="/verify_code" component={VerificationPage} />
-                  <PrivateRoute
+                  <Route
                     exact={true}
-                    path="/user/:userID"
+                    path="/users/:userID"
                     component={(props: any) => <UserPage {...props} />}
                   />
                   <Redirect exact={true} from="/" to="/users" />

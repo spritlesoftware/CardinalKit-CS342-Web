@@ -13,6 +13,10 @@ class VerificationPage extends React.Component {
     };
   }
 
+  componentDidMount() {
+  console.log(localStorage.getItem('verify-code'))
+  }
+
   onSubmitHandler = () => {
     this.setState({
       userCode: document.getElementById('verificationCode')

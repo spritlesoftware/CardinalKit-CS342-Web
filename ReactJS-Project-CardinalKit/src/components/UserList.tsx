@@ -1,16 +1,28 @@
 import firestore from 'firebase/firestore';
 import React, { Component } from 'react';
+import {Link} from 'react-router-dom'
 import ReactTable from "react-table-6";
 import "react-table-6/react-table.css";
 import Firebase from './Firebase';
 import { db } from './Firebase/firebase';
 import './styles/customStyle.css';
 import app from 'firebase/app';
-import { getAllFirebaseUsers } from '../api/getAllUsers';
+import * as admin from 'firebase-admin';
+import { getAllFirebaseUsers, getSurveys } from '../api/getAllUsers';
 import SideBar from './SideBar';
 import Header from './Header';
+import { addMinutes } from 'date-fns';
+import { usersReducer } from '../reducers/usersReducer';
+import { string } from 'prop-types';
 
-class UserList extends Component<{}, {users: any[]}> {
+admin.initializeApp();//add to here
+
+export interface userId{
+  id: string
+}
+
+
+class UserList extends Component<{}, { users: any[] }> {
   constructor(props) {
     super(props);
     this.state = {
@@ -18,14 +30,22 @@ class UserList extends Component<{}, {users: any[]}> {
     };
   }
 
+  getUserId = () => db.collection('studies')
+    .doc('com.siva.cardinalkit-example')
+    .collection('users')
+
+
+
   componentDidMount = () => {
-    db.collection('studies')
-      .doc('com.siva.cardinalkit-example')
-      .collection('users')
+    this.getUserId()
       .get()
       .then(querySnapshot => {
-        const data = querySnapshot.docs.map(doc => doc.id);
-        console.log(data); // array of cities objects
+        const data = querySnapshot.docs.map(doc => {
+          return {
+            id: doc.id,
+            view: <Link to={"/users/"+doc.id}>View Survey</Link>
+          }
+        });
         this.setState({
           users: [...data]
         })
@@ -34,72 +54,98 @@ class UserList extends Component<{}, {users: any[]}> {
         this.getSurveyDetails()
       })
 
-
+    // getSurveys(userID).then((querySnapshot) => {
+    //   const data = querySnapshot.docs.map(doc => doc.id);
+    //   this.setState({
+    //       surveyIds: [...data]
+    //   })
+    //   console.log(surveyIds)
+    //   data.map((surveyId) => {
+    //     db.collection('studies')
+    //       .doc('com.siva.cardinalkit-example')
+    //       .collection('users')
+    //       .doc(userID)
+    //       .collection('surveys')
+    //       .doc(surveyId)
+    //       .get()
+    //       .then((doc) => {
+    //         const data = doc.data()
+    //         const endDate = data?.payload?.endDate
+    //         const startDate = data?.payload?.startDate
+    //         const userID = data?.userId
+    //         const identifier = data?.payload?.identifier
+    //         const surveyData = {
+    //           startDate,
+    //           identifier,
+    //           viewResponse: <a href="#">View Response</a>
+    //         }
+    //         tempSurveyList.push(surveyData)
+    //         this.setState({
+    //           surveyList: [...tempSurveyList]
+    //         })
+    //         console.log(this.state.surveyList)
+    //       }
   };
 
   getSurveyDetails = () => {
-    const { users } = this.state
-    users.forEach((userId) => {
-      db.collection('studies')
-        .doc('com.siva.cardinalkit-example')
-        .collection('users')
-        .doc(userId)
-        .collection('serveys')
+    const { users } = this.state;
+    const surveyIds = users.map(({id}) => {
+      this.getUserId()
+        .doc(id)
+        .collection('surveys')
         .get()
         .then((querySnapshot) => {
-          console.log(querySnapshot)
+          const data = querySnapshot.docs.map(doc => doc.id);
+          return data;
         });
     })
+     console.log(surveyIds)
   }
 
   render() {
-    const data = [
-      {
-        email: 'jeev.paul.robinson@spritle.com',
-        created: 'Oct 22, 2020',
-        signedIn: 'Oct 22, 2020',
-      },
-      {
-        email: 'siva.kb+sep26@spritle.com',
-        created: 'Sep 26, 2020',
-        signedIn: 'Oct 22, 2020',
-      },
-      {
-        email: 'pradeep0199228@gmail.com',
-        created: 'Sep 28, 2020',
-        signedIn: 'Oct 20, 2020',
-      },
-      {
-        email: 'sivahomeairtel@gmail.com',
-        created: 'Sep 21, 2020',
-        signedIn: 'Oct 21, 2020',
-      },
-      {
-        email: 'cbkmar92@gmail.com',
-        created: 'Sep 12, 2020',
-        signedIn: 'Oct 22, 2020',
-      },
-      {
-        email: 'jeev.paul.robinson@gmail.com',
-        created: 'Oct 15, 2020',
-        signedIn: 'Oct 20, 2020',
-      },
-    ];
+
+    // const data = [
+    //   {
+    //     email: 'jeev.paul.robinson@spritle.com',
+    //     created: 'Oct 22, 2020',
+    //     signedIn: 'Oct 22, 2020',
+    //   },
+    //   {
+    //     email: 'siva.kb+sep26@spritle.com',
+    //     created: 'Sep 26, 2020',
+    //     signedIn: 'Oct 22, 2020',
+    //   },
+    //   {
+    //     email: 'pradeep0199228@gmail.com',
+    //     created: 'Sep 28, 2020',
+    //     signedIn: 'Oct 20, 2020',
+    //   },
+    //   {
+    //     email: 'sivahomeairtel@gmail.com',
+    //     created: 'Sep 21, 2020',
+    //     signedIn: 'Oct 21, 2020',
+    //   },
+    //   {
+    //     email: 'cbkmar92@gmail.com',
+    //     created: 'Sep 12, 2020',
+    //     signedIn: 'Oct 22, 2020',
+    //   },
+    //   {
+    //     email: 'jeev.paul.robinson@gmail.com',
+    //     created: 'Oct 15, 2020',
+    //     signedIn: 'Oct 20, 2020',
+    //   },
+    // ];
 
     const columns = [
       {
-        Header: 'Email',
-        accessor: 'email',
-        className: 'emailField',
+        Header: 'User Id',
+        accessor: 'id',
       },
       {
-        Header: 'Created',
-        accessor: 'created',
-      },
-      {
-        Header: 'Signed In',
-        accessor: 'signedIn',
-      },
+        Header: 'Action',
+        accessor: 'view',
+      }
     ];
 
     return (
@@ -149,8 +195,12 @@ class UserList extends Component<{}, {users: any[]}> {
             </div>
           </div>
         </div>
-        {/* <ReactTable data={data} columns={columns} className="usersTable" /> */}
-        <div className="w-full overflow-hidden rounded-lg shadow-xs">
+        <ReactTable
+          data={this.state.users}
+          columns={columns}
+          className="usersTable"
+        />
+        {/* <div className="w-full overflow-hidden rounded-lg shadow-xs">
           <div className="w-full overflow-x-auto">
             <table className="w-full whitespace-no-wrap">
               <thead>
@@ -194,8 +244,8 @@ class UserList extends Component<{}, {users: any[]}> {
               </tbody>
             </table>
           </div>
-        </div>
-        </div>
+        </div>*/}
+      </div>
     );
   }
 }
