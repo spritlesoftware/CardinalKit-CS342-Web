@@ -21,22 +21,37 @@ interface AppProps {
 
 
 
-class App extends React.Component<AppProps> {
+class App extends React.Component<AppProps, {isLoggedIn: any}> {
+  constructor(props) {
+    super(props)
+    this.state = {
+      isLoggedIn: false
+    }
+  }
+  componentWillMount() {
+    this.setState({
+      isLoggedIn: window.sessionStorage.getItem('isLoggedIn')
+    })
+    console.log(window.sessionStorage.getItem('isLoggedIn'))
+  }
+
+
   render() {
     const { isAuth } = this.props;
+    const {isLoggedIn} = this.state
     console.log(isAuth, "isAuth")
 
     return (
       <Router>
         <div>
           <div className="flex h-screen bg-gray-50 dark:bg-gray-900">
-            {/* {isAuth && (
+            {isLoggedIn && (
               <>
                 <SideBar />
               </>
-            )} */}
+            )}
             <div className="flex flex-col flex-1 w-full">
-              {isAuth && <Header />}
+              {isLoggedIn && <Header />}
               <main className="h-full overflow-y-auto">
                 <Switch>
                   <Route exact={true} path="/">
