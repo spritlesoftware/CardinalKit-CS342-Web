@@ -6,7 +6,7 @@ import UserList from './UserList';
 const messages = defineMessages({
   header: {
     id: 'app.containers.UserPage.header',
-    defaultMessage: 'Users',
+    defaultMessage: 'Dashboard',
   },
 });
 

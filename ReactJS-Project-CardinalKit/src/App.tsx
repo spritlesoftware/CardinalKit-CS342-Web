@@ -45,11 +45,7 @@ class App extends React.Component<AppProps, {isLoggedIn: any}> {
       <Router>
         <div>
           <div className="flex h-screen bg-gray-50 dark:bg-gray-900">
-            {isLoggedIn && (
-              <>
-                <SideBar />
-              </>
-            )}
+            {isLoggedIn && <SideBar />}
             <div className="flex flex-col flex-1 w-full">
               {isLoggedIn && <Header />}
               <main className="h-full overflow-y-auto">

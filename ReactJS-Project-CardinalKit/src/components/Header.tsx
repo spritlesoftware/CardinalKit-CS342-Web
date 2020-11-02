@@ -25,11 +25,14 @@ class Header extends React.Component<HeaderProps> {
 
   signOut = () => {
     const firebase = new Firebase();
-    firebase.doSignOut().then(() => {
+    firebase.doSignOut()
+      .then(() => {
       this.setState({
         loggedOut: true
       })
-      console.log(this.props)
+      }).then(() => {
+       window.location.reload()
+       window.sessionStorage.clear();
     })
   }
 

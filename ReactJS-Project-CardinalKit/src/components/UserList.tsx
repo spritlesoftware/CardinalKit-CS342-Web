@@ -174,6 +174,7 @@ class UserList extends Component<{}, { users: any[], newUsers: any[], totalSurve
           filterable={true}
           sortable={true}
         />
+
         {/* <div className="w-full overflow-hidden rounded-lg shadow-xs">
           <div className="w-full overflow-x-auto">
             <table className="w-full whitespace-no-wrap">

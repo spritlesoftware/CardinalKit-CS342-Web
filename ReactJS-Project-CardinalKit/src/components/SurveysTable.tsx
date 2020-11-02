@@ -135,12 +135,15 @@ class SurveysTable extends React.Component<SurveyHeaderProps, State> {
 
 
     return (
-
-      <ReactTable
-          data={this.state.surveyList}
-          columns={columns}
-          className="surveyTable"
-        />
+      <div className="container px-6 mx-auto ">
+        <div className="grid gap-6 mb-8 w-full mt-40 ">
+          <ReactTable
+              data={this.state.surveyList}
+              columns={columns}
+              className="surveyTable"
+            />
+        </div>
+      </div>
       // <CardTable>
       //   <CardTableTitle>
       //     <FormattedMessage {...messages.surveyTableHeader} />
