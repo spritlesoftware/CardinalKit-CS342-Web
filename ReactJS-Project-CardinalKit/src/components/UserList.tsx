@@ -88,12 +88,20 @@ class UserList extends Component<{}, { users: any[], newUsers: any[], totalSurve
               newUsers.push(doc.userId)
             }
             return {
+              name: 'John Adams',
+              email: 'johnadams@gmail.com',
               userId: doc.userId,
               endDate:
                 //canging date format
                 moment(doc.payload.endDate.substring(0, 10))
                   .format('ll'),
-              view: <span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100"><Link to={"/users/" + doc.userId}>View Survey</Link></span>
+              view: 
+              <div><span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100"><Link to={"/users/" + doc.userId}>View Survey</Link></span>
+              <a href="#"><span
+              className="px-2 py-1 font-semibold leading-tight text-blue-700 bg-blue-100 rounded-full dark:bg-blue-700 dark:text-blue-100"
+            >
+              Download Survey response
+            </span></a></div>
             }
            });
            this.setState({
@@ -114,11 +122,27 @@ class UserList extends Component<{}, { users: any[], newUsers: any[], totalSurve
     const columns = [
       {
         Header: () => (
+        <div className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase text-center dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">Name</div>
+        ),
+        accessor: 'name',
+        className: 'font-semibold',
+        width: 200
+      },
+      {
+        Header: () => (
+        <div className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase text-center dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">Email</div>
+        ),
+        accessor: 'email',
+        className: 'font-semibold',
+        width: 200
+      },
+      {
+        Header: () => (
         <div className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase text-center dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">user id</div>
         ),
         accessor: 'userId',
         className: 'font-semibold',
-        width: 350
+        width: 250
       },
       {
         Header: () => (
@@ -134,7 +158,6 @@ class UserList extends Component<{}, { users: any[], newUsers: any[], totalSurve
         ),
         accessor: 'view',
         filterable: false,
-        width: 300
       }
     ];
 

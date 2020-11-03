@@ -66,7 +66,7 @@ class ManageUsers extends React.Component {
             <span class="text-gray-700 dark:text-gray-400">Email</span>
             <input
               class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
-              placeholder="Jane Doe"
+              placeholder="JaneDoe@gmail.com"
               name="email"
               value={this.state.email}
               onChange={e => this.handleChange(e.target.name, e.target.value)}
@@ -80,6 +80,7 @@ class ManageUsers extends React.Component {
               class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
               placeholder=""
               name="password"
+              type='password  '
               value={this.state.password}
               onChange={e => this.handleChange(e.target.name, e.target.value)}
             />
