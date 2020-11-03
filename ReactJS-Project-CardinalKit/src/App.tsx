@@ -43,6 +43,7 @@ class App extends React.Component<AppProps, { isLoggedIn: any }> {
     if (isLoggedIn) {
       return (
         <div>
+          <Router>
           <div className="flex h-screen bg-gray-50 dark:bg-gray-900">
             {isLoggedIn && <SideBar />}
             <div className="flex flex-col flex-1 w-full">
@@ -67,7 +68,8 @@ class App extends React.Component<AppProps, { isLoggedIn: any }> {
                 </Switch>
               </main>
             </div>
-          </div>
+            </div>
+          </Router>
         </div>
       )
     } else {
