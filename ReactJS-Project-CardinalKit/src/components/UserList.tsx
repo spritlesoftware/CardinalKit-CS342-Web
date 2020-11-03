@@ -117,20 +117,24 @@ class UserList extends Component<{}, { users: any[], newUsers: any[], totalSurve
         <div className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase text-center dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">user id</div>
         ),
         accessor: 'userId',
-        className: 'font-semibold text-center'
+        className: 'font-semibold',
+        width: 350
       },
       {
         Header: () => (
         <div className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase text-center dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">survey submitted</div>
         ),
         accessor: 'endDate',
-        className:" text-center px-4 py-3 text-sm"
+        className:"px-4 py-3 text-sm",
+        width: 150
       },
       {
         Header: () => (
         <div className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase text-center dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">action</div>
         ),
         accessor: 'view',
+        filterable: false,
+        width: 300
       }
     ];
 
