@@ -1,6 +1,12 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
+import moment from 'moment';
+import Pagination from './Pagination'
+import CanvasJS, { Chart } from 'canvasjs';
+
+
+
 
 import { selectUserDetails } from '../selectors/usersSelectors';
 
@@ -25,6 +31,7 @@ import { getSurveys } from '../api/getAllUsers';
 import Firebase from './Firebase';
 import { start } from 'repl';
 import ReactTable from 'react-table-6';
+import { Canvas } from 'canvas';
 
 const messages = defineMessages({
   surveyTableHeader: {
@@ -88,7 +95,7 @@ class SurveysTable extends React.Component<SurveyHeaderProps, State> {
           .then((doc) => {
             const data = doc.data()
             const endDate = data?.payload?.endDate
-            const startDate = data?.payload?.startDate
+            const startDate = moment(data?.payload?.startDate.substring(0, 10)).format('ll')
             const userID = data?.userId
             const identifier = data?.payload?.identifier
             const surveyData = {
@@ -120,30 +127,39 @@ class SurveysTable extends React.Component<SurveyHeaderProps, State> {
 
     const columns = [
       {
-        Header: 'SURVEY',
+        Header: () => (
+        <div className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase text-center dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">Survey Name</div>
+        ),
         accessor: 'identifier',
+        className: 'font-semibold text-center'
       },
       {
-        Header: 'CREATED AT',
+        Header: () => (
+        <div className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase text-center dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">survey submitted</div>
+        ),
         accessor: 'startDate',
+        className:" text-center px-4 py-3 text-sm"
       },
       {
-        Header: "action",
-        accessor: "veriResponse"
+        Header: () => (
+          <div className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase text-center dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">action</div>
+        ),
+        accessor: 'view',
       }
     ];
-
-
     return (
       <div className="container px-6 mx-auto ">
         <div className="grid gap-6 mb-8 w-full mt-40 ">
           <ReactTable
-              data={this.state.surveyList}
-              columns={columns}
-              className="surveyTable"
+            data={this.state.surveyList}
+            columns={columns}
+            className="surveyTable"
+            defaultPageSize={5}
+            PaginationComponent={Pagination}
             />
         </div>
       </div>
+
       // <CardTable>
       //   <CardTableTitle>
       //     <FormattedMessage {...messages.surveyTableHeader} />

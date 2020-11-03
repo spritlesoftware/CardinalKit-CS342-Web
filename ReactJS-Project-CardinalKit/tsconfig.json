@@ -1,5 +1,8 @@
 {
   "compilerOptions": {
+    "types": [
+      "canvasjs"
+    ],
     "target": "es2019",
     "lib": [
       "dom",

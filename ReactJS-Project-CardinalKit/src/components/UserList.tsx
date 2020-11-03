@@ -6,6 +6,7 @@ import "react-table-6/react-table.css";
 import Firebase from './Firebase';
 import { db } from './Firebase/firebase';
 import './styles/customStyle.css';
+import Pagination from './Pagination'
 import app from 'firebase/app';
 import * as admin from 'firebase-admin';
 import { getAllFirebaseUsers, getSurveys } from '../api/getAllUsers';
@@ -14,7 +15,7 @@ import Header from './Header';
 import { addMinutes } from 'date-fns';
 import { usersReducer } from '../reducers/usersReducer';
 import { string } from 'prop-types';
-
+import moment from 'moment';
 admin.initializeApp();//add to here
 
 export interface users{
@@ -41,6 +42,8 @@ class UserList extends Component<{}, { users: any[], newUsers: any[], totalSurve
 
 
   componentDidMount = () => {
+      console.log(window.sessionStorage.getItem('authToken'), "auth token")
+
     this.getUserId()
       .get()
       .then(querySnapshot => {
@@ -74,7 +77,7 @@ class UserList extends Component<{}, { users: any[], newUsers: any[], totalSurve
          .then((querySnapshot) => {
            querySnapshot.docs.map((survey) => {
               //taking sub string to get the exact name fo the suvey
-              totalSurveys.push(survey.id.substring(0, 14))
+             totalSurveys.push(survey.id.substring(0, 14))
            })
            surveyData.push(querySnapshot.docs[0].data())
            const data = surveyData.map(doc => {
@@ -86,8 +89,11 @@ class UserList extends Component<{}, { users: any[], newUsers: any[], totalSurve
             }
             return {
               userId: doc.userId,
-              endDate: doc.payload.endDate.substring(0, 10),
-              view: <Link to={"/users/" + doc.userId}>View Survey</Link>
+              endDate:
+                //canging date format
+                moment(doc.payload.endDate.substring(0, 10))
+                  .format('ll'),
+              view: <span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100"><Link to={"/users/" + doc.userId}>View Survey</Link></span>
             }
            });
            this.setState({
@@ -95,8 +101,8 @@ class UserList extends Component<{}, { users: any[], newUsers: any[], totalSurve
              newUsers: [...newUsers],
             //to remove duplicate value
             totalSurveys: [...totalSurveys.filter( function( item, index, inputArray ) {
-                                              return inputArray.indexOf(item) == index;
-                                            })
+                          return inputArray.indexOf(item) == index;
+                        })
                           ]
            })
          })
@@ -107,15 +113,23 @@ class UserList extends Component<{}, { users: any[], newUsers: any[], totalSurve
 
     const columns = [
       {
-        Header: 'USER ID',
+        Header: () => (
+        <div className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase text-center dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">user id</div>
+        ),
         accessor: 'userId',
+        className: 'font-semibold text-center'
       },
       {
-        Header: 'LAST ACTIVE',
-        accessor: 'endDate'
+        Header: () => (
+        <div className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase text-center dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">survey submitted</div>
+        ),
+        accessor: 'endDate',
+        className:" text-center px-4 py-3 text-sm"
       },
       {
-        Header: 'ACTION',
+        Header: () => (
+        <div className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase text-center dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">action</div>
+        ),
         accessor: 'view',
       }
     ];
@@ -170,9 +184,11 @@ class UserList extends Component<{}, { users: any[], newUsers: any[], totalSurve
         <ReactTable
           data={this.state.users}
           columns={columns}
-          className="usersTable"
+          className="ReactTable"
           filterable={true}
           sortable={true}
+          defaultPageSize={5}
+          PaginationComponent={Pagination}
         />
 
         {/* <div className="w-full overflow-hidden rounded-lg shadow-xs">
