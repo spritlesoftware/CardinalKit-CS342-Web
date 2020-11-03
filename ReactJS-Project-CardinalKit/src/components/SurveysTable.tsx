@@ -145,6 +145,7 @@ class SurveysTable extends React.Component<SurveyHeaderProps, State> {
           <div className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase text-center dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">action</div>
         ),
         accessor: 'view',
+        filterable: false
       }
     ];
     return (
@@ -156,6 +157,7 @@ class SurveysTable extends React.Component<SurveyHeaderProps, State> {
             className="surveyTable"
             defaultPageSize={5}
             PaginationComponent={Pagination}
+            filterable={true}
             />
         </div>
       </div>
