@@ -101,7 +101,10 @@ class SurveysTable extends React.Component<SurveyHeaderProps, State> {
             const surveyData = {
               startDate,
               identifier,
-              viewResponse: <a href="#">View Response</a>
+              view:  
+              <div><span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
+                View Response</span>
+              </div>
             }
             tempSurveyList.push(surveyData)
             this.setState({
@@ -128,24 +131,27 @@ class SurveysTable extends React.Component<SurveyHeaderProps, State> {
     const columns = [
       {
         Header: () => (
-        <div className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase text-center dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">Survey Name</div>
+        <div className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">Survey Name</div>
         ),
         accessor: 'identifier',
-        className: 'font-semibold text-center'
+        className: 'font-semibold',
+        width: 300
       },
       {
         Header: () => (
-        <div className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase text-center dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">survey submitted</div>
+        <div className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">survey submitted</div>
         ),
         accessor: 'startDate',
-        className:" text-center px-4 py-3 text-sm"
+        className:"px-4 py-3 text-sm",
+        width: 200
       },
       {
         Header: () => (
-          <div className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase text-center dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">action</div>
+          <div className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">action</div>
         ),
         accessor: 'view',
-        filterable: false
+        filterable: false,
+        width: 400
       }
     ];
     return (
