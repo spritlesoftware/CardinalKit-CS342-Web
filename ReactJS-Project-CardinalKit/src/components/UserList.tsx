@@ -8,7 +8,6 @@ import { db } from './Firebase/firebase';
 import './styles/customStyle.css';
 import Pagination from './Pagination'
 import app from 'firebase/app';
-import * as admin from 'firebase-admin';
 import { getAllFirebaseUsers, getSurveys } from '../api/getAllUsers';
 import SideBar from './SideBar';
 import Header from './Header';
@@ -16,7 +15,6 @@ import { addMinutes } from 'date-fns';
 import { usersReducer } from '../reducers/usersReducer';
 import { string } from 'prop-types';
 import moment from 'moment';
-admin.initializeApp();//add to here
 
 export interface users{
   userId: string,
@@ -59,7 +57,6 @@ class UserList extends Component<{}, { users: any[], newUsers: any[], totalSurve
       })
       .then(() => {
         this.getSurveyDetails()
-        admin.auth().listUsers()
       })
   };
 
