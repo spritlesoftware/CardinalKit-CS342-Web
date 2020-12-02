@@ -83,14 +83,15 @@ export default class Pagination extends React.Component {
             }}
             disabled={activePage === 1}
           >
-              <svg aria-hidden="true" class="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                <path d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
-              </svg>
+            <svg aria-hidden="true" className="w-4 h-4 fill-current" viewBox="0 0 20 20">
+              <path d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" fillRule="evenodd"></path>
+            </svg>
           </PageButtonComponent>
         </div>
         <div >
           {visiblePages.map((page, index, array) => {
             return (
+
               <PageButtonComponent
                 key={page}
                 className={
@@ -106,22 +107,20 @@ export default class Pagination extends React.Component {
           })}
         </div>
         <div className="Table__nextPageWrapper">
-          <PageButtonComponent
-            className="Table__pageButton text-gray-700 text-center bg-gray-400 px-4 py-2 m-2 px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple" aria-label="Next"
-            onClick={() => {
-              if (activePage === this.props.pages) return;
-              this.changePage(activePage + 1);
-            }}
-            disabled={activePage === this.props.pages}
-          >
-            {/* {this.props.nextText} */}
-            {/* &gt; */}
-            <button class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple" aria-label="Next">
-                          <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20">
-                            <path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
-                          </svg>
-                        </button>
-          </PageButtonComponent>
+          <div className=" text-gray-700 text-center bg-gray-400 px-4 py-2 m-2">
+            <PageButtonComponent
+              className="Table__pageButton px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Next"
+              onClick={() => {
+                if (activePage === this.props.pages) return;
+                this.changePage(activePage + 1);
+              }}
+              disabled={activePage === this.props.pages}
+            >
+              <svg className="w-4 h-4 fill-current " aria-hidden="true" viewBox="0 0 20 20">
+                <path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" fillRule="evenodd"></path>
+              </svg>
+            </PageButtonComponent>
+          </div>
         </div>
       </div>
     );

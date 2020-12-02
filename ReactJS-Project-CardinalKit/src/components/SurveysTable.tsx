@@ -3,35 +3,21 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import moment from 'moment';
 import Pagination from './Pagination'
-import CanvasJS, { Chart } from 'canvasjs';
 
 
 
 
 import { selectUserDetails } from '../selectors/usersSelectors';
 
-import { Survey } from '../api/survey';
 import { UserDetails } from '../api/user';
-import { db } from './Firebase/firebase';
 
 
 import { Store } from '../reducers/rootReducer';
 
-import { defineMessages, FormattedDate, FormattedMessage } from 'react-intl';
-import { TextInfoBubble } from './TextInfoBubble';
+import { defineMessages } from 'react-intl';
 import { Card } from '../ui/Card';
-import {
-  CardTable,
-  CardTableCol,
-  CardTableHeader,
-  CardTableRow,
-  CardTableTitle,
-} from '../ui/CardTable';
-import { getSurveys } from '../api/getAllUsers';
-import Firebase from './Firebase';
-import { start } from 'repl';
+import { getSurvey, getSurveys } from '../api/getAllUsers';
 import ReactTable from 'react-table-6';
-import { Canvas } from 'canvas';
 
 const messages = defineMessages({
   surveyTableHeader: {
@@ -53,10 +39,10 @@ const messages = defineMessages({
 });
 
 interface SurveyList {
-    userID: string,
-    identifier: string,
-    startDate: string,
-    endDate: string,
+  userID: string,
+  identifier: string,
+  startDate: string,
+  endDate: string,
 }
 
 interface State {
@@ -76,38 +62,31 @@ class SurveysTable extends React.Component<SurveyHeaderProps, State> {
 
   componentDidMount() {
     const { userID } = this.props;
-    const { surveyIds, surveyList } = this.state;
-    const tempSurveyList : any[] = [];
+    const tempSurveyList: any[] = [];
     getSurveys(userID).then((querySnapshot) => {
       const data = querySnapshot.docs.map(doc => doc.id);
       this.setState({
-          surveyIds: [...data]
+        surveyIds: [...data]
       })
-      console.log(surveyIds)
       data.map((surveyId) => {
-        db.collection('studies')
-          .doc('com.siva.cardinalkit-example')
-          .collection('users')
-          .doc(userID)
-          .collection('surveys')
-          .doc(surveyId)
-          .get()
-          .then((doc) => {
-            const data = doc.data()
-            const endDate = data?.payload?.endDate
-            const startDate = moment(data?.payload?.startDate.substring(0, 10)).format('ll')
-            const userID = data?.userId
-            const identifier = data?.payload?.identifier
-            const surveyData = {
-              startDate,
-              identifier,
-              viewResponse: <a href="#">View Response</a>
+        return getSurvey(userID, surveyId)
+          .then((data) => {
+            if (data.payload) {
+              const startDate = moment(data?.payload?.startDate.substring(0, 10)).format('ll')
+              const identifier = data?.payload?.identifier
+              const surveyData = {
+                startDate,
+                identifier,
+                view:
+                  <div><span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
+                    View Response</span>
+                  </div>
+              }
+              tempSurveyList.push(surveyData)
+              this.setState({
+                surveyList: [...tempSurveyList]
+              })
             }
-            tempSurveyList.push(surveyData)
-            this.setState({
-              surveyList: [...tempSurveyList]
-            })
-            console.log(this.state.surveyList)
           })
       })
     })
@@ -115,9 +94,8 @@ class SurveysTable extends React.Component<SurveyHeaderProps, State> {
 
   render() {
     const { userID } = this.props;
-    console.log(this.props)
 
-    if (!userID ) {
+    if (!userID) {
       return (
         <Card>
           <p className="p-5">{userID}</p>
@@ -128,28 +106,31 @@ class SurveysTable extends React.Component<SurveyHeaderProps, State> {
     const columns = [
       {
         Header: () => (
-        <div className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase text-center dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">Survey Name</div>
+          <div className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">Survey Name</div>
         ),
         accessor: 'identifier',
-        className: 'font-semibold text-center'
+        className: 'font-semibold',
+        width: 300
       },
       {
         Header: () => (
-        <div className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase text-center dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">survey submitted</div>
+          <div className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">survey submitted</div>
         ),
         accessor: 'startDate',
-        className:" text-center px-4 py-3 text-sm"
+        className: "px-4 py-3 text-sm",
+        width: 200
       },
       {
         Header: () => (
-          <div className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase text-center dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">action</div>
+          <div className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">action</div>
         ),
         accessor: 'view',
-        filterable: false
+        filterable: false,
+        width: 400
       }
     ];
     return (
-      <div className="container px-6 mx-auto ">
+      <div className="container px-6 mx-auto " >
         <div className="grid gap-6 mb-8 w-full mt-40 ">
           <ReactTable
             data={this.state.surveyList}
@@ -158,44 +139,9 @@ class SurveysTable extends React.Component<SurveyHeaderProps, State> {
             defaultPageSize={5}
             PaginationComponent={Pagination}
             filterable={true}
-            />
+          />
         </div>
       </div>
-
-      // <CardTable>
-      //   <CardTableTitle>
-      //     <FormattedMessage {...messages.surveyTableHeader} />
-      //   </CardTableTitle>
-      //   <CardTableHeader>
-      //     <CardTableCol widthPercent={25}>
-      //       <FormattedMessage {...messages.nameHeader} />
-      //     </CardTableCol>
-      //     <CardTableCol widthPercent={25}>
-      //       <FormattedMessage {...messages.dateHeader} />
-      //     </CardTableCol>
-      //     <CardTableCol widthPercent={25}>
-      //       <FormattedMessage {...messages.surveyIdHeader} />
-      //     </CardTableCol>
-      //   </CardTableHeader>
-      //   {this.state.surveyList.map((survey: Survey, i: number) => (
-      //     <CardTableRow key={`survey-${survey.taskRunUUID}`} isLast={this.state.surveyList.length - 1 === i}>
-      //       <CardTableCol widthPercent={25}>
-      //         <TextInfoBubble label={survey.identifier} />
-      //       </CardTableCol>
-      //       <CardTableCol widthPercent={25}>
-      //         <FormattedDate
-      //           value={survey.startDate}
-      //           year="numeric"
-      //           month="numeric"
-      //           day="2-digit"
-      //         />
-      //       </CardTableCol>
-      //       <CardTableCol className="font-mono text-sm" widthPercent={25}>
-      //         {survey.taskRunUUID}
-      //       </CardTableCol>
-      //     </CardTableRow>
-      //   ))}
-      // </CardTable>
     );
   }
 }

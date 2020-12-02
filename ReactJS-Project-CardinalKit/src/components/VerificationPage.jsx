@@ -1,12 +1,7 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
-import app from 'firebase/app';
 import logo from '../images/login-office.jpeg';
 import logo2 from '../images/cardinal_logo.svg';
-
-
-// import * as admin from 'firebase-admin';
 
 class VerificationPage extends React.Component {
   constructor(props) {
@@ -17,39 +12,24 @@ class VerificationPage extends React.Component {
     };
   }
 
-  componentDidMount() {
-  console.log(localStorage.getItem('verify-code'))
-  }
-
   onSubmitHandler = () => {
     this.setState({
       userCode: document.getElementById('verificationCode')
     })
     var isLoggedIn = false
-    if (this.state.userCode == localStorage.getItem('verify-code')) {
+    if (this.state.userCode === localStorage.getItem('verify-code')) {
       this.setState({
         verified_code: true
       })
       isLoggedIn = true
       window.sessionStorage.setItem('isLoggedIn', isLoggedIn);
-      console.log(window.sessionStorage.getItem('isLoggedIn'));
-
-      // admin
-      //   .auth()
-      //   .updateUser(currentUser.uid, { emailVerified: true })
-      //   .then(function(userRecord) {
-      //     console.log('update success', userRecord.toJSON());
-      //   })
-      //   .catch(function(err) {
-      //     console.log('Error updating user', err);
-      //   });
     }
   };
 
   render() {
     if (this.state.verified_code) {
       window.location.reload()
-      return <Redirect to={{pathname: "/users"}} />
+      return <Redirect to={{ pathname: "/users" }} />
     }
 
     return (
@@ -58,18 +38,18 @@ class VerificationPage extends React.Component {
           <div className="flex flex-col overflow-y-auto md:flex-row">
 
             <div className=" flex flex-row h-32 md:h-auto md:w-1/2">
-                  <img
-                    aria-hidden="true"
-                    className="object-cover w-full h-full dark:hidden"
-                    src={logo}
-                    alt="Office"
-                  />
-                  <img
-                    aria-hidden="true"
-                    className="hidden object-cover w-full h-full dark:block"
-                    src={logo2}
-                    alt="Office"
-                  />
+              <img
+                aria-hidden="true"
+                className="object-cover w-full h-full dark:hidden"
+                src={logo}
+                alt="Office"
+              />
+              <img
+                aria-hidden="true"
+                className="hidden object-cover w-full h-full dark:block"
+                src={logo2}
+                alt="Office"
+              />
             </div>
 
             <div className="flex flex-row overflow-y-auto md:flex-row">
@@ -77,7 +57,7 @@ class VerificationPage extends React.Component {
                 <h4 className="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">Two Factor Authentication</h4>
                 <label className="block text-sm">
                   <span className="text-gray-700 dark:text-gray-400">Please Enter the Two Factor Authentication code sent to your email.</span>
-                <input
+                  <input
                     className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                     placeholder="Enter your verification code"
                     type="number"
@@ -87,15 +67,15 @@ class VerificationPage extends React.Component {
                 </label>
 
                 <a
-                  href = "/users"
-                  style={{ marginTop: 24, padding: 175 , paddingTop: 10, paddingBottom: 10}}
+                  href="/users"
+                  style={{ marginTop: 24, padding: 175, paddingTop: 10, paddingBottom: 10 }}
                   className="flex items-center justify-between px-auto content-center py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple w-full"
                   onClick={() => this.onSubmitHandler()}
                 >
                   <span>Submit</span>
                 </a>
-                </div>
               </div>
+            </div>
           </div>
         </div>
       </div>

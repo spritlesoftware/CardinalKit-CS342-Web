@@ -2,12 +2,6 @@ import { all, call, put, takeLatest } from 'redux-saga/effects';
 
 import { LoginActionType } from '../constants/loginConstants';
 
-//import { Store } from '../reducers/rootReducer';
-
-/*import {
-  getLoginState,
-} from '../selectors/loginSelectors';*/
-
 import { LoginUserAction, loginUserFailure, loginUserSuccess } from '../actions/loginActions';
 
 import Firebase from '../components/Firebase';

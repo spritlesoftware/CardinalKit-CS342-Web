@@ -1,22 +1,13 @@
-import firestore from 'firebase/firestore';
 import React, { Component } from 'react';
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import ReactTable from "react-table-6";
 import "react-table-6/react-table.css";
-import Firebase from './Firebase';
-import { db } from './Firebase/firebase';
 import './styles/customStyle.css';
 import Pagination from './Pagination'
-import app from 'firebase/app';
 import { getAllFirebaseUsers, getSurveys } from '../api/getAllUsers';
-import SideBar from './SideBar';
-import Header from './Header';
-import { addMinutes } from 'date-fns';
-import { usersReducer } from '../reducers/usersReducer';
-import { string } from 'prop-types';
 import moment from 'moment';
 
-export interface users{
+export interface users {
   userId: string,
   endDate: string,
 }
@@ -33,19 +24,10 @@ class UserList extends Component<{}, { users: any[], newUsers: any[], totalSurve
     };
   }
 
-  getUserId = () => db.collection('studies')
-    .doc('com.siva.cardinalkit-example')
-    .collection('users')
-
-
-
   componentDidMount = () => {
-      console.log(window.sessionStorage.getItem('authToken'), "auth token")
-
-    this.getUserId()
-      .get()
+    getAllFirebaseUsers()
       .then(querySnapshot => {
-        const data = querySnapshot.docs.map(doc => {
+        let data = querySnapshot.docs.map(doc => {
           return {
             userId: doc.id,
             view: <Link to={"/users/" + doc.id}>View Survey</Link>
@@ -66,43 +48,43 @@ class UserList extends Component<{}, { users: any[], newUsers: any[], totalSurve
     let newUsers: any[] = [];
     let totalSurveys: any[] = [];
     const today = new Date();
-    return users.map(({ userId }) => {
-       this.getUserId()
-        .doc(userId)
-        .collection('surveys')
-        .get()
-         .then((querySnapshot) => {
-           querySnapshot.docs.map((survey) => {
-              //taking sub string to get the exact name fo the suvey
-             totalSurveys.push(survey.id.substring(0, 14))
-           })
-           surveyData.push(querySnapshot.docs[0].data())
-           const data = surveyData.map(doc => {
-             //taking substring to get only the date, removing the time
-             let surveyDate = new Date(doc.payload.endDate.substring(0, 10))
-             //getting new users by comparing last active date to todays date.
-             if (surveyDate === today) {
+    users.map(({ userId }) => {
+      return getSurveys(userId)
+        .then((querySnapshot) => {
+          querySnapshot.docs.map((survey) => {
+            return totalSurveys.push(survey.id.substring(0, 14))
+          })
+          surveyData.push(querySnapshot.docs[0].data())
+          const data = surveyData.map(doc => {
+            let surveyDate = new Date(doc.payload.endDate.substring(0, 10))
+            if (surveyDate === today) {
               newUsers.push(doc.userId)
             }
             return {
+              name: 'John Adams',
+              email: 'johnadams@gmail.com',
               userId: doc.userId,
               endDate:
-                //canging date format
                 moment(doc.payload.endDate.substring(0, 10))
                   .format('ll'),
-              view: <span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100"><Link to={"/users/" + doc.userId}>View Survey</Link></span>
+              view:
+                <div><span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100"><Link to={"/users/" + doc.userId}>View Survey</Link></span>
+                  <a href="#"><span
+                    className="px-2 py-1 font-semibold leading-tight text-blue-700 bg-blue-100 rounded-full dark:bg-blue-700 dark:text-blue-100"
+                  >
+                    Download Survey response
+              </span></a></div>
             }
-           });
-           this.setState({
+          });
+          this.setState({
             users: [...data],
-             newUsers: [...newUsers],
-            //to remove duplicate value
-            totalSurveys: [...totalSurveys.filter( function( item, index, inputArray ) {
-                          return inputArray.indexOf(item) == index;
-                        })
-                          ]
-           })
-         })
+            newUsers: [...newUsers],
+            totalSurveys: [...totalSurveys.filter(function (item, index, inputArray) {
+              return inputArray.indexOf(item) === index;
+            })
+            ]
+          })
+        })
     })
   }
 
@@ -111,21 +93,39 @@ class UserList extends Component<{}, { users: any[], newUsers: any[], totalSurve
     const columns = [
       {
         Header: () => (
-        <div className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase text-center dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">user id</div>
+          <div className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">Name</div>
+        ),
+        accessor: 'name',
+        className: 'font-semibold',
+        width: 200
+      },
+      {
+        Header: () => (
+          <div className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">Email</div>
+        ),
+        accessor: 'email',
+        className: 'font-semibold',
+        width: 200
+      },
+      {
+        Header: () => (
+          <div className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase  dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">user id</div>
         ),
         accessor: 'userId',
-        className: 'font-semibold text-center'
+        className: 'font-semibold',
+        width: 250
       },
       {
         Header: () => (
-        <div className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase text-center dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">survey submitted</div>
+          <div className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">survey submitted</div>
         ),
         accessor: 'endDate',
-        className:" text-center px-4 py-3 text-sm"
+        className: "px-4 py-3 text-sm",
+        width: 150
       },
       {
         Header: () => (
-        <div className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase text-center dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">action</div>
+          <div className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase text-center dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">action</div>
         ),
         accessor: 'view',
         filterable: false,
@@ -165,9 +165,9 @@ class UserList extends Component<{}, { users: any[], newUsers: any[], totalSurve
             <div className="p-3 mr-4 text-teal-500 bg-teal-100 rounded-full dark:text-teal-100 dark:bg-teal-500">
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                 <path
-                  fill-rule="evenodd"
+                  fillRule="evenodd"
                   d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zM7 8H5v2h2V8zm2 0h2v2H9V8zm6 0h-2v2h2V8z"
-                  clip-rule="evenodd"
+                  clipRule="evenodd"
                 ></path>
               </svg>
             </div>
@@ -189,51 +189,55 @@ class UserList extends Component<{}, { users: any[], newUsers: any[], totalSurve
           PaginationComponent={Pagination}
         />
 
-        {/* <div className="w-full overflow-hidden rounded-lg shadow-xs">
-          <div className="w-full overflow-x-auto">
-            <table className="w-full whitespace-no-wrap">
-              <thead>
-                <tr className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
-                  <th className="px-4 py-3">Users</th>
-                  <th className="px-4 py-3">Email</th>
-                  <th className="px-4 py-3">Actions</th>
-                  <th className="px-4 py-3">Submitted at</th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
-                <tr className="text-gray-700 dark:text-gray-400">
-                  <td className="px-4 py-3">
-                    <div className="flex items-center text-sm">
-                      <div className="relative hidden w-8 h-8 mr-3 rounded-full md:block">
-                        <img
-                          className="object-cover w-full h-full rounded-full"
-                          src="https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&ixid=eyJhcHBfaWQiOjE3Nzg0fQ"
-                          alt=""
-                        />
-                        <div
-                          className="absolute inset-0 rounded-full shadow-inner"
-                          aria-hidden="true"
-                        ></div>
-                      </div>
-                      <div>
-                        <p className="font-semibold">Hans Burger</p>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-4 py-3 text-sm">hans@gmail.com</td>
-                  <td className="px-4 py-3 text-xs">
-                    <a href="survey_response.html">
-                      <span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
-                        View Response
-                      </span>
-                    </a>
-                  </td>
-                  <td className="px-4 py-3 text-sm">6/10/2020</td>
-                </tr>
-              </tbody>
-            </table>
+        <h2
+          className="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200"
+        >
+          Charts
+            </h2>
+        <div className="grid gap-6 mb-8 md:grid-cols-2">
+          <div
+            className="min-w-0 p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800"
+          >
+            <h4 className="mb-4 font-semibold text-gray-800 dark:text-gray-300">
+              Survey
+                </h4>
+            <canvas id="pie"></canvas>
+            <div
+              className="flex justify-center mt-4 space-x-3 text-sm text-gray-600 dark:text-gray-400"
+            >
+              <div className="flex items-center">
+                <span
+                  className="inline-block w-3 h-3 mr-1 bg-blue-500 rounded-full"
+                ></span>
+                <span>ShortWalkTask</span>
+              </div>
+              <div className="flex items-center">
+                <span
+                  className="inline-block w-3 h-3 mr-1 bg-teal-600 rounded-full"
+                ></span>
+                <span>SurveyTask-SF12</span>
+              </div>
+            </div>
           </div>
-        </div>*/}
+          <div
+            className="min-w-0 p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800"
+          >
+            <h4 className="mb-4 font-semibold text-gray-800 dark:text-gray-300">
+              Traffic
+                </h4>
+            <canvas id="line"></canvas>
+            <div
+              className="flex justify-center mt-4 space-x-3 text-sm text-gray-600 dark:text-gray-400"
+            >
+              <div className="flex items-center">
+                <span
+                  className="inline-block w-3 h-3 mr-1 bg-teal-600 rounded-full"
+                ></span>
+                <span>User</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

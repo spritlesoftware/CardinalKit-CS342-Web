@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { Redirect } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 
@@ -9,17 +8,11 @@ import { getLoginState, isAuthenticated } from '../selectors/loginSelectors';
 import app from 'firebase/app';
 
 
-import { Button, ButtonColor, ButtonType } from '../ui/Button';
+import { Button, ButtonColor } from '../ui/Button';
 import Firebase from './Firebase';
 import logo from '../images/login-office.jpeg';
 import logo2 from '../images/cardinal_logo.svg';
 
-// const messages = defineMessages({
-//   header: {
-//     id: 'LoginPage.header',
-//     defaultMessage: 'Login with Google',
-//   },
-// });
 
 export class LoginPage extends React.Component {
   constructor(props) {
@@ -56,19 +49,14 @@ export class LoginPage extends React.Component {
   signInWithEmailAndPasswordHandler = (event, email, password) => {
     const firebase = new Firebase();
     event.preventDefault();
-    console.log(email, password);
     firebase
       .doSignInWithEmailAndPassword(email, password)
-      .then(res => {
+      .then(() => {
         const verifyCode = this.setVerificationCode()
         this.sendMail(email, verifyCode);
         this.setState({
           loggedIn: true
         })
-      })
-      .then(res => {
-        console.log(res, 'verfication');
-
       })
       .catch(error => {
         this.setState({ erroMsg: 'Error signing in with password and email!' });
@@ -78,12 +66,10 @@ export class LoginPage extends React.Component {
 
 
 
-  handleSubmit = (event) => {
-    console.log('submit');
+  handleSubmit = () => {
     const firebase = new Firebase();
     firebase.doSignInWithGoogle()
       .then(() => {
-        console.log("logged in")
         const verifyCode = this.setVerificationCode()
         this.sendMail(app.auth().currentUser.email, verifyCode)
         this.props.history.push('/verify_code')
@@ -91,8 +77,7 @@ export class LoginPage extends React.Component {
   };
 
   render() {
-    const { isAuth, location, loading } = this.props;
-    console.log(isAuth, 'isAuth');
+    const { loading } = this.props;
 
     return (
       <div className="flex items-center min-h-screen p-6 bg-gray-50 dark:bg-gray-900">
@@ -122,7 +107,6 @@ export class LoginPage extends React.Component {
                     <span className="text-gray-700 dark:text-gray-400">Email</span>
                     <input
                       className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
-                      placeholder="Jane Doe"
                       type="email"
                       name="userEmail"
                       value={this.state.userEmail}
@@ -135,7 +119,6 @@ export class LoginPage extends React.Component {
                     <span className="text-gray-700 dark:text-gray-400">Password</span>
                     <input
                       className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
-                      placeholder="***************"
                       type="password"
                       name="userPassword"
                       value={this.state.userPassword}
@@ -160,33 +143,14 @@ export class LoginPage extends React.Component {
                   </a>
 
                   <hr className="my-8" />
-                  <a href="../index.html" />
                   <Button
                     className="flex items-center justify-center w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-white text-gray-700 transition-colors duration-150 border border-gray-300 rounded-lg dark:text-gray-400 active:bg-transparent hover:border-gray-500 focus:border-gray-500 active:text-gray-500 focus:outline-none focus:shadow-outline-gray"
-                    // type={ButtonType.Submit}
-                    onClick={() => {this.handleSubmit()}}
+                    onClick={() => { this.handleSubmit() }}
                     selected={loading}
                     color={ButtonColor.Blue}
                   >
                     Login with Google
                   </Button>
-
-                  <p className="mt-4">
-                    <a
-                      className="text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline"
-                      href="./forgot-password.html"
-                    >
-                      Forgot your password?
-                    </a>
-                  </p>
-                  <p className="mt-1">
-                    <a
-                      className="text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline"
-                      href="./create-account.html"
-                    >
-                      Create account
-                    </a>
-                  </p>
                 </div>
               </div>
             </div>
@@ -218,7 +182,6 @@ export function mapDispatchToProps(dispatch) {
 }
 
 export function mapStateToProps(state) {
-  console.log(state, 'state');
   const { loading, error } = getLoginState(state);
   return {
     isAuth: isAuthenticated(state),

@@ -1,7 +1,4 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
-import { Route, Redirect, Link } from 'react-router-dom';
 
 class SideBar extends React.Component {
   render() {
