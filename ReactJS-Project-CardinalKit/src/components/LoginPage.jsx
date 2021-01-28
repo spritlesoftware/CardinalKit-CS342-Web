@@ -3,15 +3,16 @@ import * as PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 
+import app from 'firebase/app';
 import { loginUser } from '../actions/loginActions';
 import { getLoginState, isAuthenticated } from '../selectors/loginSelectors';
-import app from 'firebase/app';
-
 
 import { Button, ButtonColor } from '../ui/Button';
 import Firebase from './Firebase';
 import logo from '../images/login-office.jpeg';
 import logo2 from '../images/cardinal_logo.svg';
+import { toast } from 'react-toastify';
+toast.configure();
 
 
 export class LoginPage extends React.Component {
@@ -30,11 +31,11 @@ export class LoginPage extends React.Component {
   };
 
   setVerificationCode = () => {
-    var verifyCode = Math.floor(Math.random() * 9999 + 1);
+    const verifyCode = Math.floor(Math.random() * 9999 + 1);
     localStorage.setItem('verify-code', verifyCode);
     this.props.history.push('/verify_code');
-    return verifyCode
-  }
+    return verifyCode;
+  };
 
   sendMail = (email, code) => {
     window.Email.send({
@@ -42,8 +43,8 @@ export class LoginPage extends React.Component {
       To: email,
       From: process.env.REACT_APP_FROM_EMAIL,
       Subject: 'Verfication code',
-      Body: 'Your verification code ' + code,
-    })
+      Body: `Your verification code ${code}`,
+    });
   };
 
   signInWithEmailAndPasswordHandler = (event, email, password) => {
@@ -52,11 +53,11 @@ export class LoginPage extends React.Component {
     firebase
       .doSignInWithEmailAndPassword(email, password)
       .then(() => {
-        const verifyCode = this.setVerificationCode()
+        const verifyCode = this.setVerificationCode();
         this.sendMail(email, verifyCode);
         this.setState({
-          loggedIn: true
-        })
+          loggedIn: true,
+        });
       })
       .catch(error => {
         this.setState({ erroMsg: 'Error signing in with password and email!' });
@@ -64,16 +65,23 @@ export class LoginPage extends React.Component {
       });
   };
 
-
+  validateUser = email => email.includes(
+    process.env.REACT_APP_VERIFIED_EMAIL_SUBDOMAIN
+  );
 
   handleSubmit = () => {
     const firebase = new Firebase();
-    firebase.doSignInWithGoogle()
-      .then(() => {
-        const verifyCode = this.setVerificationCode()
-        this.sendMail(app.auth().currentUser.email, verifyCode)
-        this.props.history.push('/verify_code')
-      })
+    firebase.doSignInWithGoogle().then(data => {
+      if (this.validateUser(data.user.email)) {
+        const verifyCode = this.setVerificationCode();
+        this.sendMail(app.auth().currentUser.email, verifyCode);
+        this.props.history.push('/verify_code');
+      } else {
+        const error_msg = 'email sub-domain not allowed, only '+ process.env.REACT_APP_VERIFIED_EMAIL_SUBDOMAIN + ' allowed to login with Google.';
+        toast.error(error_msg);
+        this.props.history.push('/login');
+      }
+    });
   };
 
   render() {
@@ -88,13 +96,13 @@ export class LoginPage extends React.Component {
                 <img
                   aria-hidden="true"
                   className="object-cover w-full h-full dark:hidden"
-                  src={logo}
+                  src={ logo }
                   alt="Office"
                 />
                 <img
                   aria-hidden="true"
                   className="hidden object-cover w-full h-full dark:block"
-                  src={logo2}
+                  src={ logo2 }
                   alt="Office"
                 />
               </div>
@@ -109,10 +117,10 @@ export class LoginPage extends React.Component {
                       className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                       type="email"
                       name="userEmail"
-                      value={this.state.userEmail}
+                      value={ this.state.userEmail }
                       placeholder="E.g: faruq123@gmail.com"
                       id="userEmail"
-                      onChange={event => this.handleChange(event)}
+                      onChange={ event => this.handleChange(event) }
                     />
                   </label>
                   <label className="block mt-4 text-sm">
@@ -121,23 +129,23 @@ export class LoginPage extends React.Component {
                       className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                       type="password"
                       name="userPassword"
-                      value={this.state.userPassword}
+                      value={ this.state.userPassword }
                       placeholder="Your Password"
                       id="userPassword"
-                      onChange={event => this.handleChange(event)}
+                      onChange={ event => this.handleChange(event) }
                     />
                   </label>
 
                   <a
                     className="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
                     href="../index.html"
-                    onClick={event => {
+                    onClick={ event => {
                       this.signInWithEmailAndPasswordHandler(
                         event,
                         this.state.userEmail,
                         this.state.userPassword
                       );
-                    }}
+                    } }
                   >
                     Log in
                   </a>
@@ -145,9 +153,11 @@ export class LoginPage extends React.Component {
                   <hr className="my-8" />
                   <Button
                     className="flex items-center justify-center w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-white text-gray-700 transition-colors duration-150 border border-gray-300 rounded-lg dark:text-gray-400 active:bg-transparent hover:border-gray-500 focus:border-gray-500 active:text-gray-500 focus:outline-none focus:shadow-outline-gray"
-                    onClick={() => { this.handleSubmit() }}
-                    selected={loading}
-                    color={ButtonColor.Blue}
+                    onClick={ () => {
+                      this.handleSubmit();
+                    } }
+                    selected={ loading }
+                    color={ ButtonColor.Blue }
                   >
                     Login with Google
                   </Button>
