@@ -1,6 +1,7 @@
 import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
+
 const admin = require('firebase-admin');
 
 const config = {
@@ -54,7 +55,7 @@ class Firebase {
 
   doSignInWithTwitter = () => this.auth.signInWithPopup(this.twitterProvider);
 
-  doSignOut = () => this.auth.signOut()
+  doSignOut = () => this.auth.signOut();
 
   doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
 
@@ -81,7 +82,7 @@ class Firebase {
             }
 
             // merge auth and db user
-            authUser = {
+            const currentAuthUser = {
               uid: authUser.uid,
               email: authUser.email,
               emailVerified: authUser.emailVerified,
@@ -89,7 +90,7 @@ class Firebase {
               ...dbUser,
             };
 
-            next(authUser);
+            next(currentAuthUser);
           });
       } else {
         fallback();
@@ -105,6 +106,8 @@ class Firebase {
   // *** Surveys API ***
 
   surveys = uid => this.db.collection(`studies/${config.iOSAppBundleId}/users/${uid}/surveys/`);
+
+  questions = () => this.db.collection(`survey_lists`);
 }
 
 export { db };

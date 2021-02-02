@@ -1,42 +1,69 @@
-import Firebase from '../components/Firebase';
 import app from 'firebase/app';
+import Firebase from '../components/Firebase';
 
-export function getAllFirebaseUsers(): Promise<app.firestore.QuerySnapshot> {
-  const firebase = new Firebase();
-  return firebase.users().get().then(function (doc) {
-    return doc;
-  }).catch(function (error) {
-    console.log("Error getting document:", error);
-    return error;
-  });
-}
+const firebase = new Firebase();
 
-export function getFirebaseUser(uid: String): Promise<app.firestore.QuerySnapshot> {
-  const firebase = new Firebase();
-  return firebase.user(uid).get().then(function (doc) {
-    return doc;
-  }).catch(function (error) {
-    console.log("Error getting document:", error);
-    return error;
-  });
-}
+export const getAllFirebaseUsers = (): Promise<app.firestore.QuerySnapshot> => {
+  return firebase
+    .users()
+    .get()
+    .then(doc => {
+      return doc;
+    })
+    .catch(error => {
+      alert(error);
+      return error;
+    });
+};
 
-export function getSurveys(uid: String): Promise<app.firestore.QuerySnapshot> {
-  const firebase = new Firebase();
-  return firebase.surveys(uid).get().then(function (doc) {
-    return doc;
-  }).catch(function (error) {
-    console.log("Error getting document:", error);
-    return error;
-  });
-}
+export const getFirebaseUser = (uid: string): Promise<app.firestore.QuerySnapshot> => {
+  return firebase
+    .user(uid)
+    .get()
+    .then(doc => {
+      return doc;
+    })
+    .catch(error => {
+      alert(error);
+      return error;
+    });
+};
 
-export function getSurvey(uid: String, surveyId: string): Promise<app.firestore.DocumentData> {
-  const firebase = new Firebase();
-  return firebase.surveys(uid).doc(surveyId).get().then(function (doc) {
-    return doc.data();
-  }).catch(function (error) {
-    console.log("Error getting document:", error);
-    return error;
-  });
-}
+export const getSurveys = (uid: string): Promise<app.firestore.QuerySnapshot> => {
+  return firebase
+    .surveys(uid)
+    .get()
+    .then(doc => {
+      return doc;
+    })
+    .catch(error => {
+      alert(error);
+      return error;
+    });
+};
+
+export const getSurvey = (uid: string, surveyId: string): Promise<app.firestore.DocumentData> => {
+  return firebase
+    .surveys(uid)
+    .doc(surveyId)
+    .get()
+    .then(doc => {
+      return doc.data();
+    })
+    .catch(error => {
+      alert(error);
+      return error;
+    });
+};
+
+export const addQuestions = questions => {
+  return firebase
+    .questions()
+    .add(questions)
+    .then(doc => {
+      return doc;
+    })
+    .catch(err => {
+      return err;
+    });
+};
