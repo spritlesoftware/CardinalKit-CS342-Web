@@ -58,7 +58,7 @@ const CreateSurvey = ({history}) => {
       {
         questionText: '',
         questionType: '',
-        choices: [],
+        choices: ['', '', '', ''],
       },
     ]);
   };
