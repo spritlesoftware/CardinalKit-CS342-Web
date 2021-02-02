@@ -6,13 +6,12 @@ import 'react-toastify/dist/ReactToastify.css';
 toast.configure();
 
 const CreateSurvey = ({history}) => {
-  const [choiceFields, setChoiceFields] = useState(['', '', '', '']);
 
   const [questions, setQuestions] = useState([
     {
       questionText: '',
       questionType: '',
-      choices: [],
+      choices: ['', '', '', ''],
     },
   ]);
 
@@ -43,6 +42,9 @@ const CreateSurvey = ({history}) => {
       case 'choice':
         question.choices.splice(choiceIndex, 1, e.target.value);
       break;
+      case 'addChoiceField':
+        question.choices.push('');
+        break;  
       default:
        return
     }
@@ -61,12 +63,9 @@ const CreateSurvey = ({history}) => {
     ]);
   };
 
-  const addChoiceField = () => {
-    setChoiceFields([...choiceFields, '']);
-  };
-
-  const renderChoiceFields = questionIndex =>
-    choiceFields.map((field, i) => (
+  const renderChoiceFields = questionIndex => {
+    var currentQuestion = questions[questionIndex]
+    return currentQuestion.choices.map((field, i) => (
       <input
         name="choice"
         key={i}
@@ -74,6 +73,8 @@ const CreateSurvey = ({history}) => {
         onChange={e => setQuestionAttributes(e, questionIndex, i)}
       />
     ));
+  }
+
 
   const renderQuestionFields = () =>
     questions.map((field, index, i) => (
@@ -142,7 +143,8 @@ const CreateSurvey = ({history}) => {
               </div>
               <button
                 type="button"
-                onClick={addChoiceField}
+                onClick={e => setQuestionAttributes(e, index)}
+                name="addChoiceField"
                 className="block px-4 py-2 mt-4 mb-4 ml-3 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
               >
                 Add choice
