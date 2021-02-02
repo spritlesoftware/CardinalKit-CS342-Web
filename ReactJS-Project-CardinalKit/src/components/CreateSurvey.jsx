@@ -11,7 +11,7 @@ const CreateSurvey = ({history}) => {
     {
       questionText: '',
       questionType: '',
-      choices: ['', '', '', ''],
+      questionNumber: 1,
     },
   ]);
 
@@ -35,6 +35,11 @@ const CreateSurvey = ({history}) => {
     switch(e.target.name){
       case 'questionType': 
         question.questionType = e.target.value;
+        if(e.target.value === 'choice'){
+          question.choices = ['', '', '', '']
+        } else if(question.choices){
+          delete question.choices
+        }
       break;
       case 'questionText': 
         question.questionText = e.target.value;
@@ -53,12 +58,14 @@ const CreateSurvey = ({history}) => {
   };
 
   const addNewQuestionField = () => {
+    var lastQuestion = questions[questions.length - 1];
+    var currentQuestionNumber = lastQuestion.questionNumber + 1;
     setQuestions([
       ...questions,
       {
         questionText: '',
         questionType: '',
-        choices: ['', '', '', ''],
+        questionNumber: currentQuestionNumber,
       },
     ]);
   };
