@@ -30,27 +30,23 @@ const CreateSurvey = ({history}) => {
     });
   };
 
-  const setQuestionType = (e, index) => {
+  const setQuestionAttributes = (e, index, choiceIndex) => {
     const stateQuestions = [...questions];
     const question = stateQuestions[index];
-    question.questionType = e.target.value;
+    switch(e.target.name){
+      case 'questionType': 
+        question.questionType = e.target.value;
+      break;
+      case 'questionText': 
+        question.questionText = e.target.value;
+      break;
+      case 'choice':
+        question.choices.splice(choiceIndex, 1, e.target.value);
+      break;
+      default:
+       return
+    }
     stateQuestions[index] = question;
-    setQuestions(stateQuestions);
-  };
-
-  const setQuestionText = (e, index) => {
-    const stateQuestions = [...questions];
-    const question = stateQuestions[index];
-    question.questionText = e.target.value;
-    stateQuestions[index] = question;
-    setQuestions(stateQuestions);
-  };
-
-  const setChoices = (e, questionIndex, choiceFieldIndex) => {
-    const stateQuestions = [...questions];
-    const question = stateQuestions[questionIndex];
-    question.choices.splice(choiceFieldIndex, 1, e.target.value);
-    stateQuestions[questionIndex] = question;
     setQuestions(stateQuestions);
   };
 
@@ -72,20 +68,21 @@ const CreateSurvey = ({history}) => {
   const renderChoiceFields = questionIndex =>
     choiceFields.map((field, i) => (
       <input
-        name="choice1"
+        name="choice"
+        key={i}
         className="mt-2 border border-gray-800"
-        onChange={e => setChoices(e, questionIndex, i)}
+        onChange={e => setQuestionAttributes(e, questionIndex, i)}
       />
     ));
 
   const renderQuestionFields = () =>
     questions.map((field, index, i) => (
-      <div className="px-4 py-3 mb-8 mt-10 bg-white rounded-lg shadow-md dark:bg-gray-800" key={i}>
+      <div className="px-4 py-3 mb-8 mt-10 bg-white rounded-lg shadow-md dark:bg-gray-800" key={index}>
         <div className="row m-10 flex flex-col">
           <select
             className="w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 self-end"
             onChange={e => {
-              setQuestionType(e, index);
+              setQuestionAttributes(e, index);
             }}
             name="questionType"
           >
@@ -130,7 +127,7 @@ const CreateSurvey = ({history}) => {
             <textarea
               className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
               name="questionText"
-              onChange={e => setQuestionText(e, index)}
+              onChange={e => setQuestionAttributes(e, index)}
               required
             />
           </div>
