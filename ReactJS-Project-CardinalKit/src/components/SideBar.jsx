@@ -6,7 +6,7 @@ const SideBar = () => (
     <aside className="z-20 hidden w-64 overflow-y-auto bg-white dark:bg-gray-800 md:block flex-shrink-0 h-full">
       <div className="py-4 text-gray-500 dark:text-gray-400">
         <Link className="ml-6 text-lg font-bold text-gray-800 dark:text-gray-200" to="/users">
-          Standford Medicine
+          Stanford Medicine
         </Link>
         <ul className="mt-6">
           <li className="relative px-6 py-3">
@@ -84,7 +84,7 @@ const SideBar = () => (
               >
                 <path d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
               </svg>
-              <span className="ml-4">Setting</span>
+              <span className="ml-4">Settings</span>
             </Link>
           </li>
         </ul>
@@ -110,7 +110,7 @@ const SideBar = () => (
               >
                 <path d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
               </svg>
-              <span className="ml-4">Create Survey</span>
+              <span className="ml-4">Create Surveys</span>
             </Link>
           </li>
         </ul>
