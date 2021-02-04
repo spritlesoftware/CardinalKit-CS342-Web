@@ -1,7 +1,8 @@
+import moment from 'moment';
 import * as React from 'react';
 import { connect } from 'react-redux';
+import {Link} from 'react-router-dom';
 import { Dispatch } from 'redux';
-import moment from 'moment';
 import Pagination from './Pagination'
 
 
@@ -15,9 +16,9 @@ import { UserDetails } from '../api/user';
 import { Store } from '../reducers/rootReducer';
 
 import { defineMessages } from 'react-intl';
-import { Card } from '../ui/Card';
-import { getSurvey, getSurveys } from '../api/getAllUsers';
 import ReactTable from 'react-table-6';
+import { getSurvey, getSurveys } from '../api/getAllUsers';
+import { Card } from '../ui/Card';
 
 const messages = defineMessages({
   surveyTableHeader: {
@@ -78,8 +79,10 @@ class SurveysTable extends React.Component<SurveyHeaderProps, State> {
                 startDate,
                 identifier,
                 view:
-                  <div><span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
-                    View Response</span>
+                  <div>
+                    <span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
+                    <Link to={`${window.location.pathname}/${surveyId}`}>View Response</Link>
+                    </span>
                   </div>
               }
               tempSurveyList.push(surveyData)
