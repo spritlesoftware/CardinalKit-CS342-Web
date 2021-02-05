@@ -14,13 +14,14 @@ export interface users {
   endDate: string;
 }
 
-class UserList extends Component<{}, { users: any[]; newUsers: any[]; totalSurveys: any[] }> {
+class UserList extends Component<{}, { users: any[]; newUsers: any[]; totalSurveys: any[]; totalUsers: number }> {
   constructor(props) {
     super(props);
     this.state = {
       users: [],
       newUsers: [],
       totalSurveys: [],
+      totalUsers: 0
     };
   }
 
@@ -28,10 +29,8 @@ class UserList extends Component<{}, { users: any[]; newUsers: any[]; totalSurve
     getAllFirebaseUsers()
       .then(querySnapshot => {
         const data = querySnapshot.docs.map(doc => {
-          console.log(doc.data())
           return {
             userId: doc.id,
-            // email: doc.data().email,
           };
         });
         this.setState({
@@ -43,10 +42,6 @@ class UserList extends Component<{}, { users: any[]; newUsers: any[]; totalSurve
       });
   };
 
-  getEmail = uid => {
-   getFirebaseUser(uid)
-    .then((doc) => {console.log(doc?.data()?.email)})
-  } 
 
   updateTotalSurvey = (snapshot) => {
     const totalSurveys: any[] = [];
@@ -81,15 +76,13 @@ class UserList extends Component<{}, { users: any[]; newUsers: any[]; totalSurve
     users.map(({ userId }) => {
 
       return getSurveys(userId).then(querySnapshot => {
-
-        this.updateTotalSurvey(querySnapshot);
         surveyData.push(querySnapshot.docs[0].data());
         const data = surveyData.map(doc => {
 
-          const surveyDate = new Date(doc.payload.endDate.substring(0, 10));
+
+          this.updateTotalSurvey(querySnapshot);
 
           this.updateNewUsers(doc)
-          this.getEmail(doc.userId)
 
           return {
             name: 'John Adams',
@@ -99,7 +92,7 @@ class UserList extends Component<{}, { users: any[]; newUsers: any[]; totalSurve
             view: (
               <div>
                 <span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
-                  <Link to={'/users/' + doc.userId}>View Survey</Link>
+                  <Link to={'/users/' + doc.userId}>View Surveys</Link>
                 </span>
                 <a href="#">
                   <span className="px-2 py-1 font-semibold leading-tight rounded-full dark:bg-blue-700 dark:text-blue-100">
@@ -112,7 +105,7 @@ class UserList extends Component<{}, { users: any[]; newUsers: any[]; totalSurve
         });
         this.setState({
           users: [...data],
-          newUsers: [...newUsers]
+          totalUsers: data.length
         });
       });
     });
@@ -157,7 +150,7 @@ class UserList extends Component<{}, { users: any[]; newUsers: any[]; totalSurve
       {
         Header: () => (
           <div className="text-xs text-center font-semibold tracking-wide text-left text-gray-500 uppercase text-center dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
-            action
+            actions
           </div>
         ),
         accessor: 'view',
@@ -181,7 +174,7 @@ class UserList extends Component<{}, { users: any[]; newUsers: any[]; totalSurve
                 Total Users
               </p>
               <p className="text-lg font-semibold text-gray-700 dark:text-gray-200">
-                {this.state.users.length}
+                {this.state.totalUsers}
               </p>
             </div>
           </div>
