@@ -1,9 +1,11 @@
+import { snapshotConstructor } from 'firebase-functions/lib/providers/firestore';
 import moment from 'moment';
+import { totalmem } from 'os';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import ReactTable from 'react-table-6';
 import 'react-table-6/react-table.css';
-import { getAllFirebaseUsers, getSurveys } from '../api/getAllUsers';
+import { getAllFirebaseUsers, getFirebaseUser, getSurveys } from '../api/getAllUsers';
 import Pagination from './Pagination';
 import './styles/customStyle.css';
 
@@ -26,9 +28,10 @@ class UserList extends Component<{}, { users: any[]; newUsers: any[]; totalSurve
     getAllFirebaseUsers()
       .then(querySnapshot => {
         const data = querySnapshot.docs.map(doc => {
+          console.log(doc.data())
           return {
             userId: doc.id,
-            view: <Link to={'/users/' + doc.id}>View Survey</Link>,
+            // email: doc.data().email,
           };
         });
         this.setState({
@@ -40,35 +43,66 @@ class UserList extends Component<{}, { users: any[]; newUsers: any[]; totalSurve
       });
   };
 
+  getEmail = uid => {
+   getFirebaseUser(uid)
+    .then((doc) => {console.log(doc?.data()?.email)})
+  } 
+
+  updateTotalSurvey = (snapshot) => {
+    const totalSurveys: any[] = [];
+    snapshot.docs.map(survey => {
+      totalSurveys.push(survey.id.substring(0, 14));
+      this.setState({
+        totalSurveys: [
+          ...totalSurveys.filter(function(item, index, inputArray) {
+            return inputArray.indexOf(item) === index;
+          }),
+        ],      
+      })
+    });
+  }
+
+  updateNewUsers = (doc) => {
+    let newUsers: any[] = [];
+    const today = new Date();
+
+    const surveyDate = new Date(doc.payload.endDate.substring(0, 10));
+
+    if (surveyDate === today) {
+      newUsers.push(doc.userId);
+    }
+  }
+
   getSurveyDetails = () => {
     const { users } = this.state;
     const surveyData: any[] = [];
     const newUsers: any[] = [];
-    const totalSurveys: any[] = [];
-    const today = new Date();
+
     users.map(({ userId }) => {
+
       return getSurveys(userId).then(querySnapshot => {
-        querySnapshot.docs.map(survey => {
-          return totalSurveys.push(survey.id.substring(0, 14));
-        });
+
+        this.updateTotalSurvey(querySnapshot);
         surveyData.push(querySnapshot.docs[0].data());
         const data = surveyData.map(doc => {
+
           const surveyDate = new Date(doc.payload.endDate.substring(0, 10));
-          if (surveyDate === today) {
-            newUsers.push(doc.userId);
-          }
+
+          this.updateNewUsers(doc)
+          this.getEmail(doc.userId)
+
           return {
             name: 'John Adams',
-            email: 'johnadams@gmail.com',
+            email: 'john@example.com',
             userId: doc.userId,
-            endDate: moment(doc.payload.endDate.substring(0, 10)).format('ll'),
+            endDate: moment(doc.payload.endDate.substring(0, 10)).format('LL'),
             view: (
               <div>
                 <span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
                   <Link to={'/users/' + doc.userId}>View Survey</Link>
                 </span>
                 <a href="#">
-                  <span className="px-2 py-1 font-semibold leading-tight text-blue-700 bg-blue-100 rounded-full dark:bg-blue-700 dark:text-blue-100">
+                  <span className="px-2 py-1 font-semibold leading-tight rounded-full dark:bg-blue-700 dark:text-blue-100">
                     <i className="fas fa-download" />
                   </span>
                 </a>
@@ -78,12 +112,7 @@ class UserList extends Component<{}, { users: any[]; newUsers: any[]; totalSurve
         });
         this.setState({
           users: [...data],
-          newUsers: [...newUsers],
-          totalSurveys: [
-            ...totalSurveys.filter(function(item, index, inputArray) {
-              return inputArray.indexOf(item) === index;
-            }),
-          ],
+          newUsers: [...newUsers]
         });
       });
     });
@@ -93,52 +122,48 @@ class UserList extends Component<{}, { users: any[]; newUsers: any[]; totalSurve
     const columns = [
       {
         Header: () => (
-          <div className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+          <div className="text-xs text-center font-semibold tracking-wide text-left text-gray-500 uppercase dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
             Name
           </div>
         ),
         accessor: 'name',
-        className: 'font-semibold',
-        width: 200,
+        className: 'font',
+        width: 250,
+        Cell: row => <div className="text-center h-4">{row.value}</div>
+
       },
       {
         Header: () => (
-          <div className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+          <div className="text-xs text-center font-semibold tracking-wide text-left text-gray-500 uppercase dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
             Email
           </div>
         ),
         accessor: 'email',
-        className: 'font-semibold',
-        width: 200,
-      },
-      {
-        Header: () => (
-          <div className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase  dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
-            user id
-          </div>
-        ),
-        accessor: 'userId',
-        className: 'font-semibold',
+        className: 'font',
         width: 250,
+        Cell: row => <div className="text-center h-4">{row.value}</div>
       },
       {
         Header: () => (
-          <div className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
-            survey submitted
+          <div className="text-xs text-center font-semibold tracking-wide text-left text-gray-500 uppercase dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+            Submitted Date
           </div>
         ),
         accessor: 'endDate',
         className: 'px-4 py-3 text-sm',
-        width: 150,
+        width: 250,
+        Cell: row => <div className="text-center h-4">{row.value}</div>
       },
       {
         Header: () => (
-          <div className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase text-center dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+          <div className="text-xs text-center font-semibold tracking-wide text-left text-gray-500 uppercase text-center dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
             action
           </div>
         ),
         accessor: 'view',
         filterable: false,
+        width: 250,
+        Cell: row => <div className="text-center h-4">{row.value}</div>
       },
     ];
 
@@ -199,7 +224,7 @@ class UserList extends Component<{}, { users: any[]; newUsers: any[]; totalSurve
           data={this.state.users}
           columns={columns}
           className="ReactTable"
-          filterable={true}
+          // filterable={true}
           sortable={true}
           defaultPageSize={5}
           PaginationComponent={Pagination}

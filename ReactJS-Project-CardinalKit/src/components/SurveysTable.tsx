@@ -109,39 +109,42 @@ class SurveysTable extends React.Component<SurveyHeaderProps, State> {
     const columns = [
       {
         Header: () => (
-          <div className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">Survey Name</div>
+          <div className="text-xs font-semibold text-center tracking-wide text-left text-gray-500 uppercase dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">Name</div>
         ),
         accessor: 'identifier',
-        className: 'font-semibold',
-        width: 300
+        className: 'font',
+        width: 350,
+        Cell: row => <div style={{ textAlign: "center" }}>{row.value}</div>
       },
       {
         Header: () => (
-          <div className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">survey submitted</div>
+          <div className="text-xs font-semibold text-center tracking-wide text-left text-gray-500 uppercase dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">Submitted Date</div>
         ),
         accessor: 'startDate',
         className: "px-4 py-3 text-sm",
-        width: 200
+        width: 300,
+    Cell: row => <div style={{ textAlign: "center" }}>{row.value}</div>
       },
       {
         Header: () => (
-          <div className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">action</div>
+          <div className="text-xs font-semibold text-center tracking-wide text-left text-gray-500 uppercase dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">action</div>
         ),
         accessor: 'view',
         filterable: false,
-        width: 400
+        width: 350,
+        Cell: row => <div style={{ textAlign: "center" }}>{row.value}</div>
       }
     ];
     return (
       <div className="container px-6 mx-auto " >
-        <div className="grid gap-6 mb-8 w-full mt-40 ">
+        <div className="grid mb-8 w-full">
           <ReactTable
             data={this.state.surveyList}
             columns={columns}
             className="surveyTable"
             defaultPageSize={5}
             PaginationComponent={Pagination}
-            filterable={true}
+            // filterable={true}
           />
         </div>
       </div>
