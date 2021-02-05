@@ -6,7 +6,6 @@ import 'react-toastify/dist/ReactToastify.css';
 toast.configure();
 
 const CreateSurvey = ({ history }) => {
-
   const [questions, setQuestions] = useState([
     {
       questionText: '',
@@ -35,13 +34,13 @@ const CreateSurvey = ({ history }) => {
     switch (e.target.name) {
       case 'questionType':
         question.questionType = e.target.value;
-        if(e.target.value === 'choice'){
-          question.choices = ['', '', '', '']
-        } else if(question.choices){
-          delete question.choices
+        if (e.target.value === 'choice') {
+          question.choices = ['', '', '', ''];
+        } else if (question.choices) {
+          delete question.choices;
         }
-      break;
-      case 'questionText': 
+        break;
+      case 'questionText':
         question.questionText = e.target.value;
         break;
       case 'choice':
@@ -51,15 +50,15 @@ const CreateSurvey = ({ history }) => {
         question.choices.push('');
         break;
       default:
-        return
+        return;
     }
     stateQuestions[index] = question;
     setQuestions(stateQuestions);
   };
 
   const addNewQuestionField = () => {
-    var lastQuestion = questions[questions.length - 1];
-    var currentQuestionNumber = lastQuestion.questionNumber + 1;
+    const lastQuestion = questions[questions.length - 1];
+    const currentQuestionNumber = lastQuestion.questionNumber + 1;
     setQuestions([
       ...questions,
       {
@@ -71,77 +70,87 @@ const CreateSurvey = ({ history }) => {
   };
 
   const renderChoiceFields = questionIndex => {
-    var currentQuestion = questions[questionIndex]
+    const currentQuestion = questions[questionIndex];
     return currentQuestion.choices.map((field, i) => (
-      <div className="flex flex-wrap">
+      <div className="flex mx-3" key={i}>
         <input
           name="choice"
-          key={ i }
-          className="mt-2  ml-3 border border-gray-800 w-1/2 rounded"
-          onChange={ e => setQuestionAttributes(e, questionIndex, i) }
+          key={i}
+          className="mt-2 ml-3 border border-gray-400  rounded"
+          onChange={e => setQuestionAttributes(e, questionIndex, i)}
         />
       </div>
     ));
-  }
-
+  };
 
   const renderQuestionFields = () =>
     questions.map((field, index, i) => (
-      <div className="px-4 py-3 mb-8 mt-10 bg-white dark:bg-gray border-t-2 " key={ index }>
+      <div
+        className={`px-4 py-3 mb-8 bg-white dark:bg-gray${field.questionNumber === 1 ||
+          ' border-t-2 border-fuchsia-600'}`}
+        key={index}
+      >
         <div className="row m-10 flex flex-col">
-          <div className="flex">
-            <div className="flex-auto">
+          
+          <div className="flex justify-right mb-4">
+            <div className="">
+              <label>Question No. :</label>
+            </div>
+            <div className="mx-4">{field.questionNumber}</div>
+          </div>
+          <div className="flex justify-right">
+            <div className="">
               <label>Question Type:</label>
             </div>
-            <div className="flex">
+            <div className="cursor-pointer flex">
               <select
                 className="w-7 mr-6 ml-3 rounded-md border p-2 px-3 shadow-lg bg-white ring-1 ring-black ring-opacity-5 justify-self-end"
-                onChange={ e => {
+                onChange={e => {
                   setQuestionAttributes(e, index);
-                } }
+                }}
                 name="questionType"
               >
-                <option className="lock px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
+                <option className="lock px-4 py-2  text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
                   Please select...
-              </option>
+                </option>
                 <option
                   value="instruction"
                   className="lock px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
                 >
                   instruction
-              </option>
+                </option>
                 <option
                   value="boolean"
                   className="lock px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
                 >
-                  { ' ' }
-              boolean
-              </option>
+                  {' '}
+                  boolean
+                </option>
                 <option
                   value="choice"
                   className="lock px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
                 >
-                  { ' ' }
-              choice
-              </option>
+                  {' '}
+                  choice
+                </option>
                 <option
                   value="scale"
                   className="lock px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
                 >
                   scale
-              </option>
+                </option>
                 <option
                   value="summary"
                   className="lock px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
                 >
                   summary
-              </option>
+                </option>
               </select>
             </div>
           </div>
-          <div className="flex mt-4">
-            <div className="flex-auto">
-              <label className="px-2">Question Text: </label>
+          <div className="flex justify-right mt-4">
+            <div className="">
+              <label className="mr-4">Question Text: </label>
             </div>
             <div className="flex-1 w-3/5">
               <textarea
@@ -155,39 +164,48 @@ const CreateSurvey = ({ history }) => {
                            dark:focus:shadow-outline-gray
                            form-input"
                 name="questionText"
-                onChange={ e => setQuestionAttributes(e, index) }
+                onChange={e => setQuestionAttributes(e, index)}
                 required
               />
             </div>
           </div>
 
-          { field.questionType === 'choice' && (
+          {field.questionType === 'choice' && (
             <div>
-
-              <div className="flex item-stretch w-1/2">
-
-                <div className="flex flex-auto align-end">
+              <div className="flex item-stretch">
+                <div className="">
                   <label className="mt-3 ">Enter choices: </label>
                 </div>
 
-                <div
-                  className="p-3 block flex flex-wrap justify-items-start flex-1  w-full mx-4">
-                  { renderChoiceFields(index) }
+                <div className="p-3 block flex flex-wrap justify-items-start flex-1  w-full mx-4">
+                  {renderChoiceFields(index)}
                 </div>
 
-                <div className="self-end">
+                <div className="self-end" name="addChoiceField">
                   <button
                     type="button"
-                    onClick={ e => setQuestionAttributes(e, index) }
+                    onClick={e => setQuestionAttributes(e, index)}
                     name="addChoiceField"
-                    className="block h-8  px-4 py-2  mt-4 mb-4 ml-3 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
+                    className="block h-8  px-4 py-2  mt-4 mb-4 ml-3 
+                               text-sm font-medium 
+                               leading-5 text-center 
+                               text-white 
+                               transition-colors 
+                               duration-150 
+                               bg-purple-600 border 
+                               border-transparent 
+                               rounded-lg 
+                               active:bg-purple-600 
+                               hover:bg-purple-700 
+                               focus:outline-none 
+                               focus:shadow-outline-purple"
                   >
-                    <i className="fas fa-plus mb-2" />
+                    Add a choice
                   </button>
                 </div>
               </div>
             </div>
-          ) }
+          )}
         </div>
       </div>
     ));
@@ -198,16 +216,15 @@ const CreateSurvey = ({ history }) => {
         Create Surveys
       </h1>
       <div className="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
-        <form onSubmit={ onSubmit }>
+        <form onSubmit={onSubmit}>
           <div className="flex flex-col mb-4">
-            <div className="row flex">
-              <div className="w-5/6 ">
-                <label
-                  className="text-gray-700 dark:text-gray-400 mx-10 flex-auto pl-8">
+            <div className="row flex justify-around	">
+              <div className="w-1/5">
+                <label className="text-gray-700 dark:text-gray-400 flex-auto pl-8">
                   Survey Name:
                 </label>
               </div>
-              <div className="flex-1 pl-10">
+              <div className="flex-1">
                 <input
                   className="block  mt-1 ml-4 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                   id="surveyname"
@@ -217,27 +234,26 @@ const CreateSurvey = ({ history }) => {
               </div>
             </div>
 
-            <div className="row mt-4 flex">
-              <label
-                className="text-gray-700 dark:text-gray-400 mx-10 flex-auto justify-self-center pl-8">
-                Survey Description:
-            </label>
-              <textarea
-                className="block w-full ml-4 flex-1 mt-1 mb-5 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
-                id="surveyname"
-                name="surveyDescription"
-                required
-              />
+            <div className="row mt-4 flex justify-left">
+              <div className="w-1/5">
+                <label className="text-gray-700 dark:text-gray-400 pl-8">Survey Description:</label>
+              </div>
+              <div className="w-2/5">
+                <textarea
+                  className="block w-full ml-4 mt-1 mb-5 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                  id="surveyname"
+                  name="surveyDescription"
+                  required
+                />
+              </div>
             </div>
           </div>
-          <div className="flex justify-startt">
+          <div className="flex justify-start border-t-2 border-fuchsia-600 pt-4">
             <h1 className="text-xl w-9 font-semibold mx-auto">Add Questions</h1>
           </div>
-          <div className="border-t-2 border-fuchsia-600">
-            { renderQuestionFields() }
-          </div>
-          <div className="flex flex-row-reverse">
+          <div className="">{renderQuestionFields()}</div>
 
+          <div className="flex flex-row-reverse relative">
             <button
               type="submit"
               className="block px-4 py-2 mt-4 mb-4 ml-3 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
@@ -245,15 +261,13 @@ const CreateSurvey = ({ history }) => {
               Create
             </button>
 
-
             <button
               className="block px-4 py-2 ml-3 mt-4 mb-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
               type="button"
-              onClick={ addNewQuestionField }
+              onClick={addNewQuestionField}
             >
               Add Question
             </button>
-
           </div>
         </form>
       </div>

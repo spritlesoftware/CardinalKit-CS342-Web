@@ -1,7 +1,7 @@
+import moment from 'moment';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import moment from 'moment';
 import Pagination from './Pagination'
 
 
@@ -15,9 +15,9 @@ import { UserDetails } from '../api/user';
 import { Store } from '../reducers/rootReducer';
 
 import { defineMessages } from 'react-intl';
-import { Card } from '../ui/Card';
-import { getSurvey, getSurveys } from '../api/getAllUsers';
 import ReactTable from 'react-table-6';
+import { getSurvey, getSurveys } from '../api/getAllUsers';
+import { Card } from '../ui/Card';
 
 const messages = defineMessages({
   surveyTableHeader: {
@@ -72,14 +72,16 @@ class SurveysTable extends React.Component<SurveyHeaderProps, State> {
         return getSurvey(userID, surveyId)
           .then((data) => {
             if (data.payload) {
-              const startDate = moment(data?.payload?.startDate.substring(0, 10)).format('ll')
+              const startDate = moment(data?.payload?.startDate.substring(0, 10)).format('LL')
               const identifier = data?.payload?.identifier
               const surveyData = {
                 startDate,
                 identifier,
                 view:
-                  <div><span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
-                    View Response</span>
+                  <div>
+                    <span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
+                      View Response
+                    </span>
                   </div>
               }
               tempSurveyList.push(surveyData)
@@ -106,27 +108,32 @@ class SurveysTable extends React.Component<SurveyHeaderProps, State> {
     const columns = [
       {
         Header: () => (
-          <div className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">Survey Name</div>
+          <div className="text-xs text-center font-semibold tracking-wide text-left text-gray-500 uppercase dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">Survey Name</div>
         ),
         accessor: 'identifier',
         className: 'font-semibold',
-        width: 300
+        width: 350,
+        Cell: row => <div style={{ textAlign: "center" }}>{row.value}</div>
       },
       {
         Header: () => (
-          <div className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">survey submitted</div>
+          <div className="text-xs text-center font-semibold tracking-wide text-left text-gray-500 uppercase dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">survey submitted</div>
         ),
         accessor: 'startDate',
         className: "px-4 py-3 text-sm",
-        width: 200
+        width: 300,
+        Cell: row => <div style={{ textAlign: "center" }}>{row.value}</div>
+
       },
       {
         Header: () => (
-          <div className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">action</div>
+          <div className="text-xs text-center font-semibold tracking-wide text-left text-gray-500 uppercase dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">action</div>
         ),
         accessor: 'view',
         filterable: false,
-        width: 400
+        width: 350,
+        Cell: row => <div style={{ textAlign: "center" }}>{row.value}</div>
+
       }
     ];
     return (
@@ -138,7 +145,7 @@ class SurveysTable extends React.Component<SurveyHeaderProps, State> {
             className="surveyTable"
             defaultPageSize={5}
             PaginationComponent={Pagination}
-            filterable={true}
+            // filterable={true}
           />
         </div>
       </div>
