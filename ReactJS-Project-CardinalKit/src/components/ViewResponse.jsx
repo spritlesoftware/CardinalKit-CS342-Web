@@ -29,24 +29,26 @@ const ViewResponse = ({ match }) => {
       .results[0];
     return (
       <div>
-        <p className="text-sm text-gray-600 dark:text-gray-400">
-          <b>Answer: </b>
-
-          {result.booleanAnswer?.toString()}
-          {result.scaleAnswer?.toString()}
-          {result.choiceAnswers?.join(', ')}
-          {result.textAnswer || null}
-          {result.emailAnswer || null}
-          {result.validatedTextAnswer || null}
-          {result.numericAnswer || null}
-          {result.dateAnswer || null}
-          {result.timeOfTheDayAnswer || null}
-          {result.locationAnswer || null}
-          {result.valuePickerAnswer || null}
-          {result.imageChoiceAnswer || null}
-          {result.textChoiceAnswer || result.textChoiceAnswers || null}
-          
-        </p>
+        <div className="text-md text-gray-600 dark:text-gray-400">
+          <div className="flex">
+            <b className="mx-3"> Answer: </b>
+            <div className="text-gray-900	self-center mx-3">
+              {result.booleanAnswer?.toString()}
+              {result.scaleAnswer?.toString()}
+              {result.choiceAnswers?.join(', ')}
+              {result.textAnswer || null}
+              {result.emailAnswer || null}
+              {result.validatedTextAnswer || null}
+              {result.numericAnswer || null}
+              {result.dateAnswer || null}
+              {result.timeOfTheDayAnswer || null}
+              {result.locationAnswer || null}
+              {result.valuePickerAnswer || null}
+              {result.imageChoiceAnswer || null}
+              {result.textChoiceAnswer || result.textChoiceAnswers || null}
+            </div>
+          </div>
+        </div>
       </div>
     );
   };
@@ -66,11 +68,9 @@ const ViewResponse = ({ match }) => {
             {question.questionType}
             </h2>
             <div className="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
-              <div>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  <b>Question: </b>
-                  {question.text}
-                </p>
+              <div className="flex">
+                  <b className="text-md text-gray-600 dark:text-gray-400 self-center mx-3">Question: </b>
+                  <div className="text-gray-900	self-center">{question.text}</div>
               </div>
               {renderAnswer(question.questionNumber, question.questionType)}
             </div>
