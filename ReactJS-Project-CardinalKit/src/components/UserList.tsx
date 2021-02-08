@@ -68,11 +68,11 @@ class UserList extends Component<{}, { users: any[]; newUsers: any[]; totalSurve
                   <Link to={'/users/' + doc.userId}>View Survey</Link>
                 </span>
 
-                <a href="#">
+                <Link to="/users">
                   <span className="px-2 py-1 ml-2 font-semibold leading-tight text-blue-700 bg-blue-100 rounded-full dark:bg-blue-700 dark:text-blue-100">
                     <i className="fas fa-download" />
                   </span>
-                </a>
+                </Link>
               </div>
             ),
           };
