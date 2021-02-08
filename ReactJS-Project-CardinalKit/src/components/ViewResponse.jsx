@@ -31,12 +31,21 @@ const ViewResponse = ({ match }) => {
       <div>
         <p className="text-sm text-gray-600 dark:text-gray-400">
           <b>Answer: </b>
+
           {result.booleanAnswer?.toString()}
           {result.scaleAnswer?.toString()}
           {result.choiceAnswers?.join(', ')}
           {result.textAnswer || null}
-          {result.integerAnswer || null}
-
+          {result.emailAnswer || null}
+          {result.validatedTextAnswer || null}
+          {result.numericAnswer || null}
+          {result.dateAnswer || null}
+          {result.timeOfTheDayAnswer || null}
+          {result.locationAnswer || null}
+          {result.valuePickerAnswer || null}
+          {result.imageChoiceAnswer || null}
+          {result.textChoiceAnswer || result.textChoiceAnswers || null}
+          
         </p>
       </div>
     );
