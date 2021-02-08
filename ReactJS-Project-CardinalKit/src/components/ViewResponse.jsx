@@ -34,6 +34,9 @@ const ViewResponse = ({ match }) => {
           {result.booleanAnswer?.toString()}
           {result.scaleAnswer?.toString()}
           {result.choiceAnswers?.join(', ')}
+          {result.textAnswer || null}
+          {result.integerAnswer || null}
+
         </p>
       </div>
     );
