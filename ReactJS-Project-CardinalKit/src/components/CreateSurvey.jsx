@@ -93,18 +93,18 @@ const CreateSurvey = ({ history }) => {
         <div className="row m-10 flex flex-col">
           
           <div className="flex justify-right mb-4">
-            <div className="">
-              <label>Question No. :</label>
+            <div className="px-4">
+              <label>Question No.{'  '}:</label>
             </div>
             <div className="mx-4">{field.questionNumber}</div>
           </div>
-          <div className="flex justify-right">
-            <div className="">
+          <div className="flex justify-right ">
+            <div className="px-3 self-center">
               <label>Question Type:</label>
             </div>
             <div className="cursor-pointer flex">
               <select
-                className="w-7 mr-6 ml-3 rounded-md border p-2 px-3 shadow-lg bg-white ring-1 ring-black ring-opacity-5 justify-self-end"
+                className="w-7 rounded-md border p-2 shadow bg-white"
                 onChange={e => {
                   setQuestionAttributes(e, index);
                 }}
@@ -149,8 +149,8 @@ const CreateSurvey = ({ history }) => {
             </div>
           </div>
           <div className="flex justify-right mt-4">
-            <div className="">
-              <label className="mr-4">Question Text: </label>
+            <div className="self-center">
+              <label className="px-4">Question Text: </label>
             </div>
             <div className="flex-1 w-3/5">
               <textarea
@@ -173,8 +173,8 @@ const CreateSurvey = ({ history }) => {
           {field.questionType === 'choice' && (
             <div>
               <div className="flex item-stretch">
-                <div className="">
-                  <label className="mt-3 ">Enter choices: </label>
+                <div className="self-center">
+                  <label className="mt-3 px-4">Enter choices: </label>
                 </div>
 
                 <div className="p-3 block flex flex-wrap justify-items-start flex-1  w-full mx-4">
