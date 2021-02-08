@@ -1,11 +1,9 @@
-import { snapshotConstructor } from 'firebase-functions/lib/providers/firestore';
 import moment from 'moment';
-import { totalmem } from 'os';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import ReactTable from 'react-table-6';
 import 'react-table-6/react-table.css';
-import { getAllFirebaseUsers, getFirebaseUser, getSurveys } from '../api/getAllUsers';
+import { getAllFirebaseUsers, getSurveys } from '../api/getAllUsers';
 import Pagination from './Pagination';
 import './styles/customStyle.css';
 
@@ -71,7 +69,6 @@ class UserList extends Component<{}, { users: any[]; newUsers: any[]; totalSurve
   getSurveyDetails = () => {
     const { users } = this.state;
     const surveyData: any[] = [];
-    const newUsers: any[] = [];
 
     users.map(({ userId }) => {
 

@@ -43,15 +43,15 @@ const ViewResponse = ({ match }) => {
     const questionsLength = questions.length;
 
     return questions.map((question, i) => {
-      if (i === 0 || i === questionsLength - 1) {
-      } else {
-        return (
+      if (i !== 0 && i !== questionsLength - 1) {
+        return ( 
           <div>
             <h2 className="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">
               Question 
-{' '}
-{i} |
-{question.questionType}
+            {' '}
+            {i} |
+            {' '}
+            {question.questionType}
             </h2>
             <div className="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
               <div>
