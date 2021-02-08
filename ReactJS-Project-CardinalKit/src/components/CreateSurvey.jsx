@@ -104,44 +104,44 @@ const CreateSurvey = ({ history }) => {
             </div>
             <div className="cursor-pointer flex">
               <select
-                className="w-7 rounded-md border p-2 shadow bg-white"
+                className=" dropdown w-7 rounded-md border p-2 shadow bg-white"
                 onChange={e => {
                   setQuestionAttributes(e, index);
                 }}
                 name="questionType"
               >
-                <option className="lock px-4 py-2  text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
+                <option className="rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap">
                   Please select...
                 </option>
                 <option
                   value="instruction"
-                  className="lock px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                  className="rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
                 >
                   instruction
                 </option>
                 <option
                   value="boolean"
-                  className="lock px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                  className="rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
                 >
                   {' '}
                   boolean
                 </option>
                 <option
                   value="choice"
-                  className="lock px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                  className="rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
                 >
                   {' '}
                   choice
                 </option>
                 <option
                   value="scale"
-                  className="lock px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                  className="rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
                 >
                   scale
                 </option>
                 <option
                   value="summary"
-                  className="lock px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                  className="rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
                 >
                   summary
                 </option>
@@ -230,6 +230,7 @@ const CreateSurvey = ({ history }) => {
                   id="surveyname"
                   name="surveyName"
                   required
+                  autoFocus
                 />
               </div>
             </div>
