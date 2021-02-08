@@ -14,29 +14,9 @@ import { UserDetails } from '../api/user';
 
 import { Store } from '../reducers/rootReducer';
 
-import { defineMessages } from 'react-intl';
 import ReactTable from 'react-table-6';
 import { getSurvey, getSurveys } from '../api/getAllUsers';
 import { Card } from '../ui/Card';
-
-const messages = defineMessages({
-  surveyTableHeader: {
-    id: 'app.SurveysTable.surveyTableHeader',
-    defaultMessage: 'Completed Surveys',
-  },
-  nameHeader: {
-    id: 'app.SurveysTable.dateHeader',
-    defaultMessage: 'Survey',
-  },
-  dateHeader: {
-    id: 'app.SurveysTable.dateHeader',
-    defaultMessage: 'Date',
-  },
-  surveyIdHeader: {
-    id: 'app.SurveysTable.surveyIdHeader',
-    defaultMessage: 'Survey ID',
-  },
-});
 
 interface SurveyList {
   userID: string,
