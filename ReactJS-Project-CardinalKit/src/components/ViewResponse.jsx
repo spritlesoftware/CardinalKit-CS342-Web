@@ -33,7 +33,7 @@ const ViewResponse = ({ match }) => {
           <div className="flex">
             <b className="mx-3"> Answer: </b>
             <div className="text-gray-900	self-center mx-3">
-              {result.booleanAnswer?.toString()}
+              {result.booleanAnswer?.toString().replace(/\b\w/g, l => l.toUpperCase())}
               {result.scaleAnswer?.toString()}
               {result.choiceAnswers?.join(', ')}
               {result.textAnswer || null}

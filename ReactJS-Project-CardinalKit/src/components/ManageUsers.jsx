@@ -33,7 +33,7 @@ class ManageUsers extends React.Component {
   render() {
     return (
       <div className="container px-6 mx-auto grid">
-        <h4 className="mb-4 mt-4  text-lg font-semibold text-gray-600 dark:text-gray-300">Manage User</h4>
+        <h4 className="mb-4 mt-4  text-lg font-semibold text-gray-600 dark:text-gray-300">Manage Users</h4>
         <div className="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
           <label className="block text-sm">
             <span className="text-gray-700 dark:text-gray-400">First Name</span>
