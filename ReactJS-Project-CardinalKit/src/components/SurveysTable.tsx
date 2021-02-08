@@ -141,9 +141,9 @@ class SurveysTable extends React.Component<SurveyHeaderProps, State> {
           <ReactTable
             data={this.state.surveyList}
             columns={columns}
-            className="surveyTable"
             defaultPageSize={5}
             PaginationComponent={Pagination}
+            className={"ReactTable " + (this.state.surveyList === [] ? 'animate-pulse' : '')}
             // filterable={true}
           />
         </div>

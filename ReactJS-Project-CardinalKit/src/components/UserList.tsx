@@ -213,7 +213,7 @@ class UserList extends Component<{}, { users: any[]; newUsers: any[]; totalSurve
         <ReactTable
           data={this.state.users}
           columns={columns}
-          className="ReactTable"
+          className={"ReactTable " + (this.state.totalUsers === 0 ? 'animate-pulse' : '')}
           // filterable={true}
           sortable={true}
           defaultPageSize={5}
