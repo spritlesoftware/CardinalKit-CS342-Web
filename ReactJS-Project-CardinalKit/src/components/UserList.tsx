@@ -89,11 +89,11 @@ class UserList extends Component<{}, { users: any[]; newUsers: any[]; totalSurve
             view: (
               <div>
                 <span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
-                  <Link to={'/users/' + doc.userId}>View Surveys</Link>
+                  <Link to={'/users/' + doc.userId} className="animate-bounce ease-out duration-700">View Surveys</Link>
                 </span>
                 <a href="#">
-                  <span className="px-2 py-1 font-semibold leading-tight rounded-full dark:bg-blue-700 dark:text-blue-100">
-                    <i className="fas fa-download" />
+                  <span className="px-2 py-1  font-semibold leading-tight rounded-full dark:bg-blue-700 dark:text-blue-100">
+                    <i className="fas fa-download animate-bounce ease-out hover:scale-50" />
                   </span>
                 </a>
               </div>
