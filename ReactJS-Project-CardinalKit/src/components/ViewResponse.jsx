@@ -24,7 +24,10 @@ const ViewResponse = ({ match }) => {
     });
   };
 
-  const renderAnswer = (questionNumber, questionType) => {
+  const capitalizeFirstCharacter = answer =>
+    answer?.toString().replace(/\b\w/g, l => l.toUpperCase());
+
+  const renderAnswer = (questionNumber) => {
     const result = response.payload.results.filter(res => res.questionNumber === questionNumber)[0]
       .results[0];
     return (
@@ -33,10 +36,10 @@ const ViewResponse = ({ match }) => {
           <div className="flex">
             <b className="mx-3"> Answer: </b>
             <div className="text-gray-900	self-center mx-3">
-              {result.booleanAnswer?.toString().replace(/\b\w/g, l => l.toUpperCase())}
+              {capitalizeFirstCharacter(result.booleanAnswer)}
               {result.scaleAnswer?.toString()}
               {result.choiceAnswers?.join(', ')}
-              {result.textAnswer || null}
+              {capitalizeFirstCharacter(result.textAnswer) || null}
               {result.emailAnswer || null}
               {result.validatedTextAnswer || null}
               {result.numericAnswer || null}
@@ -45,7 +48,9 @@ const ViewResponse = ({ match }) => {
               {result.locationAnswer || null}
               {result.valuePickerAnswer || null}
               {result.imageChoiceAnswer || null}
-              {result.textChoiceAnswer || result.textChoiceAnswers || null}
+              {capitalizeFirstCharacter(result.textChoiceAnswer) ||
+                result.textChoiceAnswers?.join(', ') ||
+                null}
             </div>
           </div>
         </div>
@@ -58,21 +63,20 @@ const ViewResponse = ({ match }) => {
 
     return questions.map((question, i) => {
       if (i !== 0 && i !== questionsLength - 1) {
-        return ( 
-          <div>
+        return (
+          <div key={i}>
             <h2 className="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">
               Question 
-            {' '}
-            {i} |
-            {' '}
-            {question.questionType}
+              {i} | {question.questionType}
             </h2>
             <div className="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
               <div className="flex">
-                  <b className="text-md text-gray-600 dark:text-gray-400 self-center mx-3">Question: </b>
-                  <div className="text-gray-900	self-center">{question.text}</div>
+                <b className="text-md text-gray-600 dark:text-gray-400 self-center mx-3">
+                  Question:{' '}
+                </b>
+                <div className="text-gray-900	self-center">{question.text}</div>
               </div>
-              {renderAnswer(question.questionNumber, question.questionType)}
+              {renderAnswer(question.questionNumber)}
             </div>
           </div>
         );
@@ -84,6 +88,7 @@ const ViewResponse = ({ match }) => {
     <div className="container px-6 mx-auto grid">
       <h2 className="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
         Survey Response
+        {response ? null : <i className="fas fa-spinner fa-pulse mx-4 text-gray-400" />}
       </h2>
       {renderResponse()}
     </div>
