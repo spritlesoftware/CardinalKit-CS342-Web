@@ -44,11 +44,8 @@ class App extends React.Component<AppProps, { isLoggedIn: any }> {
                 {isLoggedIn && <Header />}
                 <main className="h-full overflow-y-auto">
                   <Switch>
-                    <Route exact={true} path="/">
-                      <Redirect to={{ pathname: '/login' }} />
-                    </Route>
                     <Route exact={true} path="/login" component={LoginPage} />
-                    <Route exact={true} path="/users" component={UsersPage} />
+                    <Route exact={true} path={["/", "/users"]} component={UsersPage} />
                     <Route exact={true} path="/verify_code" component={VerificationPage} />
                     <Route exact={true} path="/manage_users" component={ManageUsers} />
                     <Route
