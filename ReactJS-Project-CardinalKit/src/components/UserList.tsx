@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import ReactTable from 'react-table-6';
 import 'react-table-6/react-table.css';
-import { getAllFirebaseUsers, getSurveys } from '../api/getAllUsers';
+import { getAllFirebaseUsers, getSurveys, getQuestions } from '../api/getAllUsers';
 import Pagination from './Pagination';
 import './styles/customStyle.css';
 
@@ -12,13 +12,14 @@ export interface users {
   endDate: string;
 }
 
-class UserList extends Component<{}, { users: any[]; newUsers: any[]; totalSurveys: any[]; totalUsers: number }> {
+class UserList extends Component<{}, { users: any[]; newUsers: any[]; totalSurveys: any[]; totalUsers: number; questions: [] }> {
   constructor(props) {
     super(props);
     this.state = {
       users: [],
       newUsers: [],
       totalSurveys: [],
+      questions: [],
       totalUsers: 0
     };
   }
@@ -66,12 +67,25 @@ class UserList extends Component<{}, { users: any[]; newUsers: any[]; totalSurve
     }
   }
 
+  recieveQuestions = questionId => {
+    getQuestions(questionId).then(doc => {
+      if (doc.questions.length !== this.state.questions.length) {
+        this.setState({
+          questions: doc.questions
+        })
+      }
+    }).then(() => {
+      console.log(this.state.questions)
+    })
+  };
+
   downloadCsv = (uid) => {
     // console.log(uid)
     getSurveys(uid)
       .then((querySnapshot) => {
         return querySnapshot.docs.map((doc) => {
-          console.log(doc.data()?.surveyQuestionId)
+          console.log(doc.data().surveyQuestionId)
+          this.recieveQuestions(doc.data().surveyQuestionId)
         })
       })
   }
