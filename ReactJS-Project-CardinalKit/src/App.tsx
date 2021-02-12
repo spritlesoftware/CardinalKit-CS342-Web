@@ -4,14 +4,15 @@ import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-d
 
 import Header from './components/Header';
 import LoginPage from './components/LoginPage';
+import ManageUsers from './components/ManageUsers';
 import NotFoundPage from './components/NotFoundPage';
 import SideBar from './components/SideBar';
 import UserPage from './components/UserPage';
 import UsersPage from './components/UsersPage';
 import VerificationPage from './components/VerificationPage';
+import ViewResponse from './components/ViewResponse';
 import { Store } from './reducers/rootReducer';
 import { isAuthenticated } from './selectors/loginSelectors';
-import ManageUsers from './components/ManageUsers';
 
 interface AppProps {
   isAuth: boolean;
@@ -43,17 +44,19 @@ class App extends React.Component<AppProps, { isLoggedIn: any }> {
                 {isLoggedIn && <Header />}
                 <main className="h-full overflow-y-auto">
                   <Switch>
-                    <Route exact={true} path="/">
-                      <Redirect to={{ pathname: '/login' }} />
-                    </Route>
                     <Route exact={true} path="/login" component={LoginPage} />
-                    <Route exact={true} path="/users" component={UsersPage} />
+                    <Route exact={true} path={["/", "/users"]} component={UsersPage} />
                     <Route exact={true} path="/verify_code" component={VerificationPage} />
                     <Route exact={true} path="/manage_users" component={ManageUsers} />
                     <Route
                       exact={true}
                       path="/users/:userID"
                       component={(props: any) => <UserPage {...props} />}
+                    />
+                    <Route
+                      exact={true}
+                      path="/users/:userID/:surveyId"
+                      component={(props: any) => <ViewResponse {...props} />}
                     />
                     <Redirect exact={true} from="/" to="/users" />
                     <Route component={NotFoundPage} />
@@ -63,29 +66,20 @@ class App extends React.Component<AppProps, { isLoggedIn: any }> {
             </div>
           </Router>
         </div>
-      )
+      );
     } else {
       return (
         <div>
           <Router>
             <Redirect to={{ pathname: '/login' }} />
-            <Route
-              exact={true}
-              path="/login"
-              component={LoginPage}
-            />
-            <Route
-              exact={true}
-              path="/verify_code"
-              component={VerificationPage}
-            />
+            <Route exact={true} path="/login" component={LoginPage} />
+            <Route exact={true} path="/verify_code" component={VerificationPage} />
           </Router>
         </div>
-      )
+      );
     }
   }
 }
-
 
 function mapStateToProps(state: Store) {
   return {

@@ -3,22 +3,20 @@ import * as React from 'react';
 class SideBar extends React.Component {
   render() {
     return (
-      <div>
-        <aside className="z-20 hidden w-64 overflow-y-auto bg-white dark:bg-gray-800 md:block flex-shrink-0 h-full">
+      <div className="z-5">
+        <aside className="hidden w-64 overflow-y-auto bg-white dark:bg-gray-800 md:block flex-shrink-0 h-full">
           <div className="py-4 text-gray-500 dark:text-gray-400">
-            <a className="ml-6 text-lg font-bold text-gray-800 dark:text-gray-200" href="#">
-              Standford Medicine
+            <a className="ml-6 text-lg font-bold text-gray-800 dark:text-gray-200" href="/users">
+              Stanford Medicine
             </a>
             <ul className="mt-6">
               <li className="relative px-6 py-3">
                 <span
                   className="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"
                   aria-hidden="true"
-                >
-                  ""
-                </span>
+                />
                 <a
-                  className="inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
+                  className="inline-flex items-center w-full text-sm font-semibold focus:shadow-outline transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
                   href="/users"
                 >
                   <svg
@@ -85,7 +83,7 @@ class SideBar extends React.Component {
                   >
                     <path d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
                   </svg>
-                  <span className="ml-4">Setting</span>
+                  <span className="ml-4">Settings</span>
                 </a>
               </li>
             </ul>

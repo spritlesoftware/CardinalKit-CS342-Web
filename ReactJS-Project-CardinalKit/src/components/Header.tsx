@@ -39,8 +39,8 @@ class Header extends React.Component<HeaderProps> {
       return <Redirect to={{ pathname: '/login' }} />
     }
     return (
-      <div>
-        <header className="z-10 py-4 bg-white shadow-md dark:bg-gray-800">
+      <div className="z-10">
+        <header className="z-10 bg-white shadow-sm dark:bg-gray-800">
           <div className="container flex items-center justify-between h-full px-6 mx-auto text-purple-600 dark:text-purple-300">
             <div className="flex justify-center flex-1 lg:mr-32">
               <div className="relative w-full max-w-xl mr-6 focus-within:text-purple-500" />

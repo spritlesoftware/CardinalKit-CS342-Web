@@ -33,7 +33,7 @@ class ManageUsers extends React.Component {
   render() {
     return (
       <div className="container px-6 mx-auto grid">
-        <h4 className="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">Create User</h4>
+        <h4 className="mb-4 mt-4  text-lg font-semibold text-gray-600 dark:text-gray-300">Manage Users</h4>
         <div className="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
           <label className="block text-sm">
             <span className="text-gray-700 dark:text-gray-400">First Name</span>
@@ -89,7 +89,8 @@ class ManageUsers extends React.Component {
             onClick={() => this.onSubmit()}
             className="flex items-center justify-between px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
           >
-            <span>Create User</span>
+            <span>Create User</span> 
+            <i class="fas fa-heart mx-2" />
           </button>
         </div>
       </div>
