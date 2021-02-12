@@ -263,7 +263,7 @@ const CreateSurvey = ({ history }) => {
             </div>
           </div>
           <div className="flex justify-start border-t-2 border-fuchsia-600 pt-4">
-            <h1 className="text-xl w-9 font-semibold mx-auto">Add Questions</h1>
+            <h1 className="text-xl font-semibold mx-auto">Add Questions</h1>
           </div>
           <div className="">{renderQuestionFields()}</div>
 
