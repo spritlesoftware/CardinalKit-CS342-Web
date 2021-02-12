@@ -49,6 +49,9 @@ const CreateSurvey = ({ history }) => {
       case 'addChoiceField':
         question.choices.push('');
         break;
+      case 'removeChoice':
+        question.choices.splice(choiceIndex, 1);
+        break;
       default:
         return;
     }
@@ -73,12 +76,23 @@ const CreateSurvey = ({ history }) => {
     const currentQuestion = questions[questionIndex];
     return currentQuestion.choices.map((field, i) => (
       <div className="flex mx-3" key={i}>
-        <input
-          name="choice"
-          key={i}
-          className="mt-2 ml-3 border border-gray-400  rounded"
-          onChange={e => setQuestionAttributes(e, questionIndex, i)}
-        />
+        <div className="flex content-center my-1">
+          <input
+            name="choice"
+            key={i}
+            className="mt-2 ml-3 border border-gray-400  rounded"
+            onChange={e => setQuestionAttributes(e, questionIndex, i)}
+            value={field}
+          />
+          <button
+            onClick={e => setQuestionAttributes(e, questionIndex, i)}
+            name="removeChoice"
+            type="button"
+            className="bg-gray-200 m-2 px-1 rounded-sm self-center"
+          >
+            &#10005;
+          </button>
+        </div>
       </div>
     ));
   };
@@ -91,7 +105,6 @@ const CreateSurvey = ({ history }) => {
         key={index}
       >
         <div className="row m-10 flex flex-col">
-          
           <div className="flex justify-right mb-4">
             <div className="px-4">
               <label>Question No.{'  '}:</label>
