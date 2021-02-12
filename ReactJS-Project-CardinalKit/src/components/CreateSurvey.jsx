@@ -83,6 +83,7 @@ const CreateSurvey = ({ history }) => {
             className="mt-2 ml-3 border border-gray-400  rounded"
             onChange={e => setQuestionAttributes(e, questionIndex, i)}
             value={field}
+            autoComplete="off"
           />
           <button
             onClick={e => setQuestionAttributes(e, questionIndex, i)}
@@ -244,6 +245,7 @@ const CreateSurvey = ({ history }) => {
                   name="surveyName"
                   required
                   autoFocus
+                  autoComplete="off"
                 />
               </div>
             </div>
