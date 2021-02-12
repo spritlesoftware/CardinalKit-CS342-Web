@@ -15,29 +15,9 @@ import { UserDetails } from '../api/user';
 
 import { Store } from '../reducers/rootReducer';
 
-import { defineMessages } from 'react-intl';
 import ReactTable from 'react-table-6';
 import { getSurvey, getSurveys } from '../api/getAllUsers';
 import { Card } from '../ui/Card';
-
-const messages = defineMessages({
-  surveyTableHeader: {
-    id: 'app.SurveysTable.surveyTableHeader',
-    defaultMessage: 'Completed Surveys',
-  },
-  nameHeader: {
-    id: 'app.SurveysTable.dateHeader',
-    defaultMessage: 'Survey',
-  },
-  dateHeader: {
-    id: 'app.SurveysTable.dateHeader',
-    defaultMessage: 'Date',
-  },
-  surveyIdHeader: {
-    id: 'app.SurveysTable.surveyIdHeader',
-    defaultMessage: 'Survey ID',
-  },
-});
 
 interface SurveyList {
   userID: string,
@@ -73,7 +53,7 @@ class SurveysTable extends React.Component<SurveyHeaderProps, State> {
         return getSurvey(userID, surveyId)
           .then((data) => {
             if (data.payload) {
-              const startDate = moment(data?.payload?.startDate.substring(0, 10)).format('ll')
+              const startDate = moment(data?.payload?.startDate.substring(0, 10)).format('LL')
               const identifier = data?.payload?.identifier
               const surveyData = {
                 startDate,
@@ -118,7 +98,7 @@ class SurveysTable extends React.Component<SurveyHeaderProps, State> {
       },
       {
         Header: () => (
-          <div className="text-xs font-semibold text-center tracking-wide text-left text-gray-500 uppercase dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">Submitted Date</div>
+          <div className="text-xs text-center font-semibold tracking-wide text-left text-gray-500 uppercase dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">survey submitted</div>
         ),
         accessor: 'startDate',
         className: "px-4 py-3 text-sm",

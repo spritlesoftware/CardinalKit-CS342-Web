@@ -12,7 +12,7 @@ export interface users {
   endDate: string;
 }
 
-class UserList extends Component<{}, { users: any[]; newUsers: any[]; totalSurveys: any[]; totalUsers: number; questions: [] }> {
+class UserList extends Component<{}, { users: any[]; newUsers: any[]; usersDetails: any[], totalSurveys: any[]; totalUsers: number; questions: [] }> {
   constructor(props) {
     super(props);
     this.state = {
@@ -130,6 +130,7 @@ class UserList extends Component<{}, { users: any[]; newUsers: any[]; totalSurve
           users: [...data],
           totalUsers: data.length
         });
+        console.log(this.state.users)
       });
     });
   };
@@ -159,6 +160,14 @@ class UserList extends Component<{}, { users: any[]; newUsers: any[]; totalSurve
         width: 250,
         Cell: row => <div className="text-center h-6">{row.value}</div>
       },
+      // {
+      //   Header: () => (
+      //     <div className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase  dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">user id</div>
+      //   ),
+      //   accessor: 'userId',
+      //   className: 'font',
+      //   width: 250
+      // },
       {
         Header: () => (
           <div className="text-xs text-center font-semibold tracking-wide text-left text-gray-500 uppercase dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
@@ -237,7 +246,7 @@ class UserList extends Component<{}, { users: any[]; newUsers: any[]; totalSurve
           </div>
         </div>
         <ReactTable
-          data={this.state.usersDetails}
+          data={this.state.users}
           columns={columns}
           className={"ReactTable " + (this.state.totalUsers === 0 ? 'animate-pulse' : '')}
           // filterable={true}
@@ -251,24 +260,24 @@ class UserList extends Component<{}, { users: any[]; newUsers: any[]; totalSurve
         <div className="grid gap-6 mb-8 md:grid-cols-2">
           <div className="min-w-0 p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800">
             <h4 className="mb-4 font-semibold text-gray-800 dark:text-gray-300">Survey</h4>
-            <canvas id="pie"></canvas>
+            <canvas id="pie" />
             <div className="flex justify-center mt-4 space-x-3 text-sm text-gray-600 dark:text-gray-400">
               <div className="flex items-center">
-                <span className="inline-block w-3 h-3 mr-1 bg-blue-500 rounded-full"></span>
+                <span className="inline-block w-3 h-3 mr-1 bg-blue-500 rounded-full" />
                 <span>ShortWalkTask</span>
               </div>
               <div className="flex items-center">
-                <span className="inline-block w-3 h-3 mr-1 bg-teal-600 rounded-full"></span>
+                <span className="inline-block w-3 h-3 mr-1 bg-teal-600 rounded-full" />
                 <span>SurveyTask-SF12</span>
               </div>
             </div>
           </div>
           <div className="min-w-0 p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800">
             <h4 className="mb-4 font-semibold text-gray-800 dark:text-gray-300">Traffic</h4>
-            <canvas id="line"></canvas>
+            <canvas id="line" />
             <div className="flex justify-center mt-4 space-x-3 text-sm text-gray-600 dark:text-gray-400">
               <div className="flex items-center">
-                <span className="inline-block w-3 h-3 mr-1 bg-teal-600 rounded-full"></span>
+                <span className="inline-block w-3 h-3 mr-1 bg-teal-600 rounded-full" />
                 <span>User</span>
               </div>
             </div>

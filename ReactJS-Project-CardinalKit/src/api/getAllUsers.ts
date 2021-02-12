@@ -71,3 +71,17 @@ export function getQuestions(questionId): Promise<app.firestore.DocumentData> {
       return err;
     });
 }
+
+export const addQuestions = questions => {
+  const firebase = new Firebase();
+
+  return firebase
+    .allQuestions()
+    .add(questions)
+    .then(doc => {
+      return doc;
+    })
+    .catch(err => {
+      return err;
+    });
+};

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 
+import CreateSurvey from './components/CreateSurvey';
 import Header from './components/Header';
 import LoginPage from './components/LoginPage';
 import ManageUsers from './components/ManageUsers';
@@ -48,6 +49,7 @@ class App extends React.Component<AppProps, { isLoggedIn: any }> {
                     <Route exact={true} path={["/", "/users"]} component={UsersPage} />
                     <Route exact={true} path="/verify_code" component={VerificationPage} />
                     <Route exact={true} path="/manage_users" component={ManageUsers} />
+                    <Route exact={true} path="/create_survey" component={CreateSurvey} />
                     <Route
                       exact={true}
                       path="/users/:userID"
