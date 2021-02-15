@@ -75,17 +75,13 @@ class UserList extends Component<{}, { users: any[]; newUsers: any[]; usersDetai
           questions: doc.questions
         })
       }
-    }).then(() => {
-      console.log(this.state.questions)
     })
   };
 
   downloadCsv = (uid) => {
-    // console.log(uid)
     getSurveys(uid)
       .then((querySnapshot) => {
         return querySnapshot.docs.map((doc) => {
-          console.log(doc.data().surveyQuestionId)
           this.recieveQuestions(doc.data().surveyQuestionId)
         })
       })
@@ -130,7 +126,6 @@ class UserList extends Component<{}, { users: any[]; newUsers: any[]; usersDetai
           users: [...data],
           totalUsers: data.length
         });
-        console.log(this.state.users)
       });
     });
   };
@@ -254,7 +249,6 @@ class UserList extends Component<{}, { users: any[]; newUsers: any[]; usersDetai
           defaultPageSize={5}
           PaginationComponent={Pagination}
         />
-        {/* {console.log(this.state.users)} */}
 
         <h2 className="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">Charts</h2>
         <div className="grid gap-6 mb-8 md:grid-cols-2">
