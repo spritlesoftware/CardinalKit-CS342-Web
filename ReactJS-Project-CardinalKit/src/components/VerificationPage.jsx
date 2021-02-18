@@ -9,30 +9,30 @@ class VerificationPage extends React.Component {
     this.state = {
       userCode: null,
       verified_code: false,
-      verificationCode: null
+      verificationCode: null,
     };
   }
 
   onSubmitHandler = () => {
     this.setState({
-      userCode: document.getElementById('verificationCode')
-    })
-    var isLoggedIn = false
+      userCode: document.getElementById('verificationCode'),
+    });
+    let isLoggedIn = false;
     if (this.state.userCode === localStorage.getItem('verify-code')) {
       this.setState({
         verified_code: true,
-        verificationCode: localStorage.getItem('verify-code')
-      })
-      isLoggedIn = true
+        verificationCode: localStorage.getItem('verify-code'),
+      });
+      isLoggedIn = true;
       window.sessionStorage.setItem('isLoggedIn', isLoggedIn);
-      window.localStorage.clear()
+      window.localStorage.clear();
     }
   };
 
   render() {
-    if (this.state.verified_code  || !this.state.verificationCode){
-      return <Redirect to={{ pathname: "/users" }} />
-    } 
+    if (this.state.verified_code || !this.state.verificationCode) {
+      return <Redirect to={{ pathname: '/users' }} />;
+    }
 
     return (
       <div className="flex items-center min-h-screen p-6 bg-gray-50 dark:bg-gray-900">
@@ -56,9 +56,13 @@ class VerificationPage extends React.Component {
 
             <div className="flex flex-row overflow-y-auto md:flex-row">
               <div className="px-4 py-3 mb-8 bg-white rounded-lg dark:bg-gray-800">
-                <h4 className="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">Two Factor Authentication</h4>
+                <h4 className="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">
+                  Two Factor Authentication
+                </h4>
                 <label className="block text-sm">
-                  <span className="text-gray-700 dark:text-gray-400">Please Enter the Two Factor Authentication code sent to your email.</span>
+                  <span className="text-gray-700 dark:text-gray-400">
+                    Please Enter the Two Factor Authentication code sent to your email.
+                  </span>
                   <input
                     className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                     placeholder="Enter your verification code"
