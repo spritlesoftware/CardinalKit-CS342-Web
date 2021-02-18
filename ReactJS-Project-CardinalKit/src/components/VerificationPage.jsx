@@ -8,7 +8,8 @@ class VerificationPage extends React.Component {
     super(props);
     this.state = {
       userCode: null,
-      verified_code: false
+      verified_code: false,
+      verificationCode: null
     };
   }
 
@@ -19,24 +20,25 @@ class VerificationPage extends React.Component {
     var isLoggedIn = false
     if (this.state.userCode === localStorage.getItem('verify-code')) {
       this.setState({
-        verified_code: true
+        verified_code: true,
+        verificationCode: localStorage.getItem('verify-code')
       })
       isLoggedIn = true
       window.sessionStorage.setItem('isLoggedIn', isLoggedIn);
+      window.localStorage.clear()
     }
   };
 
   render() {
-    if (this.state.verified_code) {
-      window.location.reload()
+    if (this.state.verified_code  || !this.state.verificationCode){
       return <Redirect to={{ pathname: "/users" }} />
-    }
+    } 
 
     return (
       <div className="flex items-center min-h-screen p-6 bg-gray-50 dark:bg-gray-900">
         <div className="flex-1 h-full max-w-4xl mx-auto overflow-hidden bg-white rounded-lg shadow-xl dark:bg-gray-800">
           <div className="flex flex-col overflow-y-auto md:flex-row">
-
+            {console.log(this.state)}
             <div className=" flex flex-row h-32 md:h-auto md:w-1/2">
               <img
                 aria-hidden="true"
