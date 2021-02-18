@@ -9,7 +9,7 @@ class VerificationPage extends React.Component {
     this.state = {
       userCode: null,
       verified_code: false,
-      verificationCode: null,
+      verificationCode: '',
     };
   }
 
