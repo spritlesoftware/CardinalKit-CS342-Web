@@ -9,7 +9,7 @@ class VerificationPage extends React.Component {
     this.state = {
       userCode: null,
       verified_code: false,
-      verificationCode: '',
+      verificationCode: localStorage.getItem('verify-code')      ,
     };
   }
 
@@ -31,6 +31,7 @@ class VerificationPage extends React.Component {
 
   render() {
     if (this.state.verified_code || !this.state.verificationCode) {
+      console.log(this.state)
       return <Redirect to={{ pathname: '/users' }} />;
     }
 
