@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Redirect } from 'react-router-dom';
-import logo from '../images/login-office.jpeg';
+import logo from '../images/code_development_.svg';
 import logo2 from '../images/cardinal_logo.svg';
 
 class VerificationPage extends React.Component {
@@ -9,7 +9,7 @@ class VerificationPage extends React.Component {
     this.state = {
       userCode: null,
       verified_code: false,
-      verificationCode: localStorage.getItem('verify-code')      ,
+      verificationCode: localStorage.getItem('verifyCode'),
     };
   }
 
@@ -18,10 +18,10 @@ class VerificationPage extends React.Component {
       userCode: document.getElementById('verificationCode'),
     });
     let isLoggedIn = false;
-    if (this.state.userCode === localStorage.getItem('verify-code')) {
+    if (this.state.userCode === localStorage.getItem('verifyCode')) {
       this.setState({
         verified_code: true,
-        verificationCode: localStorage.getItem('verify-code'),
+        verificationCode: localStorage.getItem('verifyCode'),
       });
       isLoggedIn = true;
       window.sessionStorage.setItem('isLoggedIn', isLoggedIn);
@@ -31,7 +31,6 @@ class VerificationPage extends React.Component {
 
   render() {
     if (this.state.verified_code || !this.state.verificationCode) {
-      console.log(this.state)
       return <Redirect to={{ pathname: '/users' }} />;
     }
 
@@ -75,7 +74,7 @@ class VerificationPage extends React.Component {
                 <a
                   href="/users"
                   style={{ marginTop: 24, padding: 175, paddingTop: 10, paddingBottom: 10 }}
-                  className="flex items-center justify-between px-auto content-center py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple w-full"
+                  className="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 hover:bg-red-400 border border-transparent rounded-lg active:bg-red-600 bg-red-600 focus:outline-none focus:shadow-outline-purple"
                   onClick={() => this.onSubmitHandler()}
                 >
                   <span>Submit</span>
