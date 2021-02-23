@@ -51,16 +51,19 @@ class UserList extends Component<{}, { users: any[]; newUsers: any[]; totalSurve
         querySnapshot.docs.map(survey => {
           return totalSurveys.push(survey.id.substring(0, 14));
         });
-        surveyData.push(querySnapshot.docs[0].data());
+        if(!querySnapshot.docs[0]) {
+          return 
+        }
+        surveyData.push(querySnapshot.docs[0]?.data());
         const data = surveyData.map(doc => {
-          const surveyDate = new Date(doc.payload.endDate.substring(0, 10));
+          const surveyDate = new Date(doc?.payload.endDate.substring(0, 10));
           if (surveyDate === today) {
             newUsers.push(doc.userId);
           }
           return {
             name: 'John Adams',
             email: 'johnadams@gmail.com',
-            userId: doc.userId,
+            userId: doc?.userId,
             endDate: moment(doc.payload.endDate.substring(0, 10)).format('ll'),
             view: (
               <div>
