@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import ReactTable from 'react-table-6';
 import 'react-table-6/react-table.css';
 import { getAllFirebaseUsers, getQuestions, getSurveys } from '../api/getAllUsers';
-// import ExportToExcel from './ExportToExcel';
+import ExportToExcel from './ExportToExcel';
 import Pagination from './Pagination';
 import './styles/customStyle.css';
 import UserDetailHeader from './UserDetailHeader';
@@ -16,7 +16,7 @@ export interface users {
 
 class UserList extends Component<
   {},
-  { users: any[]; newUsers: any[]; totalSurveys: any[]; totalUsers: number; userData: any[] }
+  { users: any[]; newUsers: any[]; totalSurveys: any[]; totalUsers: number; userData: any[]; filterAll: string; dataPresent: boolean, dummyUsers: any[], filteredUsers: any[] }
 > {
   constructor(props) {
     super(props);
@@ -26,28 +26,75 @@ class UserList extends Component<
       totalSurveys: [],
       totalUsers: 0,
       userData: [],
+      filterAll: '',
+      dataPresent: true,
+      filteredUsers: [],
+      dummyUsers: [{
+        name: 'a user',
+        email: 'aUser@example.com',
+        endDate:   22/2/2021,
+      },
+      {
+        name: 'b user',
+        email: 'bUser@example.com',
+        endDate:  22/2/2021,
+      },
+      {
+        name: 'c user',
+        email: 'cUser@example.com',
+        endDate:  22/2/2021,
+      },
+      {
+        name: 'd user',
+        email: 'dUser@example.com',
+        endDate: 22/2/2021,
+      },
+      {
+        name: 'e user',
+        email: 'eUser@example.com',
+        endDate: 22/2/2021,
+      }]
     };
+
+
+     
   }
 
   componentDidMount = () => {
     getAllFirebaseUsers()
       .then(querySnapshot => {
-        const uids = querySnapshot.docs.map(doc => ({ userId: doc.id }));
-
+        if(querySnapshot.docs.length === 0) {
+          this.setState({
+            dataPresent: false
+          })
+        }
+        const uids = querySnapshot.docs.map(doc => ({ userId: doc.id }))
+        
         const data = querySnapshot.docs.map(doc => ({
           userId: doc.id,
           email: doc.data().email,
         }));
-
-        this.setState({
-          users: [...uids],
-          userData: [...data],
-        });
+        if(this.state.filterAll === ''){
+          this.setState({
+            users: [...uids],
+            userData: [...data],
+          });
+        } else {
+          //
+        }
       })
       .then(() => {
         this.getSurveyDetails();
       });
   };
+
+  filterUsers = (e) => {
+    const filteredUsers = this.state.dummyUsers.filter((user) => user.name.includes(e.target.value))  
+
+    this.setState({
+      filteredUsers
+    })
+  }
 
   updateTotalSurvey = snapshot => {
     const totalSurveys: any[] = [];
@@ -55,9 +102,7 @@ class UserList extends Component<
       totalSurveys.push(survey.id.substring(0, 14));
       this.setState({
         totalSurveys: [
-          ...totalSurveys.filter((item, index, inputArray) => (
-            inputArray.indexOf(item) === index
-          )),
+          ...totalSurveys.filter((item, index, inputArray) => inputArray.indexOf(item) === index),
         ],
       });
     });
@@ -66,7 +111,7 @@ class UserList extends Component<
   updateNewUsers = doc => {
     const newUsers: any[] = [];
     const today = new Date();
-    const surveyDate = new Date(doc.payload.endDate.substring(0, 10));
+    const surveyDate = new Date(doc?.payload.endDate.substring(0, 10));
 
     if (surveyDate === today) {
       newUsers.push(doc.userId);
@@ -80,7 +125,7 @@ class UserList extends Component<
     const surveyData: any[] = [];
     users.map(({ userId }) => {
       return getSurveys(userId).then(querySnapshot => {
-        surveyData.push(querySnapshot.docs[0].data());
+        surveyData.push(querySnapshot?.docs[0]?.data());
 
         const data = surveyData.map(doc => {
           this.updateTotalSurvey(querySnapshot);
@@ -89,11 +134,11 @@ class UserList extends Component<
 
           return {
             name: 'John Adams',
-            email: doc.userId ? this.filterEmailFromUserData(doc.userId) : ' ',
+            email: doc?.userId ? this.filterEmailFromUserData(doc.userId) : ' ',
 
-            userId: doc.userId,
+            userId: doc?.userId,
 
-            endDate: moment(doc.payload.endDate.substring(0, 10)).format('LL'),
+            endDate: moment(doc?.payload.endDate.substring(0, 10)).format('LL'),
             view: (
               <div>
                 <span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
@@ -105,14 +150,14 @@ class UserList extends Component<
                   </Link>
                 </span>
 
-                {/* <ExportToExcel uid={doc.userId}/> */}
+                <ExportToExcel uid={doc.userId}/>
 
-                <button className="mx-1">
+                {/* <button className="mx-1">
                   <span className="px-2 py-1  font-semibold bg-blue-200 leading-tight rounded-full dark:bg-blue-700 dark:text-blue-100">
                     Response
                     <i className="ml-1 fas fa-cloud-download-alt  text-gray-700	animate-bounce ease-out hover:scale-50" />
                   </span>
-                </button>
+                </button> */}
               </div>
             ),
           };
@@ -126,6 +171,9 @@ class UserList extends Component<
   };
 
   render() {
+
+    const {totalUsers, dataPresent} = this.state;
+
     const columns = [
       {
         Header: () => (
@@ -160,17 +208,17 @@ class UserList extends Component<
         width: 250,
         Cell: row => <div className="text-center h-4">{row.value}</div>,
       },
-      {
-        Header: () => (
-          <div className="text-xs text-center font-semibold tracking-wide text-left text-gray-500 uppercase text-center dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
-            actions
-          </div>
-        ),
-        accessor: 'view',
-        filterable: false,
-        width: 250,
-        Cell: row => <div className="text-center h-4">{row.value}</div>,
-      },
+      // {
+      //   Header: () => (
+      //     <div className="text-xs text-center font-semibold tracking-wide text-left text-gray-500 uppercase text-center dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+      //       actions
+      //     </div>
+      //   ),
+      //   accessor: 'view',
+      //   filterable: false,
+      //   width: 250,
+      //   Cell: row => <div className="text-center h-4">{row.value}</div>,
+      // },
     ];
 
     return (
@@ -226,16 +274,24 @@ class UserList extends Component<
             </div>
           </div>
         </div>
+
+        <div className="flex content-center justify-end">
+          <label className="text-gray-00 my-6 mx-3">Search User: </label>
+          <input 
+            onChange={(e) => this.filterUsers(e)} 
+            placeholder="Eg: Jhon Doe"
+            className="rounded shadow my-4 px-2  py-1 focus:outline-none focus:ring focus:border-blue-300"/>
+            <i className="fas fa-times"></i>
+        </div>
+
         <ReactTable
-          data={this.state.users}
+          data={this.state.filteredUsers.length===0 ? this.state.dummyUsers : this.state.filteredUsers}
           columns={columns}
-          className={'ReactTable ' + (this.state.totalUsers === 0 ? 'animate-pulse' : '')}
-          // filterable={true}
+          className={'ReactTable ' + ((totalUsers === 0 && dataPresent) ? 'animate-pulse' : '')}
           sortable={true}
           defaultPageSize={5}
           PaginationComponent={Pagination}
         />
-        {/* {console.log(this.state.users)} */}
 
         <h2 className="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">Charts</h2>
         <div className="grid gap-6 mb-8 md:grid-cols-2">
