@@ -208,17 +208,17 @@ class UserList extends Component<
         width: 250,
         Cell: row => <div className="text-center h-4">{row.value}</div>,
       },
-      // {
-      //   Header: () => (
-      //     <div className="text-xs text-center font-semibold tracking-wide text-left text-gray-500 uppercase text-center dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
-      //       actions
-      //     </div>
-      //   ),
-      //   accessor: 'view',
-      //   filterable: false,
-      //   width: 250,
-      //   Cell: row => <div className="text-center h-4">{row.value}</div>,
-      // },
+      {
+        Header: () => (
+          <div className="text-xs text-center font-semibold tracking-wide text-left text-gray-500 uppercase text-center dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+            actions
+          </div>
+        ),
+        accessor: 'view',
+        filterable: false,
+        width: 250,
+        Cell: row => <div className="text-center h-4">{row.value}</div>,
+      },
     ];
 
     return (
@@ -285,7 +285,7 @@ class UserList extends Component<
         </div>
 
         <ReactTable
-          data={this.state.filteredUsers.length===0 ? this.state.dummyUsers : this.state.filteredUsers}
+          data={this.state.filteredUsers.length===0 ? this.state.users : this.state.filteredUsers}
           columns={columns}
           className={'ReactTable ' + ((totalUsers === 0 && dataPresent) ? 'animate-pulse' : '')}
           sortable={true}
