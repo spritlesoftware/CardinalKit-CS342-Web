@@ -47,7 +47,6 @@ const ViewResponse = ({ match }) => {
 
   const renderAnswer = (questionNumber) => {
     const result = response.payload.results.filter(res => res.identifier == questionNumber)[0]?.results[0];
-    var choiceAnswers = renderChoiceAnswers(questionNumber, result?.choiceAnswers)
     return (
       <div>
         <div className="text-md text-gray-600 dark:text-gray-400">
@@ -56,7 +55,7 @@ const ViewResponse = ({ match }) => {
             <div className="text-gray-900	self-center mx-3">
               { capitalizeFirstCharacter(result?.booleanAnswer) }
               { result?.scaleAnswer?.toString() }
-              { choiceAnswers }
+              { renderChoiceAnswers(questionNumber, result?.choiceAnswers) }
               { capitalizeFirstCharacter(result?.textAnswer) || null }
               { result?.emailAnswer || null }
               { result?.validatedTextAnswer || null }
