@@ -266,7 +266,7 @@ class UserList extends Component<
             placeholder="Eg: Jhon Doe"
             className="rounded shadow my-4 px-2  py-1 focus:outline-none focus:ring focus:border-blue-300"/>
             <span className="self-center mx-2" onClick={() => this.clearSearchField()}> 
-              <i className="fas fa-times hover:cursor-pointer	"></i>
+              <i className="fas fa-times hover:cursor-pointer	" />
             </span>
         </div>
 

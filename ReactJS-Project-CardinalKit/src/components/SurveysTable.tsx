@@ -68,11 +68,11 @@ class SurveysTable extends React.Component<SurveyHeaderProps, State> {
 
 
     getSurveys(userID).then((querySnapshot) => {
-      const data = querySnapshot.docs.map(doc => doc.id);
+      const ids = querySnapshot.docs.map(doc => doc.id);
       this.setState({
-        surveyIds: [...data]
+        surveyIds: [...ids]
       })
-      data.map((surveyId) => {
+      ids.map((surveyId) => {
         return getSurvey(userID, surveyId)
           .then((data) => {
             if (data.payload) {
