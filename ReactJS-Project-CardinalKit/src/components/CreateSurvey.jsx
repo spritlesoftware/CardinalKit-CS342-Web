@@ -9,8 +9,13 @@ const CreateSurvey = ({ history }) => {
   const [questions, setQuestions] = useState([
     {
       text: '',
-      questionType: '',
+      questionType: 'instruction',
       questionNumber: 1,
+    },
+    {
+      text: '',
+      questionType: 'summary',
+      questionNumber: -1,
     },
   ]);
 
@@ -72,6 +77,12 @@ const CreateSurvey = ({ history }) => {
     ]);
   };
 
+  const removeQuestion = async (questionIndex) => {
+    const stateQuestions = [...questions];
+    stateQuestions.splice(questionIndex, 1);
+    setQuestions(stateQuestions)
+  }
+
   const renderChoiceFields = questionIndex => {
     const currentQuestion = questions[questionIndex];
     return currentQuestion.choices.map((field, i) => (
@@ -98,6 +109,61 @@ const CreateSurvey = ({ history }) => {
     ));
   };
 
+
+  const renderQuestionType  = (question, questionIndex) => {
+    if(question.questionType === 'instruction') {
+      return 'Instruction'
+    } else if(question.questionType === 'summary') {
+      return 'Summary'
+    } else {
+      return (
+        <select
+          className=" dropdown w-7 rounded-md border p-2 shadow bg-white"
+          onChange={e => {
+            setQuestionAttributes(e, questionIndex);
+          }}
+          name="questionType"
+        >
+          <option className="rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap">
+            Please select...
+          </option>
+          <option
+            value="instruction"
+            className="rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
+          >
+            instruction
+          </option>
+          <option
+            value="boolean"
+            className="rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
+          >
+            {' '}
+            boolean
+          </option>
+          <option
+            value="choice"
+            className="rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
+          >
+            {' '}
+            choice
+          </option>
+          <option
+            value="scale"
+            className="rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
+          >
+            scale
+          </option>
+          <option
+            value="summary"
+            className="rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
+          >
+            summary
+          </option>
+        </select>
+      )
+    }
+  }
+
   const renderQuestionFields = () =>
     questions.map((field, index, i) => (
       <div
@@ -106,60 +172,31 @@ const CreateSurvey = ({ history }) => {
         key={index}
       >
         <div className="row m-10 flex flex-col">
-          <div className="flex justify-right mb-4">
-            <div className="px-4">
-              <label>Question No.{'  '}:</label>
+          <div className="flex justify-right mb-4 justify-between	">
+            <div className="flex">
+              <div className="px-4">
+                <label>Question No.{'  '}:</label>
+              </div>
+              <div className="mx-4">{index + 1}</div>
             </div>
-            <div className="mx-4">{field.questionNumber}</div>
+            {field.questionType ===  'instruction' || 
+              <div className=" justify-self-end" >
+                <button 
+                className="block px-4 py-2 ml-3 mb-5 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
+                onClick={() => removeQuestion(index)}
+                type="button"
+                >
+                  Remove Question
+                </button>
+              </div>
+            } 
           </div>
           <div className="flex justify-right ">
             <div className="px-3 self-center">
               <label>Question Type:</label>
             </div>
             <div className="cursor-pointer flex">
-              <select
-                className=" dropdown w-7 rounded-md border p-2 shadow bg-white"
-                onChange={e => {
-                  setQuestionAttributes(e, index);
-                }}
-                name="questionType"
-              >
-                <option className="rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap">
-                  Please select...
-                </option>
-                <option
-                  value="instruction"
-                  className="rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
-                >
-                  instruction
-                </option>
-                <option
-                  value="boolean"
-                  className="rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
-                >
-                  {' '}
-                  boolean
-                </option>
-                <option
-                  value="choice"
-                  className="rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
-                >
-                  {' '}
-                  choice
-                </option>
-                <option
-                  value="scale"
-                  className="rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
-                >
-                  scale
-                </option>
-                <option
-                  value="summary"
-                  className="rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
-                >
-                  summary
-                </option>
-              </select>
+              {renderQuestionType(field, index)}
             </div>
           </div>
           <div className="flex justify-right mt-4">
@@ -282,7 +319,7 @@ const CreateSurvey = ({ history }) => {
               type="button"
               onClick={addNewQuestionField}
             >
-              Add Question
+              Add Question 
             </button>
           </div>
         </form>
