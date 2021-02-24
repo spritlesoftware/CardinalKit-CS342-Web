@@ -8,7 +8,7 @@ toast.configure();
 const CreateSurvey = ({ history }) => {
   const [questions, setQuestions] = useState([
     {
-      questionText: '',
+      text: '',
       questionType: '',
       questionNumber: 1,
     },
@@ -40,8 +40,8 @@ const CreateSurvey = ({ history }) => {
           delete question.choices;
         }
         break;
-      case 'questionText':
-        question.questionText = e.target.value;
+      case 'text':
+        question.text = e.target.value;
         break;
       case 'choice':
         question.choices.splice(choiceIndex, 1, e.target.value);
@@ -65,7 +65,7 @@ const CreateSurvey = ({ history }) => {
     setQuestions([
       ...questions,
       {
-        questionText: '',
+        text: '',
         questionType: '',
         questionNumber: currentQuestionNumber,
       },
@@ -177,7 +177,7 @@ const CreateSurvey = ({ history }) => {
                            dark:text-gray-300
                            dark:focus:shadow-outline-gray
                            form-input"
-                name="questionText"
+                name="text"
                 onChange={e => setQuestionAttributes(e, index)}
                 required
               />
