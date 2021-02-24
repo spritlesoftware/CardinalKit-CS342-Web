@@ -17,7 +17,7 @@ import { Store } from '../reducers/rootReducer';
 
 import { defineMessages } from 'react-intl';
 import ReactTable from 'react-table-6';
-import { getSurvey, getSurveys } from '../api/getAllUsers';
+import { getQuestions, getSurvey, getSurveys } from '../api/getAllUsers';
 import { Card } from '../ui/Card';
 
 const messages = defineMessages({
@@ -56,7 +56,8 @@ class SurveysTable extends React.Component<SurveyHeaderProps, State> {
     super(props)
     this.state = {
       surveyIds: [],
-      surveyList: []
+      surveyList: [],
+      
     }
   }
 
@@ -64,6 +65,8 @@ class SurveysTable extends React.Component<SurveyHeaderProps, State> {
   componentDidMount() {
     const { userID } = this.props;
     const tempSurveyList: any[] = [];
+
+
     getSurveys(userID).then((querySnapshot) => {
       const data = querySnapshot.docs.map(doc => doc.id);
       this.setState({
@@ -74,7 +77,7 @@ class SurveysTable extends React.Component<SurveyHeaderProps, State> {
           .then((data) => {
             if (data.payload) {
               const startDate = moment(data?.payload?.startDate.substring(0, 10)).format('ll')
-              const identifier = data?.payload?.identifier
+              const identifier = data?.payload?.name || '(Survey Name unavailable)'
               const surveyData = {
                 startDate,
                 identifier,
@@ -94,6 +97,16 @@ class SurveysTable extends React.Component<SurveyHeaderProps, State> {
       })
     })
   }
+
+  // recieveQuestions = async (qid) => {
+  //   let questionName = await getQuestions(qid)
+  //                           .then((question) => {
+  //                             return question.name
+  //                           })
+    
+  //   console.log(questionName)
+  //   return questionName
+  // }
 
   render() {
     const { userID } = this.props;

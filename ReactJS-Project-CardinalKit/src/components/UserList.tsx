@@ -16,7 +16,7 @@ export interface users {
 
 class UserList extends Component<
   {},
-  { users: any[]; newUsers: any[]; totalSurveys: any[]; totalUsers: number; userData: any[]; filterAll: string; dataPresent: boolean, dummyUsers: any[], filteredUsers: any[] }
+  { users: any[]; newUsers: any[]; totalSurveys: any[]; totalUsers: number; userData: any[]; filterAll: string; dataPresent: boolean, filteredUsers: any[], filterText: string }
 > {
   constructor(props) {
     super(props);
@@ -29,31 +29,7 @@ class UserList extends Component<
       filterAll: '',
       dataPresent: true,
       filteredUsers: [],
-      dummyUsers: [{
-        name: 'a user',
-        email: 'aUser@example.com',
-        endDate:   22/2/2021,
-      },
-      {
-        name: 'b user',
-        email: 'bUser@example.com',
-        endDate:  22/2/2021,
-      },
-      {
-        name: 'c user',
-        email: 'cUser@example.com',
-        endDate:  22/2/2021,
-      },
-      {
-        name: 'd user',
-        email: 'dUser@example.com',
-        endDate: 22/2/2021,
-      },
-      {
-        name: 'e user',
-        email: 'eUser@example.com',
-        endDate: 22/2/2021,
-      }]
+      filterText: ''
     };
 
 
@@ -89,10 +65,17 @@ class UserList extends Component<
   };
 
   filterUsers = (e) => {
-    const filteredUsers = this.state.dummyUsers.filter((user) => user.name.includes(e.target.value))  
-
+    const filteredUsers = this.state.users.filter((user) => user.name.toLowerCase().includes(e.target.value))
+    
     this.setState({
+      filterText: e.target.value,
       filteredUsers
+    })
+  }
+
+  clearSearchField = () => {
+    this.setState({
+      filterText: ''
     })
   }
 
@@ -278,10 +261,13 @@ class UserList extends Component<
         <div className="flex content-center justify-end">
           <label className="text-gray-00 my-6 mx-3">Search User: </label>
           <input 
-            onChange={(e) => this.filterUsers(e)} 
+            onChange={(e) => this.filterUsers(e)}
+            value={this.state.filterText}
             placeholder="Eg: Jhon Doe"
             className="rounded shadow my-4 px-2  py-1 focus:outline-none focus:ring focus:border-blue-300"/>
-            <i className="fas fa-times"></i>
+            <span className="self-center mx-2" onClick={() => this.clearSearchField()}> 
+              <i className="fas fa-times hover:cursor-pointer	"></i>
+            </span>
         </div>
 
         <ReactTable
