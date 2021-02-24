@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Redirect } from 'react-router-dom';
-import logo from '../images/login-office.jpeg';
+import logo from '../images/code_development_.svg';
 import logo2 from '../images/cardinal_logo.svg';
 
 class VerificationPage extends React.Component {
@@ -8,28 +8,30 @@ class VerificationPage extends React.Component {
     super(props);
     this.state = {
       userCode: null,
-      verified_code: false
+      verified_code: false,
+      verificationCode: localStorage.getItem('verifyCode'),
     };
   }
 
   onSubmitHandler = () => {
     this.setState({
-      userCode: document.getElementById('verificationCode')
-    })
-    var isLoggedIn = false
-    if (this.state.userCode === localStorage.getItem('verify-code')) {
+      userCode: document.getElementById('verificationCode'),
+    });
+    let isLoggedIn = false;
+    if (this.state.userCode === localStorage.getItem('verifyCode')) {
       this.setState({
-        verified_code: true
-      })
-      isLoggedIn = true
+        verified_code: true,
+        verificationCode: localStorage.getItem('verifyCode'),
+      });
+      isLoggedIn = true;
       window.sessionStorage.setItem('isLoggedIn', isLoggedIn);
+      window.localStorage.clear();
     }
   };
 
   render() {
-    if (this.state.verified_code) {
-      window.location.reload()
-      return <Redirect to={{ pathname: "/users" }} />
+    if (this.state.verified_code || !this.state.verificationCode) {
+      return <Redirect to={{ pathname: '/users' }} />;
     }
 
     return (
@@ -69,7 +71,7 @@ class VerificationPage extends React.Component {
                 <a
                   href="/users"
                   style={{ marginTop: 24, padding: 175, paddingTop: 10, paddingBottom: 10 }}
-                  className="flex items-center justify-between px-auto content-center py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple w-full"
+                  className="flex items-center justify-between px-auto content-center py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-red-500 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple w-full"
                   onClick={() => this.onSubmitHandler()}
                 >
                   <span>Submit</span>

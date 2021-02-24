@@ -1,18 +1,23 @@
 import moment from 'moment';
-import React, { Component } from 'react';   
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import ReactTable from 'react-table-6';
 import 'react-table-6/react-table.css';
-import { getAllFirebaseUsers, getSurveys, getQuestions } from '../api/getAllUsers';
+import { getAllFirebaseUsers, getQuestions, getSurveys } from '../api/getAllUsers';
+import ExportToExcel from './ExportToExcel';
 import Pagination from './Pagination';
 import './styles/customStyle.css';
+import UserDetailHeader from './UserDetailHeader';
 
 export interface users {
   userId: string;
   endDate: string;
 }
 
-class UserList extends Component<{}, { users: any[]; newUsers: any[]; usersDetails: any[], totalSurveys: any[]; totalUsers: number; questions: [] }> {
+class UserList extends Component<
+  {},
+  { users: any[]; newUsers: any[]; totalSurveys: any[]; totalUsers: number; userData: any[]; filterAll: string; dataPresent: boolean, dummyUsers: any[], filteredUsers: any[] }
+> {
   constructor(props) {
     super(props);
     this.state = {
@@ -20,117 +25,156 @@ class UserList extends Component<{}, { users: any[]; newUsers: any[]; usersDetai
       usersDetails: [],
       newUsers: [],
       totalSurveys: [],
-      questions: [],
-      totalUsers: 0
+      totalUsers: 0,
+      userData: [],
+      filterAll: '',
+      dataPresent: true,
+      filteredUsers: [],
+      dummyUsers: [{
+        name: 'a user',
+        email: 'aUser@example.com',
+        endDate:   22/2/2021,
+      },
+      {
+        name: 'b user',
+        email: 'bUser@example.com',
+        endDate:  22/2/2021,
+      },
+      {
+        name: 'c user',
+        email: 'cUser@example.com',
+        endDate:  22/2/2021,
+      },
+      {
+        name: 'd user',
+        email: 'dUser@example.com',
+        endDate: 22/2/2021,
+      },
+      {
+        name: 'e user',
+        email: 'eUser@example.com',
+        endDate: 22/2/2021,
+      }]
     };
+
+
+
   }
 
   componentWillMount = () => {
     getAllFirebaseUsers()
       .then(querySnapshot => {
-        const data = querySnapshot.docs.map(doc => {
-          return {
-            userId: doc.id,
-          };
-        });
-        this.setState({
-          users: [...data],
-        });
+        if(querySnapshot.docs.length === 0) {
+          this.setState({
+            dataPresent: false
+          })
+        }
+        const uids = querySnapshot.docs.map(doc => ({ userId: doc.id }))
+
+        const data = querySnapshot.docs.map(doc => ({
+          userId: doc.id,
+          email: doc.data().email,
+        }));
+        if(this.state.filterAll === ''){
+          this.setState({
+            users: [...uids],
+            userData: [...data],
+          });
+        } else {
+          //
+        }
       })
       .then(() => {
         this.getSurveyDetails();
       });
   };
 
+  filterUsers = (e) => {
+    const filteredUsers = this.state.dummyUsers.filter((user) => user.name.includes(e.target.value))
 
-  updateTotalSurvey = (snapshot) => {
+    this.setState({
+      filteredUsers
+    })
+  }
+
+  updateTotalSurvey = snapshot => {
     const totalSurveys: any[] = [];
     snapshot.docs.map(survey => {
       totalSurveys.push(survey.id.substring(0, 14));
       this.setState({
         totalSurveys: [
-          ...totalSurveys.filter(function(item, index, inputArray) {
-            return inputArray.indexOf(item) === index;
-          }),
-        ],      
-      })
+          ...totalSurveys.filter((item, index, inputArray) => inputArray.indexOf(item) === index),
+        ],
+      });
     });
-  }
+  };
 
-  updateNewUsers = (doc) => {
-    let newUsers: any[] = [];
+  updateNewUsers = doc => {
+    const newUsers: any[] = [];
     const today = new Date();
-
-    const surveyDate = new Date(doc.payload.endDate.substring(0, 10));
+    const surveyDate = new Date(doc?.payload.endDate.substring(0, 10));
 
     if (surveyDate === today) {
       newUsers.push(doc.userId);
     }
-  }
-
-  recieveQuestions = questionId => {
-    getQuestions(questionId).then(doc => {
-      if (doc.questions.length !== this.state.questions.length) {
-        this.setState({
-          questions: doc.questions
-        })
-      }
-    })
   };
 
-  downloadCsv = (uid) => {
-    getSurveys(uid)
-      .then((querySnapshot) => {
-        return querySnapshot.docs.map((doc) => {
-          this.recieveQuestions(doc.data().surveyQuestionId)
-        })
-      })
-  }
+  filterEmailFromUserData = uid => this.state.userData.filter(user => user.userId === uid)[0].email;
 
   getSurveyDetails = () => {
     const { users } = this.state;
     const surveyData: any[] = [];
     users.map(({ userId }) => {
-
       return getSurveys(userId).then(querySnapshot => {
+        surveyData.push(querySnapshot?.docs[0]?.data());
 
-        surveyData.push(querySnapshot.docs[0].data());
         const data = surveyData.map(doc => {
-
-
           this.updateTotalSurvey(querySnapshot);
 
-          this.updateNewUsers(doc)
+          this.updateNewUsers(doc);
 
           return {
             name: 'John Adams',
-            email: 'john@example.com',
-            userId: doc.userId,
-            endDate: moment(doc.payload.endDate.substring(0, 10)).format('LL'),
+            email: doc?.userId ? this.filterEmailFromUserData(doc.userId) : ' ',
+
+            userId: doc?.userId,
+
+            endDate: moment(doc?.payload.endDate.substring(0, 10)).format('LL'),
             view: (
               <div>
                 <span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
-                  <Link to={`/users/${doc.userId}`} className="animate-bounce ease-out duration-700">View Surveys</Link>
+                  <Link
+                    to={`/users/${doc.userId}`}
+                    className="animate-bounce ease-out duration-700"
+                  >
+                    View Surveys
+                  </Link>
                 </span>
-                <button onClick={() => this.downloadCsv(doc.userId)}>
+
+                <ExportToExcel uid={doc.userId}/>
+
+                {/* <button className="mx-1">
                   <span className="px-2 py-1  font-semibold bg-blue-200 leading-tight rounded-full dark:bg-blue-700 dark:text-blue-100">
                     Response
                     <i className="ml-1 fas fa-cloud-download-alt  text-gray-700	animate-bounce ease-out hover:scale-50" />
                   </span>
-                </button>
+                </button> */}
               </div>
             ),
           };
         });
         this.setState({
           users: [...data],
-          totalUsers: data.length
+          totalUsers: data.length,
         });
       });
     });
   };
 
   render() {
+
+    const {totalUsers, dataPresent} = this.state;
+
     const columns = [
       {
         Header: () => (
@@ -141,8 +185,7 @@ class UserList extends Component<{}, { users: any[]; newUsers: any[]; usersDetai
         accessor: 'name',
         className: 'font',
         width: 250,
-        Cell: row => <div className="text-center h-4">{row.value}</div>
-
+        Cell: row => <div className="text-center h-4">{row.value}</div>,
       },
       {
         Header: () => (
@@ -153,7 +196,7 @@ class UserList extends Component<{}, { users: any[]; newUsers: any[]; usersDetai
         accessor: 'email',
         className: 'font',
         width: 250,
-        Cell: row => <div className="text-center h-6">{row.value}</div>
+        Cell: row => <div className="text-center h-6">{row.value}</div>,
       },
       // {
       //   Header: () => (
@@ -172,7 +215,7 @@ class UserList extends Component<{}, { users: any[]; newUsers: any[]; usersDetai
         accessor: 'endDate',
         className: 'px-4 py-3 text-sm',
         width: 250,
-        Cell: row => <div className="text-center h-4">{row.value}</div>
+        Cell: row => <div className="text-center h-4">{row.value}</div>,
       },
       {
         Header: () => (
@@ -183,7 +226,7 @@ class UserList extends Component<{}, { users: any[]; newUsers: any[]; usersDetai
         accessor: 'view',
         filterable: false,
         width: 250,
-        Cell: row => <div className="text-center h-4">{row.value}</div>
+        Cell: row => <div className="text-center h-4">{row.value}</div>,
       },
     ];
 
@@ -240,11 +283,20 @@ class UserList extends Component<{}, { users: any[]; newUsers: any[]; usersDetai
             </div>
           </div>
         </div>
+
+        <div className="flex content-center justify-end">
+          <label className="text-gray-00 my-6 mx-3">Search User: </label>
+          <input
+            onChange={(e) => this.filterUsers(e)}
+            placeholder="Eg: Jhon Doe"
+            className="rounded shadow my-4 px-2  py-1 focus:outline-none focus:ring focus:border-blue-300"/>
+            <i className="fas fa-times"></i>
+        </div>
+
         <ReactTable
-          data={this.state.users}
+          data={this.state.filteredUsers.length===0 ? this.state.users : this.state.filteredUsers}
           columns={columns}
-          className={"ReactTable " + (this.state.totalUsers === 0 ? 'animate-pulse' : '')}
-          // filterable={true}
+          className={'ReactTable ' + ((totalUsers === 0 && dataPresent) ? 'animate-pulse' : '')}
           sortable={true}
           defaultPageSize={5}
           PaginationComponent={Pagination}

@@ -20,7 +20,7 @@ const ViewResponse = ({ match }) => {
   const getResponse = () => {
     getSurvey(match.params.userID, match.params.surveyId).then(res => {
       setResponse(res);
-      recieveQuestions(res.surveyQuestionId);
+      recieveQuestions(res.payload.identifier);
     });
   };
 
@@ -28,28 +28,27 @@ const ViewResponse = ({ match }) => {
     answer?.toString().replace(/\b\w/g, l => l.toUpperCase());
 
   const renderAnswer = (questionNumber) => {
-    const result = response.payload.results.filter(res => res.questionNumber === questionNumber)[0]
-      .results[0];
+    const result = response.payload.results.filter(res => res.identifier == questionNumber)[0]?.results[0];
     return (
       <div>
         <div className="text-md text-gray-600 dark:text-gray-400">
           <div className="flex">
             <b className="mx-3"> Answer: </b>
             <div className="text-gray-900	self-center mx-3">
-              {capitalizeFirstCharacter(result.booleanAnswer)}
-              {result.scaleAnswer?.toString()}
-              {result.choiceAnswers?.join(', ')}
-              {capitalizeFirstCharacter(result.textAnswer) || null}
-              {result.emailAnswer || null}
-              {result.validatedTextAnswer || null}
-              {result.numericAnswer || null}
-              {result.dateAnswer || null}
-              {result.timeOfTheDayAnswer || null}
-              {result.locationAnswer || null}
-              {result.valuePickerAnswer || null}
-              {result.imageChoiceAnswer || null}
-              {capitalizeFirstCharacter(result.textChoiceAnswer) ||
-                result.textChoiceAnswers?.join(', ') ||
+              {capitalizeFirstCharacter(result?.booleanAnswer)}
+              {result?.scaleAnswer?.toString()}
+              {result?.choiceAnswers?.join(', ')}
+              {capitalizeFirstCharacter(result?.textAnswer) || null}
+              {result?.emailAnswer || null}
+              {result?.validatedTextAnswer || null}
+              {result?.numericAnswer || null}
+              {result?.dateAnswer || null}
+              {result?.timeOfTheDayAnswer || null}
+              {result?.locationAnswer || null}
+              {result?.valuePickerAnswer || null}
+              {result?.imageChoiceAnswer || null}
+              {capitalizeFirstCharacter(result?.textChoiceAnswer) ||
+                result?.textChoiceAnswers?.join(', ') ||
                 null}
             </div>
           </div>
