@@ -36,6 +36,7 @@ const CreateSurvey = ({ history }) => {
   const setQuestionAttributes = (e, index, choiceIndex) => {
     const stateQuestions = [...questions];
     const question = stateQuestions[index];
+    
     switch (e.target.name) {
       case 'questionType':
         question.questionType = e.target.value;
@@ -65,19 +66,19 @@ const CreateSurvey = ({ history }) => {
   };
 
   const addNewQuestionField = () => {
-    const lastQuestion = questions[questions.length - 1];
+    const lastQuestion = questions[questions.length - 2];
     const currentQuestionNumber = lastQuestion.questionNumber + 1;
-    setQuestions([
-      ...questions,
-      {
-        text: '',
-        questionType: '',
-        questionNumber: currentQuestionNumber,
-      },
-    ]);
+    var newQuestion = {
+      text: '',
+      questionType: '',
+      questionNumber: currentQuestionNumber,
+    }
+    const stateQuestions = [...questions]
+    stateQuestions.splice(questions.length - 1, 0, newQuestion)
+    setQuestions(stateQuestions);
   };
 
-  const removeQuestion = async (questionIndex) => {
+  const removeQuestion =  (questionIndex) => {
     const stateQuestions = [...questions];
     stateQuestions.splice(questionIndex, 1);
     setQuestions(stateQuestions)
@@ -128,12 +129,6 @@ const CreateSurvey = ({ history }) => {
             Please select...
           </option>
           <option
-            value="instruction"
-            className="rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
-          >
-            instruction
-          </option>
-          <option
             value="boolean"
             className="rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
           >
@@ -152,12 +147,6 @@ const CreateSurvey = ({ history }) => {
             className="rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
           >
             scale
-          </option>
-          <option
-            value="summary"
-            className="rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
-          >
-            summary
           </option>
         </select>
       )
@@ -180,6 +169,7 @@ const CreateSurvey = ({ history }) => {
               <div className="mx-4">{index + 1}</div>
             </div>
             {field.questionType ===  'instruction' || 
+             field.questionType ===  'summary' ||
               <div className=" justify-self-end" >
                 <button 
                 className="block px-4 py-2 ml-3 mb-5 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
@@ -215,6 +205,7 @@ const CreateSurvey = ({ history }) => {
                            dark:focus:shadow-outline-gray
                            form-input"
                 name="text"
+                value={questions[index].text}
                 onChange={e => setQuestionAttributes(e, index)}
                 required
               />
@@ -262,11 +253,14 @@ const CreateSurvey = ({ history }) => {
     ));
 
   return (
-    <div className="container mx-auto px-4">
-      <h1 className="px-6 my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200 mx-auto">
-        Create Surveys
-      </h1>
-      <div className="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
+    <div className="container mx-auto px-4">     
+      <div className="mt-4 px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
+      <div className="px-6 my-10 ml-2 ">
+        <h1 className="mb-3 text-2xl font-semibold text-gray-700 dark:text-gray-200 mx-auto">
+          Create Surveys
+        </h1>
+        <div className="h-1 bg-purple-600 w-1/12" />
+      </div>
         <form onSubmit={onSubmit}>
           <div className="flex flex-col mb-4">
             <div className="row flex justify-around	">
