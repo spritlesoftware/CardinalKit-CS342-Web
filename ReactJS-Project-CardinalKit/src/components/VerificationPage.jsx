@@ -71,7 +71,7 @@ class VerificationPage extends React.Component {
                 <a
                   href="/users"
                   style={{ marginTop: 24, padding: 175, paddingTop: 10, paddingBottom: 10 }}
-                  className="flex items-center justify-between px-auto content-center py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-red-500 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple w-full"
+                  className="flex items-center justify-between px-auto content-center py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-red-500 border border-transparent rounded-lg active:bg-purple-600 hover:bg-red-400 focus:outline-none focus:shadow-outline-purple w-full"
                   onClick={() => this.onSubmitHandler()}
                 >
                   <span>Submit</span>
