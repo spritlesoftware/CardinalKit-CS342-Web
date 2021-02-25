@@ -134,20 +134,20 @@ const CreateSurvey = ({ history }) => {
             className="rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
           >
             {' '}
-            boolean
+            Boolean
           </option>
           <option
             value="choice"
             className="rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
           >
             {' '}
-            choice
+            Choice
           </option>
           <option
             value="scale"
             className="rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
           >
-            scale
+            Scale
           </option>
         </select>
       )
