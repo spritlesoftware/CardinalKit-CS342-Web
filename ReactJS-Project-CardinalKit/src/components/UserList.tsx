@@ -22,7 +22,6 @@ class UserList extends Component<
     super(props);
     this.state = {
       users: [],
-      usersDetails: [],
       newUsers: [],
       totalSurveys: [],
       totalUsers: 0,
