@@ -1,7 +1,7 @@
 import moment from 'moment';
 import * as React from 'react';
 import { connect } from 'react-redux';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Dispatch } from 'redux';
 import Pagination from './Pagination'
 
@@ -16,7 +16,7 @@ import { UserDetails } from '../api/user';
 import { Store } from '../reducers/rootReducer';
 
 import ReactTable from 'react-table-6';
-import { getSurvey, getSurveys } from '../api/getAllUsers';
+import { getQuestions, getSurvey, getSurveys } from '../api/getAllUsers';
 import { Card } from '../ui/Card';
 
 interface SurveyList {
@@ -36,7 +36,8 @@ class SurveysTable extends React.Component<SurveyHeaderProps, State> {
     super(props)
     this.state = {
       surveyIds: [],
-      surveyList: []
+      surveyList: [],
+
     }
   }
 
@@ -44,24 +45,26 @@ class SurveysTable extends React.Component<SurveyHeaderProps, State> {
   componentDidMount() {
     const { userID } = this.props;
     const tempSurveyList: any[] = [];
+
+
     getSurveys(userID).then((querySnapshot) => {
-      const data = querySnapshot.docs.map(doc => doc.id);
+      const ids = querySnapshot.docs.map(doc => doc.id);
       this.setState({
-        surveyIds: [...data]
+        surveyIds: [...ids]
       })
-      data.map((surveyId) => {
+      ids.map((surveyId) => {
         return getSurvey(userID, surveyId)
           .then((data) => {
             if (data.payload) {
-              const startDate = moment(data?.payload?.startDate.substring(0, 10)).format('LL')
-              const identifier = data?.payload?.identifier
+              const startDate = moment(data?.payload?.startDate.substring(0, 10)).format('ll')
+              const identifier = data?.payload?.name || data?.payload?.identifier
               const surveyData = {
                 startDate,
                 identifier,
                 view:
                   <div>
                     <span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
-                    <Link to={`${window.location.pathname}/${surveyId}`}>View Response</Link>
+                      <Link to={`${window.location.pathname}/${surveyId}`}>View Response</Link>
                     </span>
                   </div>
               }
@@ -74,6 +77,16 @@ class SurveysTable extends React.Component<SurveyHeaderProps, State> {
       })
     })
   }
+
+  // recieveQuestions = async (qid) => {
+  //   let questionName = await getQuestions(qid)
+  //                           .then((question) => {
+  //                             return question.name
+  //                           })
+
+  //   console.log(questionName)
+  //   return questionName
+  // }
 
   render() {
     const { userID } = this.props;
@@ -103,7 +116,7 @@ class SurveysTable extends React.Component<SurveyHeaderProps, State> {
         accessor: 'startDate',
         className: "px-4 py-3 text-sm",
         width: 300,
-    Cell: row => <div style={{ textAlign: "center" }}>{row.value}</div>
+        Cell: row => <div style={{ textAlign: "center" }}>{row.value}</div>
       },
       {
         Header: () => (
@@ -124,7 +137,7 @@ class SurveysTable extends React.Component<SurveyHeaderProps, State> {
             defaultPageSize={5}
             PaginationComponent={Pagination}
             className={"ReactTable " + (this.state.surveyList === [] ? 'animate-pulse' : '')}
-            // filterable={true}
+          // filterable={true}
           />
         </div>
       </div>
