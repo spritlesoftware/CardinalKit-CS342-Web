@@ -17,9 +17,10 @@ const db = firebaseApp.firestore();
 
 class Firebase {
   constructor() {
-    // if (!app.apps.length) {
-    //   admin.initializeApp(config);
-    // }
+
+    if (!app.apps.length) {
+      // admin.initializeApp(config);
+    }
 
     /* Helper */
 
@@ -106,7 +107,7 @@ class Firebase {
   surveys = uid => this.db.collection(`studies/${config.iOSAppBundleId}/users/${uid}/surveys/`);
 
   questions = questionId => this.db.collection(`survey_lists`).doc(questionId);
-  
+
   allQuestions = () => this.db.collection(`survey_lists`);
 }
 
