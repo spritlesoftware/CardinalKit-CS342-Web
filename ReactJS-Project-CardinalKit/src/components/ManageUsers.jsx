@@ -16,7 +16,7 @@ class ManageUsers extends React.Component {
   }
 
   checkForNumericInName = (fieldName, value) => {
-    const letters = /^[a-zA-Z,.()+\s-]*$/; // regex to allow onpy alphabets and Empty spaces
+    const letters = /^[a-zA-Z,.()+\s-]*$/; // regex to allow only alphabets and Empty spaces
     return value.match(letters) || fieldName === 'email' || fieldName === 'password';
   };
 
