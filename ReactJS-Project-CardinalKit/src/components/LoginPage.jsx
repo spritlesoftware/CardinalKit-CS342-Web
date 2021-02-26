@@ -11,7 +11,7 @@ import { getLoginState, isAuthenticated } from '../selectors/loginSelectors';
 import { Button, ButtonColor } from '../ui/Button';
 import Firebase from './Firebase';
 import logo from '../images/health_.svg';
-import logo2 from '../images/cardinal_logo.svg';
+import logo2 from '../images/cardinalKitLogo.ico';
 
 toast.configure();
 
@@ -95,7 +95,7 @@ export class LoginPage extends React.Component {
               <div className="h-1/2 md:h-auto md:w-1/2">
                 <img
                   aria-hidden="true"
-                  className="object-fill mx-3 dark:block w-1/2"
+                  className="object-fill h-10 mx-3 stroke-current text-red-400 dark:block"
                   src={logo2}
                   alt="Office"
                 />

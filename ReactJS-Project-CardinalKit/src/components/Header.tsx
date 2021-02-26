@@ -13,7 +13,6 @@ import Firebase from './Firebase';
 class Header extends React.Component<HeaderProps> {
   state = {
     collapsed: false,
-    loggedOut: false,
   };
   toggle = () => {
     this.setState({
@@ -25,19 +24,12 @@ class Header extends React.Component<HeaderProps> {
     const firebase = new Firebase();
     firebase.doSignOut()
       .then(() => {
-        this.setState({
-          loggedOut: true
-        })
-      }).then(() => {
         window.location.reload()
         window.sessionStorage.clear();
       })
   }
 
   render() {
-    if (this.state.loggedOut) {
-      return <Redirect to={{ pathname: '/login' }} />
-    }
     return (
       <div className="z-10">
         <header className="z-10 bg-white shadow-sm dark:bg-gray-800">
