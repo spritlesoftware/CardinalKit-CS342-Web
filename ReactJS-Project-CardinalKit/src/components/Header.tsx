@@ -22,12 +22,11 @@ class Header extends React.Component<HeaderProps> {
 
   signOut = () => {
     const firebase = new Firebase();
-    firebase.doSignOut()
-      .then(() => {
-        window.location.reload()
-        window.sessionStorage.clear();
-      })
-  }
+    firebase.doSignOut().then(() => {
+      window.location.reload();
+      window.sessionStorage.clear();
+    });
+  };
 
   render() {
     return (
