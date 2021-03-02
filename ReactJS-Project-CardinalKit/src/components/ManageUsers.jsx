@@ -118,7 +118,7 @@ class ManageUsers extends React.Component {
                     onChange={() => this.showHidePasswordToggle()}
                   />
                   <label className="text-gray-500">Show Password</label>
-                           </div>}
+              </div>)}
             </div>
             <input
               className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-red-400 focus:outline-none focus:shadow-outline-red dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
