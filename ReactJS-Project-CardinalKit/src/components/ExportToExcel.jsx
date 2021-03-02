@@ -22,11 +22,16 @@ const ExportToExcel = ({ uid }) => {
     setQuestionAndResponseToState();
   }, []);
 
-  const setQuestionAndResponseToState = () => {
+  const clearPreviousData = () => {
     setSurveyQuestions([])
     setResponse([])
     setExcelData([])
+  }
+
+  const setQuestionAndResponseToState = () => {
     
+    clearPreviousData()
+
     let temprorySurvey = [];
     let temproryResponse = [];
     getSurveys(uid).then(querySnapshot => {
