@@ -20,15 +20,14 @@ class ManageUsers extends React.Component {
     return value.match(letters) || fieldName === 'email' || fieldName === 'password';
   };
 
-  validatePassword = (passwordValue) => {
+  validatePassword = passwordValue => {
     // const passwordRegex = /^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8,}|(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8,}|(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,}|(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[a-z]).{8,}|(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9]).{8,}$/;
-    console.log('this is a function to validate password')
-  }
-
+    console.log('this is a function to validate password');
+  };
 
   handleChange = (name, value) => {
-    if(name === "password") {
-      this.validatePassword(value)
+    if (name === 'password') {
+      this.validatePassword(value);
     }
 
     this.checkForNumericInName(name, value)
@@ -59,15 +58,14 @@ class ManageUsers extends React.Component {
   validate;
 
   render() {
-
     const { firstName, lastName, email, password } = this.state;
 
     return (
       <div className=" container px-6 mx-auto grid">
         <div className="px-4 py-3 my-8 bg-white shadow-md dark:bg-gray-800">
-            <h2 className="mb-4 mt-4  text-lg font-semibold text-gray-600 dark:text-gray-300">
-              Manage Users
-            </h2>
+          <h2 className="mb-4 mt-4  text-lg font-semibold text-gray-600 dark:text-gray-300">
+            Manage Users
+          </h2>
           <label className="block text-sm">
             <span className="text-gray-700 dark:text-gray-400">First Name: </span>
             <input
@@ -111,15 +109,16 @@ class ManageUsers extends React.Component {
           <label className="block text-sm">
             <div className="flex content-center w-1/4 justify-left">
               <span className="text-gray-700 dark:text-gray-400">Password: </span>
-              {password && <div className="mx-2">
-                <input
-                  type="checkbox"
-                  name="showPassword"
-                  className="mx-1"
-                  onChange={() => this.showHidePasswordToggle()}
-                />
-                <label className="text-gray-500">Show Password</label>
-              </div>}
+              {password && (
+                <div className="mx-2">
+                  <input
+                    type="checkbox"
+                    name="showPassword"
+                    className="mx-1"
+                    onChange={() => this.showHidePasswordToggle()}
+                  />
+                  <label className="text-gray-500">Show Password</label>
+                           </div>}
             </div>
             <input
               className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-red-400 focus:outline-none focus:shadow-outline-red dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
