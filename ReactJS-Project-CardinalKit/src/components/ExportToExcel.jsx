@@ -15,7 +15,7 @@ const ExportToExcel = ({ uid }) => {
   const [dataExtracted, setDataExtracted] = useState(false);
 
   useEffect(() => {
-    loading && matchResponseWithQuestions();
+    loading && setExportData();
   }, [surveyQuestions]);
 
   useEffect(() => {
@@ -54,7 +54,7 @@ const ExportToExcel = ({ uid }) => {
     });
   };
 
-  const matchResponseWithQuestions = () => {
+  const setExportData = () => {
     var tempData = [];
     var questionId = '';
     var name = '';
