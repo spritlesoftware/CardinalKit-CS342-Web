@@ -136,7 +136,7 @@ class ManageUsers extends React.Component {
           <button
             onClick={() => this.onSubmit()}
             type="submit"
-            className="flex items-center justify-between inset-y-0 right-0 px-4 py-2 mb-6 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-red-600 border border-transparent shadow-2xl active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
+            className="flex items-center justify-between inset-y-0 right-0 px-4 py-2 mb-6 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-red-600 border border-transparent shadow-2xl active:bg-red-400 hover:bg-red-400 focus:outline-none focus:shadow-outline-red"
           >
             <span>Create User</span>
             <i className="fas fa-heart mx-2 animate-bounce" />
