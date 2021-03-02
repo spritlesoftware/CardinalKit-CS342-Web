@@ -98,16 +98,6 @@ class SurveysTable extends React.Component<SurveyHeaderProps, State> {
     })
   }
 
-  // recieveQuestions = async (qid) => {
-  //   let questionName = await getQuestions(qid)
-  //                           .then((question) => {
-  //                             return question.name
-  //                           })
-
-  //   console.log(questionName)
-  //   return questionName
-  // }
-
   render() {
     const { userID } = this.props;
 

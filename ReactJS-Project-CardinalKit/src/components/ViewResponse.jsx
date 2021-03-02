@@ -33,7 +33,7 @@ const ViewResponse = ({ match }) => {
     if (choiceQuestions.length > 0) {
       choices.map(choiceIndx => {
         const currentQuestion = choiceQuestions.find(
-          ques => (ques.questionNumber === questionNumber)
+          ques => ques.questionNumber === questionNumber
         );
         choiceAnswers.push(currentQuestion?.choices[choiceIndx]);
       });

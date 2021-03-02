@@ -63,17 +63,15 @@ class ManageUsers extends React.Component {
     const { firstName, lastName, email, password } = this.state;
 
     return (
-      <div className="container px-6 mx-auto grid">
-        <div>
-          <h4 className="mb-4 mt-4  text-lg font-semibold text-gray-600 dark:text-gray-300">
-            Manage Users
-          </h4>
-        </div>
-        <div className="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
+      <div className=" container px-6 mx-auto grid">
+        <div className="px-4 py-3 my-8 bg-white shadow-md dark:bg-gray-800">
+            <h2 className="mb-4 mt-4  text-lg font-semibold text-gray-600 dark:text-gray-300">
+              Manage Users
+            </h2>
           <label className="block text-sm">
-            <span className="text-gray-700 dark:text-gray-400">First Name</span>
+            <span className="text-gray-700 dark:text-gray-400">First Name: </span>
             <input
-              className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+              className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-red-400 focus:outline-none focus:shadow-outline-red dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
               placeholder="Jane"
               name="firstName"
               value={firstName}
@@ -86,9 +84,9 @@ class ManageUsers extends React.Component {
           <br />
           <br />
           <label className="block text-sm">
-            <span className="text-gray-700 dark:text-gray-400">Last Name</span>
+            <span className="text-gray-700 dark:text-gray-400">Last Name: </span>
             <input
-              className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+              className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-red-400 focus:outline-none focus:shadow-outline-red dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
               placeholder="Doe"
               name="lastName"
               value={lastName}
@@ -99,9 +97,9 @@ class ManageUsers extends React.Component {
           <br />
           <br />
           <label className="block text-sm">
-            <span className="text-gray-700 dark:text-gray-400">Email</span>
+            <span className="text-gray-700 dark:text-gray-400">Email address: </span>
             <input
-              className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+              className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-red-400 focus:outline-none focus:shadow-outline-red dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
               placeholder="JaneDoe@gmail.com"
               name="email"
               value={email}
@@ -112,7 +110,7 @@ class ManageUsers extends React.Component {
           <br />
           <label className="block text-sm">
             <div className="flex content-center w-1/4 justify-left">
-              <span className="text-gray-700 dark:text-gray-400">Password</span>
+              <span className="text-gray-700 dark:text-gray-400">Password: </span>
               {password && <div className="mx-2">
                 <input
                   type="checkbox"
@@ -124,7 +122,7 @@ class ManageUsers extends React.Component {
               </div>}
             </div>
             <input
-              className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+              className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-red-400 focus:outline-none focus:shadow-outline-red dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
               placeholder="********"
               name="password"
               type="password"
@@ -139,7 +137,7 @@ class ManageUsers extends React.Component {
           <button
             onClick={() => this.onSubmit()}
             type="submit"
-            className="flex items-center justify-between px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
+            className="flex items-center justify-between inset-y-0 right-0 px-4 py-2 mb-6 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-red-600 border border-transparent shadow-2xl active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
           >
             <span>Create User</span>
             <i className="fas fa-heart mx-2 animate-bounce" />
