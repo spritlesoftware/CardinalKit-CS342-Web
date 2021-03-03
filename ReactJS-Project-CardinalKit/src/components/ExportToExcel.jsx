@@ -28,17 +28,34 @@ const ExportToExcel = ({ uid }) => {
     setExcelData([])
   }
 
+  const getChoiceAnswers = (allChoices, userChoices) => {
+    const choiceAnswers = []
+
+    //user choices contain the indexes of the actual array of choices from the question
+    userChoices.map(choiceIndx => {
+      choiceAnswers.push(allChoices[choiceIndx]);
+    });
+
+    return choiceAnswers.join(', ')
+  }
+
+
   const setQuestionAndResponseToState = () => {
     
     clearPreviousData()
 
     let temprorySurvey = [];
     let temproryResponse = [];
+    
     getSurveys(uid).then(querySnapshot => {
       querySnapshot.docs.map(doc => {
+
         var questionId = doc.data().payload.identifier;
-        temproryResponse.push({ response: doc.data().payload.results, questionId });
+
+        temproryResponse.push({ response: doc.data().payload.results, questionId});
+
         setResponse(temproryResponse);
+
         getQuestions(questionId).then(doc => {
           setLoading(true);
           temprorySurvey.push({
@@ -47,6 +64,7 @@ const ExportToExcel = ({ uid }) => {
             description: doc.description,
             questionId,
           });
+
           setSurveyQuestions([...temprorySurvey]);
           setLoading(false);
         });
@@ -55,7 +73,7 @@ const ExportToExcel = ({ uid }) => {
   };
 
   const setExportData = () => {
-    var tempData = [];
+    var temporaryData = [];
     var questionId = '';
     var name = '';
     var description = '';
@@ -65,7 +83,7 @@ const ExportToExcel = ({ uid }) => {
       questionId = survey.questionId;
       name = survey.name;
       description = survey.description;
-      tempData = survey.questions.map((question, i) => {
+      temporaryData = survey.questions.map((question, i) => {
         var matchedResponse = response.find(res => res.questionId === questionId);
 
         if (matchedResponse.response[i].results[0]?.booleanAnswer !== undefined) {
@@ -73,21 +91,21 @@ const ExportToExcel = ({ uid }) => {
         } else if (matchedResponse.response[i].results[0]?.scaleAnswer) {
           answer = matchedResponse.response[i].results[0]?.scaleAnswer.toString();
         } else if (matchedResponse.response[i].results[0]?.choiceAnswers) {
-          answer = question.choices.join(', ');
+          answer = getChoiceAnswers(question.choices, matchedResponse.response[i].results[0]?.choiceAnswers);
         } else {
           answer = '-';
         }
         return Object.assign({}, question, { ...matchedResponse.response[i].results[0], answer });
       });
     });
-    setExcelData([...excelData, { data: tempData, questionId, name, description }]);
+    setExcelData([...excelData, { data: temporaryData, questionId, name, description }]);
     setDataExtracted(true);
   };
 
   const renderDownloadButton = () => {
     if (dataExtracted) {
       return (
-        <button>
+        <button onClick={() => setQuestionAndResponseToState()}>
           <span className="px-2 py-1 ml-2 font-semibold bg-blue-200 leading-tight shadow-lg dark:bg-blue-700 dark:text-blue-100">
             Response
             <i className="ml-1 fas fa-cloud-download-alt  text-gray-700	animate-bounce ease-out hover:scale-50" />
@@ -103,7 +121,7 @@ const ExportToExcel = ({ uid }) => {
   return (
     <ExcelFile element={renderDownloadButton()} filename="Cardinal Kit survey Response">
       {excelData.map((survey, i) => (
-        <ExcelSheet data={survey.data} name={survey.name}>
+        <ExcelSheet data={survey.data} name={survey.name} key={i}>
           <ExcelColumn label="Question Number" value="questionNumber" widthPx={160} />
           <ExcelColumn label="Question" value="text" wrapText={true} />
           <ExcelColumn label="Answer" value={'answer'} />
