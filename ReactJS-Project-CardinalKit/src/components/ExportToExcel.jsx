@@ -87,7 +87,7 @@ const ExportToExcel = ({ uid }) => {
   const renderDownloadButton = () => {
     if (dataExtracted) {
       return (
-        <button onClick={() => setQuestionAndResponseToState()}>
+        <button>
           <span className="px-2 py-1 ml-2 font-semibold bg-blue-200 leading-tight shadow-lg dark:bg-blue-700 dark:text-blue-100">
             Response
             <i className="ml-1 fas fa-cloud-download-alt  text-gray-700	animate-bounce ease-out hover:scale-50" />
