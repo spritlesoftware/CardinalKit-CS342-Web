@@ -302,20 +302,26 @@ const CreateSurvey = ({ history }) => {
           </div>
           <div className="">{renderQuestionFields()}</div>
 
-          <div className="flex flex-row-reverse relative">
-            <button
-              type="submit"
-              className="block px-4 py-2 mt-4 mb-4 ml-3 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-red-700 border border-transparent shadow-2xl active:bg-puredrple-500 hover:shadow-none focus:outline-none focus:shadow-outline-red"
-            >
-              Create Survey
-            </button>
-
-            <button
-              className="block px-4 py-2 ml-3 mt-4 mb-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-red-700 border border-transparent shadow-2xl active:bg-red-500 hover:shadow-none focus:outline-none focus:shadow-outline-red"
+          <div className="flex justify-end relative">
+          <button
+              className="flex px-4 py-2 ml-3 mt-4 mb-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-red-700 border border-transparent shadow-2xl active:bg-red-500 hover:shadow-none focus:outline-none focus:shadow-outline-red"
               type="button"
               onClick={addNewQuestionField}
             >
-              Add Question 
+              <span>Add Question </span>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-5 h-5">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              </svg>
+            </button>
+
+            <button
+              type="submit"
+              className="flex px-4 py-2 mt-4 mb-4 ml-3 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-red-700 border border-transparent shadow-2xl active:bg-puredrple-500 hover:shadow-none focus:outline-none focus:shadow-outline-red"
+            >
+              <span>Create Survey</span>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
+                <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clipRule="evenodd" />
+              </svg>
             </button>
           </div>
         </form>
