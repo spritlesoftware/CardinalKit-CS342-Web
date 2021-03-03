@@ -92,7 +92,7 @@ const CreateSurvey = ({ history }) => {
           <input
             name="choice"
             key={i}
-            className="mt-2 ml-3 border border-gray-400  rounded"
+            className="mt-2 ml-3 border border-gray-400"
             onChange={e => setQuestionAttributes(e, questionIndex, i)}
             value={field}
             autoComplete="off"
@@ -101,7 +101,7 @@ const CreateSurvey = ({ history }) => {
             onClick={e => setQuestionAttributes(e, questionIndex, i)}
             name="removeChoice"
             type="button"
-            className="bg-gray-200 m-2 px-1 rounded-sm self-center"
+            className="bg-gray-200 m-2 px-1 shadow-2xl self-center"
           >
             &#10005;
           </button>
@@ -119,33 +119,33 @@ const CreateSurvey = ({ history }) => {
     } else {
       return (
         <select
-          className=" dropdown w-7 rounded-md border p-2 shadow bg-white"
+          className=" dropdown w-7 border p-2 bg-white"
           onChange={e => {
             setQuestionAttributes(e, questionIndex);
           }}
           name="questionType"
           required
         >
-          <option className="rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" value="">
+          <option className=" bg-gray-200 hover:shadow-none py-2 px-4 block whitespace-no-wrap" value="">
             Please select...
           </option>
           <option
             value="boolean"
-            className="rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
+            className=" bg-gray-200 hover:shadow-none py-2 px-4 block whitespace-no-wrap"
           >
             {' '}
             Boolean
           </option>
           <option
             value="choice"
-            className="rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
+            className=" bg-gray-200 hover:shadow-none py-2 px-4 block whitespace-no-wrap"
           >
             {' '}
             Choice
           </option>
           <option
             value="scale"
-            className="rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
+            className=" bg-gray-200 hover:shadow-none py-2 px-4 block whitespace-no-wrap"
           >
             Scale
           </option>
@@ -173,7 +173,7 @@ const CreateSurvey = ({ history }) => {
              field.questionType ===  'summary' ||
               <div className=" justify-self-end" >
                 <button 
-                className="block px-4 py-2 ml-3 mb-5 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
+                className="block px-4 py-2 ml-3 mb-5 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-red-700 border border-transparent shadow-2xl active:bg-red-600 hover:shadow-none focus:outline-none focus:shadow-outline-red"
                 onClick={() => removeQuestion(index)}
                 type="button"
                 >
@@ -199,9 +199,9 @@ const CreateSurvey = ({ history }) => {
                 className="block w-full mt-1 text-sm
                            dark:border-gray-600
                            dark:bg-gray-700
-                           focus:border-purple-400
+                           focus:border-red-400
                            focus:outline-none
-                           focus:shadow-outline-purple
+                           focus:shadow-outline-red
                            dark:text-gray-300
                            dark:focus:shadow-outline-gray
                            form-input"
@@ -235,13 +235,14 @@ const CreateSurvey = ({ history }) => {
                                text-white 
                                transition-colors 
                                duration-150 
-                               bg-purple-600 border 
+                               bg-red-700 
+                               border 
                                border-transparent 
-                               rounded-lg 
-                               active:bg-purple-600 
-                               hover:bg-purple-700 
+                               shadow-2xl 
+                               active:bg-red-600 
+                               hover:shadow-none
                                focus:outline-none 
-                               focus:shadow-outline-purple"
+                               focus:shadow-outline-red"
                   >
                     Add a choice
                   </button>
@@ -255,13 +256,13 @@ const CreateSurvey = ({ history }) => {
 
   return (
     <div className="container mx-auto px-4">     
-      <div className="mt-4 px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
-      <div className="px-6 my-10 ml-2 ">
-        <h1 className="mb-3 text-2xl font-semibold text-gray-700 dark:text-gray-200 mx-auto">
-          Create Surveys
-        </h1>
-        <div className="h-1 bg-purple-600 w-1/12" />
-      </div>
+      <div className="mt-4 px-4 py-3 mb-8 bg-white shadow-2xl shadow-md dark:bg-gray-800">
+        <div className="px-6 my-10 ml-2 ">
+          <h1 className="mb-3 text-2xl font-semibold text-gray-700 dark:text-gray-200 mx-auto">
+            Create Surveys
+          </h1>
+          <div className="h-1 bg-red-700 w-1/12" />
+        </div>
         <form onSubmit={onSubmit}>
           <div className="flex flex-col mb-4">
             <div className="row flex justify-around	">
@@ -272,7 +273,7 @@ const CreateSurvey = ({ history }) => {
               </div>
               <div className="flex-1">
                 <input
-                  className="block  mt-1 ml-4 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                  className="block  mt-1 ml-4 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-red-400 focus:outline-none focus:shadow-outline-red dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                   id="surveyname"
                   name="surveyName"
                   required
@@ -288,7 +289,7 @@ const CreateSurvey = ({ history }) => {
               </div>
               <div className="w-2/5">
                 <textarea
-                  className="block w-full ml-4 mt-1 mb-5 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                  className="block w-full ml-4 mt-1 mb-5 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-red-400 focus:outline-none focus:shadow-outline-red dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                   id="surveyname"
                   name="surveyDescription"
                   required
@@ -297,20 +298,20 @@ const CreateSurvey = ({ history }) => {
             </div>
           </div>
           <div className="flex justify-start border-t-2 border-fuchsia-600 pt-4">
-            <h1 className="text-xl w-9 font-semibold mx-auto">Add Questions</h1>
+            <h1 className="text-xl w-9 font-semibold mx-auto">Create Questions</h1>
           </div>
           <div className="">{renderQuestionFields()}</div>
 
           <div className="flex flex-row-reverse relative">
             <button
               type="submit"
-              className="block px-4 py-2 mt-4 mb-4 ml-3 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
+              className="block px-4 py-2 mt-4 mb-4 ml-3 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-red-700 border border-transparent shadow-2xl active:bg-puredrple-500 hover:shadow-none focus:outline-none focus:shadow-outline-red"
             >
-              Create
+              Create Survey
             </button>
 
             <button
-              className="block px-4 py-2 ml-3 mt-4 mb-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
+              className="block px-4 py-2 ml-3 mt-4 mb-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-red-700 border border-transparent shadow-2xl active:bg-red-500 hover:shadow-none focus:outline-none focus:shadow-outline-red"
               type="button"
               onClick={addNewQuestionField}
             >
