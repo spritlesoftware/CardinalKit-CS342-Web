@@ -16,10 +16,11 @@ const ExportToExcel = ({ uid }) => {
 
   useEffect(() => {
     loading && setExportData();
-  }, [surveyQuestions]);
+  }, [surveyQuestions, excelData]);
 
   useEffect(() => {
     setQuestionAndResponseToState();
+    clearPreviousData()
   }, []);
 
   const clearPreviousData = () => {
@@ -42,8 +43,6 @@ const ExportToExcel = ({ uid }) => {
 
   const setQuestionAndResponseToState = () => {
     
-    clearPreviousData()
-
     let temprorySurvey = [];
     let temproryResponse = [];
     
@@ -72,7 +71,7 @@ const ExportToExcel = ({ uid }) => {
     });
   };
 
-  const setExportData = () => {
+  const setExportData = () => { 
     var temporaryData = [];
     var questionId = '';
     var name = '';
@@ -84,18 +83,19 @@ const ExportToExcel = ({ uid }) => {
       name = survey.name;
       description = survey.description;
       temporaryData = survey.questions.map((question, i) => {
-        var matchedResponse = response.find(res => res.questionId === questionId);
+        var matchedResponse = response.find(res => res.questionId === questionId)?.response[i].results[0]
 
-        if (matchedResponse.response[i].results[0]?.booleanAnswer !== undefined) {
-          answer = matchedResponse.response[i].results[0]?.booleanAnswer.toString();
-        } else if (matchedResponse.response[i].results[0]?.scaleAnswer) {
-          answer = matchedResponse.response[i].results[0]?.scaleAnswer.toString();
-        } else if (matchedResponse.response[i].results[0]?.choiceAnswers) {
-          answer = getChoiceAnswers(question.choices, matchedResponse.response[i].results[0]?.choiceAnswers);
+        if (matchedResponse?.booleanAnswer !== undefined) {
+          answer = matchedResponse?.booleanAnswer.toString();
+        } else if (matchedResponse?.scaleAnswer) {
+          answer = matchedResponse?.scaleAnswer.toString();
+        } else if (matchedResponse?.choiceAnswers) {
+          answer = getChoiceAnswers(question.choices, matchedResponse?.choiceAnswers);
         } else {
           answer = '-';
         }
-        return Object.assign({}, question, { ...matchedResponse.response[i].results[0], answer });
+
+        return Object.assign({}, question, { ...matchedResponse, answer });
       });
     });
     setExcelData([...excelData, { data: temporaryData, questionId, name, description }]);
@@ -105,8 +105,8 @@ const ExportToExcel = ({ uid }) => {
   const renderDownloadButton = () => {
     if (dataExtracted) {
       return (
-        <button onClick={() => setQuestionAndResponseToState()}>
-          <span className="px-2 py-1 ml-2 font-semibold bg-blue-200 leading-tight shadow-lg dark:bg-blue-700 dark:text-blue-100">
+        <button>
+          <span className="px-1 py-1 ml-2 font-semibold bg-blue-200 leading-tight shadow-lg dark:bg-blue-700 dark:text-blue-100">
             Response
             <i className="ml-1 fas fa-cloud-download-alt  text-gray-700	animate-bounce ease-out hover:scale-50" />
           </span>
