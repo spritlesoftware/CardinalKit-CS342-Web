@@ -17,7 +17,7 @@ export interface users {
 class UserList extends Component<
   {},
   { users: any[]; newUsers: any[]; totalSurveys: any[]; totalUsers: number; userData: any[]; filterAll: string; dataPresent: boolean, filteredUsers: any[], filterText: string }
-> {
+  > {
   constructor(props) {
     super(props);
     this.state = {
@@ -33,24 +33,24 @@ class UserList extends Component<
     };
 
 
-     
+
   }
 
   componentDidMount = () => {
     getAllFirebaseUsers()
       .then(querySnapshot => {
-        if(querySnapshot.docs.length === 0) {
+        if (querySnapshot.docs.length === 0) {
           this.setState({
             dataPresent: false
           })
         }
         const uids = querySnapshot.docs.map(doc => ({ userId: doc.id }))
-        
+
         const data = querySnapshot.docs.map(doc => ({
           userId: doc.id,
           email: doc.data().email,
         }));
-        if(this.state.filterAll === ''){
+        if (this.state.filterAll === '') {
           this.setState({
             users: [...uids],
             userData: [...data],
@@ -65,11 +65,13 @@ class UserList extends Component<
   };
 
   filterUsers = (e) => {
-    const filteredUsers = this.state.users.filter((user) => user.name.toLowerCase().includes(e.target.value))
-    
+    const filteredUsers = this.state.users.filter(
+      (user) => user.name.toLowerCase().includes(e.target.value)
+    )
+
     this.setState({
+      filteredUsers,
       filterText: e.target.value,
-      filteredUsers
     })
   }
 
@@ -123,7 +125,7 @@ class UserList extends Component<
 
             endDate: moment(doc?.payload.endDate.substring(0, 10)).format('LL'),
             view: (
-              <div>
+              <div className="flex">
                 <span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 shadow-lg dark:bg-green-700 dark:text-green-100">
                   <Link
                     to={`/users/${doc.userId}`}
@@ -133,7 +135,7 @@ class UserList extends Component<
                   </Link>
                 </span>
 
-                <ExportToExcel uid={doc.userId}/>
+                <ExportToExcel uid={doc.userId} />
               </div>
             ),
           };
@@ -148,7 +150,13 @@ class UserList extends Component<
 
   render() {
 
-    const {totalUsers, dataPresent} = this.state;
+    const {
+      totalUsers,
+      dataPresent,
+      filterText,
+      filteredUsers,
+      users
+    } = this.state;
 
     const columns = [
       {
@@ -254,18 +262,18 @@ class UserList extends Component<
 
         <div className="flex content-center justify-end">
           <label className="text-gray-00 my-6 mx-3">Search User: </label>
-          <input 
-            onChange={(e) => this.filterUsers(e)}
-            value={this.state.filterText}
+          <input
+            onInput={(e) => this.filterUsers(e)}
+            value={filterText}
             placeholder="Eg: Jhon Doe"
-            className="shadow my-4 px-2  py-1 focus:outline-none "/>
-            <span className="self-center mx-2" onClick={() => this.clearSearchField()}> 
-              <i className="fas fa-times hover:cursor-pointer	" />
-            </span>
+            className="shadow my-4 px-2  py-1 focus:outline-none " />
+          <span className="self-center mx-2" onClick={() => this.clearSearchField()}>
+            <i className="fas fa-times hover:cursor-pointer	" />
+          </span>
         </div>
 
         <ReactTable
-          data={this.state.filteredUsers.length===0 ? this.state.users : this.state.filteredUsers}
+          data={(filteredUsers.length === 0 && filterText === '') ? users : filteredUsers}
           columns={columns}
           className={'ReactTable ' + ((totalUsers === 0 && dataPresent) ? 'animate-pulse' : '')}
           sortable={true}
