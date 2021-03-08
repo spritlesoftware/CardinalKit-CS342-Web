@@ -124,7 +124,7 @@ class UserList extends Component<
             endDate: moment(doc?.payload.endDate.substring(0, 10)).format('LL'),
             view: (
               <div>
-                <span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
+                <span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 shadow-lg dark:bg-green-700 dark:text-green-100">
                   <Link
                     to={`/users/${doc.userId}`}
                     className="animate-bounce ease-out duration-700"
@@ -134,13 +134,6 @@ class UserList extends Component<
                 </span>
 
                 <ExportToExcel uid={doc.userId}/>
-
-                {/* <button className="mx-1">
-                  <span className="px-2 py-1  font-semibold bg-blue-200 leading-tight rounded-full dark:bg-blue-700 dark:text-blue-100">
-                    Response
-                    <i className="ml-1 fas fa-cloud-download-alt  text-gray-700	animate-bounce ease-out hover:scale-50" />
-                  </span>
-                </button> */}
               </div>
             ),
           };
@@ -160,7 +153,7 @@ class UserList extends Component<
     const columns = [
       {
         Header: () => (
-          <div className="text-xs text-center shadow-none font-semibold tracking-wide text-gray-500 uppercase dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+          <div className="text-sm text-center shadow-none font-semibold tracking-wide text-gray-500 uppercase dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
             Name
           </div>
         ),
@@ -171,7 +164,7 @@ class UserList extends Component<
       },
       {
         Header: () => (
-          <div className="text-xs text-center font-semibold tracking-wide text-left text-gray-500 uppercase dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+          <div className="text-sm text-center font-semibold tracking-wide text-left text-gray-500 uppercase dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
             Email
           </div>
         ),
@@ -182,7 +175,7 @@ class UserList extends Component<
       },
       {
         Header: () => (
-          <div className="text-xs text-center font-semibold tracking-wide text-left text-gray-500 uppercase dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+          <div className="text-sm text-center font-semibold tracking-wide text-left text-gray-500 uppercase dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
             Submitted Date
           </div>
         ),
@@ -193,7 +186,7 @@ class UserList extends Component<
       },
       {
         Header: () => (
-          <div className="text-xs text-center font-semibold tracking-wide text-left text-gray-500 uppercase text-center dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+          <div className="text-sm text-center font-semibold tracking-wide text-left text-gray-500 uppercase text-center dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
             actions
           </div>
         ),
@@ -206,15 +199,16 @@ class UserList extends Component<
 
     return (
       <div className="container px-6 mx-auto grid">
-        <div className="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-4">
-          <div className="flex items-center p-4 bg-white rounded-lg shadow-lg  transition duration-1000 ease-in dark:bg-gray-800">
-            <div className="p-3 mr-4 text-orange-500 bg-orange-100 rounded-full dark:text-orange-100 dark:bg-orange-500">
+        <div className="flex justify-between	 mb-8 md:grid-cols-2 xl:grid-cols-4">
+
+          <div className="flex items-center w-1/3 mx-10 p-4 bg-white shadow-lg  transition duration-1000 ease-in dark:bg-gray-800">
+            <div className="p-3 mr-4  text-orange-500 bg-orange-100 rounded-full dark:text-orange-100 dark:bg-orange-500">
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
               </svg>
             </div>
             <div>
-              <p className="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">
+              <p className="mb-2  text-sm font-medium text-gray-600 dark:text-gray-400">
                 Total Users
               </p>
               <p className="text-lg font-semibold text-gray-700 dark:text-gray-200">
@@ -223,7 +217,7 @@ class UserList extends Component<
             </div>
           </div>
 
-          <div className="flex items-center p-4 bg-white rounded-lg shadow-lg dark:bg-gray-800">
+          <div className="flex items-center w-1/3 mx-10 p-4 bg-white shadow-lg dark:bg-gray-800">
             <div className="p-3 mr-4 text-blue-500 bg-blue-100 rounded-full dark:text-blue-100 dark:bg-blue-500">
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
@@ -237,7 +231,7 @@ class UserList extends Component<
             </div>
           </div>
 
-          <div className="flex items-center p-4 bg-white rounded-lg shadow-lg dark:bg-gray-800">
+          <div className="flex items-center w-1/3 mx-10 p-4 bg-white shadow-lg dark:bg-gray-800">
             <div className="p-3 mr-4 text-teal-500 bg-teal-100 rounded-full dark:text-teal-100 dark:bg-teal-500">
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                 <path
@@ -264,7 +258,7 @@ class UserList extends Component<
             onChange={(e) => this.filterUsers(e)}
             value={this.state.filterText}
             placeholder="Eg: Jhon Doe"
-            className="rounded shadow my-4 px-2  py-1 focus:outline-none focus:ring focus:border-blue-300"/>
+            className="shadow my-4 px-2  py-1 focus:outline-none "/>
             <span className="self-center mx-2" onClick={() => this.clearSearchField()}> 
               <i className="fas fa-times hover:cursor-pointer	" />
             </span>

@@ -4,7 +4,6 @@ import { getQuestions, getSurvey } from '../api/getAllUsers';
 const ViewResponse = ({ match }) => {
   const [questions, setQuestions] = useState([]);
   const [response, setResponse] = useState();
-  const [choices, setChoices] = useState([])
 
   useEffect(() => {
     getResponse();
@@ -26,27 +25,29 @@ const ViewResponse = ({ match }) => {
   };
 
   const renderChoiceAnswers = (questionNumber, choices) => {
-    let choiceAnswers = []
-    let choiceQuestions = questions
-      .filter((question) =>
-        question.questionType === "choice" &&
-        question.questionNumber === questionNumber
-      )
+    const choiceAnswers = [];
+    const choiceQuestions = questions.filter(
+      question => question.questionType === 'choice' && question.questionNumber === questionNumber
+    );
 
     if (choiceQuestions.length > 0) {
-      choices.map((choiceIndx) => {
-        var currentQuestion = choiceQuestions.find((ques) => ques.questionNumber = questionNumber)
-        choiceAnswers.push(currentQuestion?.choices[choiceIndx])
-      })
+      choices.map(choiceIndx => {
+        const currentQuestion = choiceQuestions.find(
+          ques => ques.questionNumber === questionNumber
+        );
+        choiceAnswers.push(currentQuestion?.choices[choiceIndx]);
+      });
     }
-    return choiceAnswers.join(', ')
-  }
+    return choiceAnswers.join(', ');
+  };
 
   const capitalizeFirstCharacter = answer =>
     answer?.toString().replace(/\b\w/g, l => l.toUpperCase());
 
-  const renderAnswer = (questionNumber) => {
-    const result = response.payload.results.filter(res => res.identifier == questionNumber)[0]?.results[0];
+  const renderAnswer = questionNumber => {
+    const result = response.payload.results.filter(res => res.identifier == questionNumber)[0]
+      ?.results[0];
+    const choiceAnswers = renderChoiceAnswers(questionNumber, result?.choiceAnswers);
     return (
       <div>
         <div className="text-md text-gray-600 dark:text-gray-400">
@@ -55,7 +56,7 @@ const ViewResponse = ({ match }) => {
             <div className="text-gray-900	self-center mx-3">
               { capitalizeFirstCharacter(result?.booleanAnswer) }
               { result?.scaleAnswer?.toString() }
-              { renderChoiceAnswers(questionNumber, result?.choiceAnswers) }
+              { choiceAnswers }
               { capitalizeFirstCharacter(result?.textAnswer) || null }
               { result?.emailAnswer || null }
               { result?.validatedTextAnswer || null }

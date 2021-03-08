@@ -44,21 +44,18 @@ class App extends React.Component<AppProps, { isLoggedIn: any }> {
                 {isLoggedIn && <Header />}
                 <main className="h-full overflow-y-auto">
                   <Switch>
-                    <Route exact={true} path="/login" component={LoginPage} />
-                    <Route exact={true} path={["/", "/users"]} component={UsersPage} />
-                    <Route exact={true} path="/verify_code" component={VerificationPage} />
-                    <Route exact={true} path="/manage_users" component={ManageUsers} />
+                    <Route exact path={['/', '/users']} component={UsersPage} />
+                    <Route exact path="/manage_users" component={ManageUsers} />
                     <Route
-                      exact={true}
+                      exact
                       path="/users/:userID"
                       component={(props: any) => <UserPage {...props} />}
                     />
                     <Route
-                      exact={true}
+                      exact
                       path="/users/:userID/:surveyId"
                       component={(props: any) => <ViewResponse {...props} />}
                     />
-                    <Redirect exact={true} from="/" to="/users" />
                     <Route component={NotFoundPage} />
                   </Switch>
                 </main>
@@ -72,8 +69,8 @@ class App extends React.Component<AppProps, { isLoggedIn: any }> {
         <div>
           <Router>
             <Redirect to={{ pathname: '/login' }} />
-            <Route exact={true} path="/login" component={LoginPage} />
-            <Route exact={true} path="/verify_code" component={VerificationPage} />
+            <Route exact path="/login" component={LoginPage} />
+            <Route exact path="/verify_code" component={VerificationPage} />
           </Router>
         </div>
       );
