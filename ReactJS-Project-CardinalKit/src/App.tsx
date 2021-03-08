@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-d
 import CreateSurvey from './components/CreateSurvey';
 import Header from './components/Header';
 import LoginPage from './components/LoginPage';
+import ManageSurveys from './components/ManageSurveys';
 import ManageUsers from './components/ManageUsers';
 import NotFoundPage from './components/NotFoundPage';
 import SideBar from './components/SideBar';
@@ -52,6 +53,7 @@ class App extends React.Component<AppProps, { isLoggedIn: any }> {
                     <Route exact={true} path="/verify_code" component={VerificationPage} />
                     <Route exact={true} path="/manage_users" component={ManageUsers} />
                     <Route exact={true} path="/create_survey" component={CreateSurvey} />
+                    <Route exact={true} path="/manage_surveys" component={ManageSurveys} />
                     <Route
                       exact={true}
                       path="/users/:userID"

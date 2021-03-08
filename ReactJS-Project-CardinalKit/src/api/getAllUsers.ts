@@ -67,3 +67,13 @@ export const addQuestions = questions => {
       return err;
     });
 };
+
+
+export const getAllSurveys = () => {
+  return firebase
+    .questions()
+    .get()
+    .then((querySnapShot) => {
+      return querySnapShot.docs.map((doc) => doc.data())
+    })
+}
