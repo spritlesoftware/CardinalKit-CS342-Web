@@ -8,7 +8,23 @@ import SideBar from './SideBar';
 import Header from './Header';
 
 const PublicRoute = ({ isLoggedIn, component: Component, ...rest }) => (
-  <Route {...rest} render={props => <Component {...props} />} />
+  <Route
+    {...rest}
+    render={props =>
+      isLoggedIn ? (
+        <Redirect
+          to={{
+            pathname: '/users',
+            state: { from: props.location },
+          }}
+        />
+      ) : (
+        <main className="h-full overflow-y-auto">
+          <Component {...props} />
+        </main>
+      )
+    }
+  />
 );
 
 // PublicRoute.propTypes = {
@@ -31,4 +47,4 @@ const PublicRoute = ({ isLoggedIn, component: Component, ...rest }) => (
 //   }
 // )(PublicRoute);
 
-export default PublicRoute
+export default PublicRoute;
