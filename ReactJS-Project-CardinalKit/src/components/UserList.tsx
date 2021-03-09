@@ -264,7 +264,6 @@ class UserList extends Component<
           <label className="text-gray-00 my-6 mx-3">Search User: </label>
           <input
             onInput={(e) => this.filterUsers(e)}
-            value={filterText}
             placeholder="Eg: Jhon Doe"
             className="shadow my-4 px-2  py-1 focus:outline-none " />
           <span className="self-center mx-2" onClick={() => this.clearSearchField()}>
