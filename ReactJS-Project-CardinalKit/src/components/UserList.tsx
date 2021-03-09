@@ -117,14 +117,6 @@ class UserList extends Component<{}, { users: any[]; newUsers: any[]; totalSurve
         width: 300,
         Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       },
-      // {
-      //   Header: () => (
-      //     <div className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase  dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">user id</div>
-      //   ),
-      //   accessor: 'userId',
-      //   className: 'font',
-      //   width: 250
-      // },
       {
         Header: () => (
           <div className="text-xs font-semibold text-center tracking-wide text-left text-gray-500 uppercase dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
@@ -210,34 +202,6 @@ class UserList extends Component<{}, { users: any[]; newUsers: any[]; totalSurve
           defaultPageSize={5}
           PaginationComponent={Pagination}
         />
-
-        <h2 className="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">Charts</h2>
-        <div className="grid gap-6 mb-8 md:grid-cols-2">
-          <div className="min-w-0 p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800">
-            <h4 className="mb-4 font-semibold text-gray-800 dark:text-gray-300">Survey</h4>
-            <canvas id="pie" />
-            <div className="flex justify-center mt-4 space-x-3 text-sm text-gray-600 dark:text-gray-400">
-              <div className="flex items-center">
-                <span className="inline-block w-3 h-3 mr-1 bg-blue-500 rounded-full" />
-                <span>ShortWalkTask</span>
-              </div>
-              <div className="flex items-center">
-                <span className="inline-block w-3 h-3 mr-1 bg-teal-600 rounded-full" />
-                <span>SurveyTask-SF12</span>
-              </div>
-            </div>
-          </div>
-          <div className="min-w-0 p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800">
-            <h4 className="mb-4 font-semibold text-gray-800 dark:text-gray-300">Traffic</h4>
-            <canvas id="line" />
-            <div className="flex justify-center mt-4 space-x-3 text-sm text-gray-600 dark:text-gray-400">
-              <div className="flex items-center">
-                <span className="inline-block w-3 h-3 mr-1 bg-teal-600 rounded-full" />
-                <span>User</span>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     );
   }
