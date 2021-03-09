@@ -34,7 +34,7 @@ const CreateSurvey = ({ history }) => {
 
     addQuestions(survey).then(() => {
       toast.success('survey Created Sucessfully');
-      history.push('/users');
+      history.push('/manage_surveys');
     });
   };
 
