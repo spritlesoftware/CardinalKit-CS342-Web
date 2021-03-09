@@ -134,7 +134,6 @@ class UserList extends Component<
                     View Surveys
                   </Link>
                 </span>
-
                 <ExportToExcel uid={doc.userId} />
               </div>
             ),
