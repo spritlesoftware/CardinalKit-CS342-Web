@@ -36,24 +36,5 @@ const PrivateRoute = ({ isLoggedIn, component: Component, ...rest }) => (
   />
 );
 
-// PrivateRoute.propTypes = {
-//   component: PropTypes.func,
-//   location: PropTypes.object,
-// };
-
-// export function mapStateToProps(state) {
-//   return {
-//     isAuth: isAuthenticated(state),
-//   };
-// }
-
-// export default connect(
-//   mapStateToProps,
-//   null,
-//   null,
-//   {
-//     pure: false,
-//   }
-// )(PrivateRoute);
 
 export default PrivateRoute

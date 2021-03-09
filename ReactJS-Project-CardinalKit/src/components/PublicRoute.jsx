@@ -27,24 +27,4 @@ const PublicRoute = ({ isLoggedIn, component: Component, ...rest }) => (
   />
 );
 
-// PublicRoute.propTypes = {
-//   component: PropTypes.func,
-//   location: PropTypes.object,
-// };
-
-// export function mapStateToProps(state) {
-//   return {
-//     isAuth: isAuthenticated(state),
-//   };
-// }
-
-// export default connect(
-//   mapStateToProps,
-//   null,
-//   null,
-//   {
-//     pure: false,
-//   }
-// )(PublicRoute);
-
 export default PublicRoute;
