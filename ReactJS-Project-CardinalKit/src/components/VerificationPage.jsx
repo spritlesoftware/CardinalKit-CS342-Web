@@ -14,9 +14,9 @@ class VerificationPage extends React.Component {
   onSubmitHandler = e => {
     e.preventDefault();
     if (this.state.userCode === localStorage.getItem('verifyCode')) {
-      window.sessionStorage.setItem('isLoggedIn', true);
-      window.localStorage.clear();
       this.props.history.push('/users');
+      window.localStorage.setItem('isLoggedIn', true);
+      window.localStorage.removeItem('verifyCode');
       window.location.reload();
     } else {
       this.state.userCode === ''

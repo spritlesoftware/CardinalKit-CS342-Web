@@ -24,7 +24,7 @@ class Header extends React.Component<HeaderProps> {
     const firebase = new Firebase();
     firebase.doSignOut().then(() => {
       window.location.reload();
-      window.sessionStorage.clear();
+      window.localStorage.clear();
     });
   };
 
