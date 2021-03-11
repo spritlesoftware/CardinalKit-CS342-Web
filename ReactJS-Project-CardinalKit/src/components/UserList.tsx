@@ -119,9 +119,7 @@ class UserList extends Component<
           return {
             name: 'John Adams',
             email: doc?.userId ? this.filterEmailFromUserData(doc.userId) : ' ',
-
-            userId: doc?.userId,
-
+            userID: doc?.userId,
             endDate: moment(doc?.payload.endDate.substring(0, 10)).format('LL'),
             view: (
               <div className="flex">
@@ -167,6 +165,17 @@ class UserList extends Component<
         className: 'font',
         width: 250,
         Cell: row => <div className="text-center h-4">{row.value}</div>,
+      },
+      {
+        Header: () => (
+          <div className="text-sm text-center font-semibold tracking-wide text-left text-gray-500 uppercase dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+            User Id
+          </div>
+        ),
+        accessor: 'userID',
+        className: 'font',
+        width: 250,
+        Cell: row => <div className="text-center h-6">{row.value}</div>,
       },
       {
         Header: () => (
@@ -272,7 +281,7 @@ class UserList extends Component<
         <ReactTable
           data={(filteredUsers.length === 0 && filterText === '') ? users : filteredUsers}
           columns={columns}
-          className={'ReactTable ' + ((totalUsers === 0 && dataPresent) ? 'animate-pulse' : '')}
+          className={'ReactTable overflow-x-scroll	' + ((totalUsers === 0 && dataPresent) ? 'animate-pulse' : '')}
           sortable={true}
           defaultPageSize={5}
           PaginationComponent={Pagination}
