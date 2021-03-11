@@ -80,7 +80,7 @@ class Firebase {
             }
 
             // merge auth and db user
-            authUser = {
+            const currentAuthUser = {
               uid: authUser.uid,
               email: authUser.email,
               emailVerified: authUser.emailVerified,
@@ -88,7 +88,7 @@ class Firebase {
               ...dbUser,
             };
 
-            next(authUser);
+            next(currentAuthUser);
           });
       } else {
         fallback();
@@ -103,9 +103,11 @@ class Firebase {
 
   // *** Surveys API ***
 
-  surveys = uid => this.db.collection(`studies/${config.iOSAppBundleId}/users/${uid}/surveys/`);
+  surveyResponses = uid => this.db.collection(`studies/${config.iOSAppBundleId}/users/${uid}/surveys/`);
 
-  questions = questionId => this.db.collection(`survey_lists`).doc(questionId);
+  survey = questionId => this.db.collection(`survey_lists`).doc(questionId);
+
+  allSurveys = () => this.db.collection(`survey_lists`);
 }
 
 export { db };

@@ -2,8 +2,10 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 
+import CreateSurvey from './components/CreateSurvey';
 import Header from './components/Header';
 import LoginPage from './components/LoginPage';
+import ManageSurveys from './components/ManageSurveys';
 import ManageUsers from './components/ManageUsers';
 import NotFoundPage from './components/NotFoundPage';
 import PrivateRoute from './components/PrivateRoute';
@@ -66,17 +68,26 @@ class App extends React.Component<AppProps, { isLoggedIn: any }> {
 
           <PrivateRoute
             exact
+            path="/manage_surveys"
+            component={ManageSurveys}
+            isLoggedIn={isLoggedIn}
+          />
+
+          <PrivateRoute
+            exact
+            path="/create_survey"
+            component={CreateSurvey}
+            isLoggedIn={isLoggedIn}
+          />
+
+          <PrivateRoute
+            exact
             path="/users/:userID/:surveyId"
             component={(props: any) => <ViewResponse {...props} />}
             isLoggedIn={isLoggedIn}
           />
 
-          <PublicRoute 
-            exact 
-            path="/login" 
-            component={LoginPage} 
-            isLoggedIn={isLoggedIn} 
-          />
+          <PublicRoute exact path="/login" component={LoginPage} isLoggedIn={isLoggedIn} />
 
           <PublicRoute
             exact

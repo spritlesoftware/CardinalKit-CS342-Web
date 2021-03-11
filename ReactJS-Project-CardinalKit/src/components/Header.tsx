@@ -37,7 +37,7 @@ class Header extends React.Component<HeaderProps> {
               <div className="relative w-full max-w-xl mr-6 focus-within:text-purple-500" />
             </div>
             <ul className="flex items-center flex-shrink-0 space-x-6">
-              <div className="h-16 p-2 flex flex-col justify-center" onClick={this.signOut}>
+              <div className="h-16 p-2 mr-2 flex flex-col justify-center" onClick={this.signOut}>
                 <LogOut color="black" />
               </div>
             </ul>

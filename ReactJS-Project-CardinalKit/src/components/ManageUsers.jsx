@@ -63,9 +63,11 @@ class ManageUsers extends React.Component {
     return (
       <div className=" container px-6 mx-auto grid">
         <div className="px-4 py-3 my-8 bg-white shadow-md dark:bg-gray-800">
-          <h2 className="mb-4 mt-4  text-lg font-semibold text-gray-600 dark:text-gray-300">
+          <h1 className="mt-4  text-lg font-semibold text-gray-600 dark:text-gray-300">
             Manage Users
-          </h2>
+          </h1>
+          <div className="h-1 bg-red-700 w-1/12 mb-10" />
+
           <label className="block text-sm">
             <span className="text-gray-700 dark:text-gray-400">First Name: </span>
             <input
@@ -118,7 +120,8 @@ class ManageUsers extends React.Component {
                     onChange={() => this.showHidePasswordToggle()}
                   />
                   <label className="text-gray-500">Show Password</label>
-              </div>)}
+                </div>
+              )}
             </div>
             <input
               className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-red-400 focus:outline-none focus:shadow-outline-red dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
@@ -133,14 +136,16 @@ class ManageUsers extends React.Component {
           <br />
           <br />
           <br />
-          <button
-            onClick={() => this.onSubmit()}
-            type="submit"
-            className="flex items-center justify-between inset-y-0 right-0 px-4 py-2 mb-6 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-red-600 border border-transparent shadow-2xl active:bg-red-400 hover:bg-red-400 focus:outline-none focus:shadow-outline-red"
-          >
-            <span>Create User</span>
-            <i className="fas fa-heart mx-2 animate-bounce" />
-          </button>
+          <div className="flex justify-end mx-5">
+            <button
+              onClick={() => this.onSubmit()}
+              type="submit"
+              className="flex items-center justify-end inset-y-0 left-0 px-4 py-2 mb-6 mr-0 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-red-600 border border-transparent shadow-2xl active:bg-red-400 hover:bg-red-400 focus:outline-none focus:shadow-outline-red"
+            >
+              <span>Create User</span>
+              <i className="fas fa-heart mx-2 animate-bounce" />
+            </button>
+          </div>
         </div>
       </div>
     );
