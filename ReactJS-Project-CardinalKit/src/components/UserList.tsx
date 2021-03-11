@@ -174,7 +174,7 @@ class UserList extends Component<
         ),
         accessor: 'userID',
         className: 'font',
-        width: 250,
+        minWidth: 300,
         Cell: row => <div className="text-center h-6">{row.value}</div>,
       },
       {
