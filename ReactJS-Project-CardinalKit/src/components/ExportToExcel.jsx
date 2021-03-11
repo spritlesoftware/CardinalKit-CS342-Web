@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import ReactExport from 'react-export-excel';
+import ReactExport from 'react-data-export';
 import { getQuestions, getSurveys } from '../api/getAllUsers';
 import SurveysTable from './SurveysTable';
 
