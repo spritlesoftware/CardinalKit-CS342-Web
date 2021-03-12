@@ -30,7 +30,7 @@ class VerificationPage extends React.Component {
       <div className="flex items-center min-h-screen p-6 bg-gray-50 dark:bg-gray-900">
         <div className="flex-1 h-full max-w-4xl mx-auto overflow-hidden bg-white rounded-lg shadow-xl dark:bg-gray-800">
           <div className="flex flex-col overflow-y-auto md:flex-row">
-            <div className=" flex flex-row h-32 md:h-auto md:w-1/2">
+            <div className=" flex flex-row h-32 ml-10 md:h-auto md:w-1/2">
               <img
                 aria-hidden="true"
                 className="mb-14  mr-8 h-70 dark:hidden"
@@ -47,7 +47,7 @@ class VerificationPage extends React.Component {
 
             <div className="h-80 mt-8 w-1 mx-5 rounded shadow-2xl bg-gray-200" />
 
-            <div className="flex flex-row mt-10  overflow-y-auto md:flex-row">
+            <div className="flex flex-row overflow-y-auto md:flex-row">
               <div className="px-4 py-3 mt-8 w-3/4 bg-white dark:bg-gray-800">
                 <h4 className="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">
                   Two Factor Authentication
@@ -75,6 +75,10 @@ class VerificationPage extends React.Component {
                     <span>Submit</span>
                   </button>
                 </form>
+
+                <p className="mt-5 text-gray-500 text-center">
+                  Note: If you didn't recieve any emails in the Inbox, please check the Spam.
+                </p>
               </div>
             </div>
           </div>

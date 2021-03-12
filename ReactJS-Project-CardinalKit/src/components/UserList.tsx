@@ -118,7 +118,7 @@ class UserList extends Component<
             name: 'John Adams',
             email: doc?.userId ? this.filterEmailFromUserData(doc.userId) : ' ',
             userID: doc?.userId,
-            endDate: moment(doc?.payload.endDate.substring(0, 10)).format('LL'),
+            endDate: moment(doc?.payload.endDate.substring(0, 10)).format('ll'),
             view: (
               <div className="flex">
                 <span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 shadow-lg dark:bg-green-700 dark:text-green-100">
@@ -194,7 +194,7 @@ class UserList extends Component<
         ),
         accessor: 'endDate',
         className: 'px-4 py-3 text-sm',
-        width: 250,
+        // width: 150,
         Cell: row => <div className="text-center h-4">{row.value}</div>,
       },
       {
