@@ -77,7 +77,7 @@ class VerificationPage extends React.Component {
                 </form>
 
                 <p className="mt-5 text-gray-500 text-center">
-                  Note: If you didn't recieve any emails in the Inbox, please check the Spam.
+                  Note: If you didn't recieve any emails in the Inbox, please check the Spam folder.
                 </p>
               </div>
             </div>
