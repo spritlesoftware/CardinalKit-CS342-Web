@@ -1,67 +1,88 @@
 import app from 'firebase/app';
 import Firebase from '../components/Firebase';
 
-export function getAllFirebaseUsers(): Promise<app.firestore.QuerySnapshot> {
-  const firebase = new Firebase();
+const firebase = new Firebase();
+
+export const getAllFirebaseUsers = (): Promise<app.firestore.QuerySnapshot> => {
   return firebase
     .users()
     .get()
-    .then(function(doc) {
+    .then(doc => {
       return doc;
     })
-    .catch(function(error) {
-      console.log('Error getting document:', error);
+    .catch(error => {
+      alert(error);
       return error;
     });
-}
+};
 
-export function getFirebaseUser(uid: String): Promise<app.firestore.QuerySnapshot> {
-  const firebase = new Firebase();
+export const getFirebaseUser = (uid: string): Promise<app.firestore.QuerySnapshot> => {
   return firebase
     .user(uid)
     .get()
-    .then(function(doc) {
+    .then(doc => {
       return doc;
     })
-    .catch(function(error) {
-      console.log('Error getting document:', error);
+    .catch(error => {
+      alert(error);
       return error;
     });
-}
+};
 
-export function getSurveys(uid: String): Promise<app.firestore.QuerySnapshot> {
-  const firebase = new Firebase();
+export const getSurveys = (uid: string): Promise<app.firestore.QuerySnapshot> => {
   return firebase
-    .surveys(uid)
+    .surveyResponses(uid)
     .get()
-    .then(function(doc) {
+    .then(doc => {
       return doc;
     })
-    .catch(function(error) {
-      console.log('Error getting document:', error);
+    .catch(error => {
+      alert(error);
       return error;
     });
-}
+};
 
-export function getSurvey(uid: String, surveyId: string): Promise<app.firestore.DocumentData> {
-  const firebase = new Firebase();
+export const getSurvey = (uid: string, surveyId: string): Promise<app.firestore.DocumentData> => {
   return firebase
-    .surveys(uid)
+    .surveyResponses(uid)
     .doc(surveyId)
     .get()
-    .then(function(doc) {
+    .then(doc => {
       return doc.data();
     })
-    .catch(function(error) {
-      console.log('Error getting document:', error);
+    .catch(error => {
+      alert(error);
       return error;
     });
+};
+
+export const addQuestions = questions => {
+  const firebase = new Firebase();
+
+  return firebase
+    .allSurveys()
+    .add(questions)
+    .then(doc => {
+      return doc;
+    })
+    .catch(err => {
+      return err;
+    });
+};
+
+
+export const getAllSurveys = () => {
+  return firebase
+    .allSurveys()
+    .get()
+    .then((querySnapShot) => {
+      return querySnapShot.docs.map((doc) => doc.data())
+    })
 }
 
 export function getQuestions(questionId): Promise<app.firestore.DocumentData> {
-  const firebase = new Firebase();
   return firebase
-    .questions(questionId)
+    .survey(questionId)
     .get()
     .then(doc => {
       return doc.data();
@@ -71,17 +92,3 @@ export function getQuestions(questionId): Promise<app.firestore.DocumentData> {
       return err;
     });
 }
-
-export const addQuestions = questions => {
-  const firebase = new Firebase();
-
-  return firebase
-    .allQuestions()
-    .add(questions)
-    .then(doc => {
-      return doc;
-    })
-    .catch(err => {
-      return err;
-    });
-};

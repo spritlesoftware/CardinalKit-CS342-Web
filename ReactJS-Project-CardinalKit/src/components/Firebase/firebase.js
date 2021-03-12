@@ -2,8 +2,6 @@ import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 
-const admin = require('firebase-admin');
-
 const config = {
   apiKey: process.env.REACT_APP_API_KEY || 'AIzaSyCVzML6v4C16HNjUZN_xnEX5RWJmDq3YUU',
   authDomain: process.env.REACT_APP_AUTH_DOMAIN || 'cs342-master-sample.firebaseapp.com',
@@ -19,9 +17,9 @@ const db = firebaseApp.firestore();
 
 class Firebase {
   constructor() {
-    if (!app.apps.length) {
-      admin.initializeApp(config);
-    }
+    // if (!app.apps.length) {
+    //   admin.initializeApp(config);
+    // }
 
     /* Helper */
 
@@ -105,11 +103,11 @@ class Firebase {
 
   // *** Surveys API ***
 
-  surveys = uid => this.db.collection(`studies/${config.iOSAppBundleId}/users/${uid}/surveys/`);
+  surveyResponses = uid => this.db.collection(`studies/${config.iOSAppBundleId}/users/${uid}/surveys/`);
 
-  questions = questionId => this.db.collection(`survey_lists`).doc(questionId);
-  
-  allQuestions = () => this.db.collection(`survey_lists`);
+  survey = questionId => this.db.collection(`survey_lists`).doc(questionId);
+
+  allSurveys = () => this.db.collection(`survey_lists`);
 }
 
 export { db };

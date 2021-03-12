@@ -2,8 +2,6 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
-import { Redirect } from 'react-router-dom';
-
 import { LogOut } from 'react-feather';
 
 import { logoutUser } from '../actions/loginActions';
@@ -13,7 +11,6 @@ import Firebase from './Firebase';
 class Header extends React.Component<HeaderProps> {
   state = {
     collapsed: false,
-    loggedOut: false,
   };
   toggle = () => {
     this.setState({
@@ -23,21 +20,13 @@ class Header extends React.Component<HeaderProps> {
 
   signOut = () => {
     const firebase = new Firebase();
-    firebase.doSignOut()
-      .then(() => {
-        this.setState({
-          loggedOut: true
-        })
-      }).then(() => {
-        window.location.reload()
-        window.sessionStorage.clear();
-      })
-  }
+    firebase.doSignOut().then(() => {
+      window.location.reload();
+      window.localStorage.clear();
+    });
+  };
 
   render() {
-    if (this.state.loggedOut) {
-      return <Redirect to={{ pathname: '/login' }} />
-    }
     return (
       <div className="z-10">
         <header className="z-10 bg-white shadow-sm dark:bg-gray-800">
@@ -46,7 +35,7 @@ class Header extends React.Component<HeaderProps> {
               <div className="relative w-full max-w-xl mr-6 focus-within:text-purple-500" />
             </div>
             <ul className="flex items-center flex-shrink-0 space-x-6">
-              <div className="h-16 p-2 flex flex-col justify-center" onClick={this.signOut}>
+              <div className="h-16 p-2 mr-2 flex flex-col justify-center" onClick={this.signOut}>
                 <LogOut color="black" />
               </div>
             </ul>

@@ -1,13 +1,14 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Switch } from 'react-router-dom';
 
 import CreateSurvey from './components/CreateSurvey';
-import Header from './components/Header';
 import LoginPage from './components/LoginPage';
+import ManageSurveys from './components/ManageSurveys';
 import ManageUsers from './components/ManageUsers';
 import NotFoundPage from './components/NotFoundPage';
-import SideBar from './components/SideBar';
+import PrivateRoute from './components/PrivateRoute';
+import PublicRoute from './components/PublicRoute';
 import UserPage from './components/UserPage';
 import UsersPage from './components/UsersPage';
 import VerificationPage from './components/VerificationPage';
@@ -26,60 +27,77 @@ class App extends React.Component<AppProps, { isLoggedIn: any }> {
       isLoggedIn: false,
     };
   }
+
   componentWillMount() {
-    this.setState({
-      isLoggedIn: window.sessionStorage.getItem('isLoggedIn'),
-    });
+    if (window.localStorage.getItem('isLoggedIn') !== null) {
+      var isLoggedIn: any = window.localStorage.getItem('isLoggedIn');
+      this.setState({
+        isLoggedIn
+      });
+    }
   }
 
   render() {
     const { isLoggedIn } = this.state;
 
-    if (isLoggedIn) {
-      return (
-        <div>
-          <Router>
-            <div className="flex h-screen bg-gray-50 dark:bg-gray-900">
-              {isLoggedIn && <SideBar />}
-              <div className="flex flex-col flex-1 w-full">
-                {isLoggedIn && <Header />}
-                <main className="h-full overflow-y-auto">
-                  <Switch>
-                    <Route exact={true} path="/login" component={LoginPage} />
-                    <Route exact={true} path={["/", "/users"]} component={UsersPage} />
-                    <Route exact={true} path="/verify_code" component={VerificationPage} />
-                    <Route exact={true} path="/manage_users" component={ManageUsers} />
-                    <Route exact={true} path="/create_survey" component={CreateSurvey} />
-                    <Route
-                      exact={true}
-                      path="/users/:userID"
-                      component={(props: any) => <UserPage {...props} />}
-                    />
-                    <Route
-                      exact={true}
-                      path="/users/:userID/:surveyId"
-                      component={(props: any) => <ViewResponse {...props} />}
-                    />
-                    <Redirect exact={true} from="/" to="/users" />
-                    <Route component={NotFoundPage} />
-                  </Switch>
-                </main>
-              </div>
-            </div>
-          </Router>
-        </div>
-      );
-    } else {
-      return (
-        <div>
-          <Router>
-            <Redirect to={{ pathname: '/login' }} />
-            <Route exact={true} path="/login" component={LoginPage} />
-            <Route exact={true} path="/verify_code" component={VerificationPage} />
-          </Router>
-        </div>
-      );
-    }
+    return (
+      <Router>
+        <Switch>
+          <PrivateRoute
+            exact
+            path={['/', '/users']}
+            component={UsersPage}
+            isLoggedIn={isLoggedIn}
+          />
+
+          <PrivateRoute
+            exact
+            path="/manage_users"
+            component={ManageUsers}
+            isLoggedIn={isLoggedIn}
+          />
+
+          <PrivateRoute
+            exact
+            path="/users/:userID"
+            component={(props: any) => <UserPage {...props} />}
+            isLoggedIn={isLoggedIn}
+          />
+
+          <PrivateRoute
+            exact
+            path="/manage_surveys"
+            component={ManageSurveys}
+            isLoggedIn={isLoggedIn}
+          />
+
+          <PrivateRoute
+            exact
+            path="/create_survey"
+            component={CreateSurvey}
+            isLoggedIn={isLoggedIn}
+          />
+
+          <PrivateRoute
+            exact
+            path="/users/:userID/:surveyId"
+            component={(props: any) => <ViewResponse {...props} />}
+            isLoggedIn={isLoggedIn}
+          />
+
+          <PublicRoute exact path="/login" component={LoginPage} isLoggedIn={isLoggedIn} />
+
+          <PublicRoute
+            exact
+            path="/verify_code"
+            component={VerificationPage}
+            isLoggedIn={isLoggedIn}
+          />
+
+          <PrivateRoute component={NotFoundPage} isLoggedIn={isLoggedIn} />
+        </Switch>
+      </Router>
+    );
   }
 }
 
