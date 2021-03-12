@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const SideBar = () => {
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
 
-  const highLightLink = path => {
+  const highLightActiveLink = path => {
     setCurrentPath(path);
   };
 
@@ -26,7 +26,7 @@ const SideBar = () => {
               <Link
                 className="inline-flex items-center w-full text-sm font-semibold text-gray-500 transition-colors duration-150 hover:text-gray-800"
                 to="/users"
-                onClick={e => highLightLink('/users')}
+                onClick={e => highLightActiveLink('/users')}
               >
                 <svg
                   className="w-5 h-5"
@@ -63,7 +63,7 @@ const SideBar = () => {
               <Link
                 className="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 "
                 to="/manage_users"
-                onClick={e => highLightLink('/manage_users')}
+                onClick={e => highLightActiveLink('/manage_users')}
               >
                 <svg
                   className="h-5 w-5"
@@ -94,7 +94,7 @@ const SideBar = () => {
               <Link
                 className="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
                 to="/manage_surveys"
-                onClick={e => highLightLink('/manage_surveys')}
+                onClick={e => highLightActiveLink('/manage_surveys')}
               >
                 <svg
                   className="h-5 w-5"
