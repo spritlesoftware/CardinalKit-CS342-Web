@@ -51,7 +51,7 @@ export class LoginPage extends React.Component {
 
   validateFields = (email, password) => {
     if (!email && !password) {
-      toast.error('Please enter you Email and Password!');
+      toast.error('Please enter your Email and Password!');
     } else if (!email || !password) {
       if (!email) {
         toast.error('Please enter your Email');
@@ -90,7 +90,7 @@ export class LoginPage extends React.Component {
         this.sendMail(app.auth().currentUser.email, verifyCode);
         this.props.history.push('/verify_code');
       } else {
-        const error_msg = `email sub-domain not allowed, only ${process.env.REACT_APP_VERIFIED_EMAIL_SUBDOMAIN} allowed to login with Google.`;
+        const error_msg =`Email sub-domain not allowed, only ${process.env.REACT_APP_VERIFIED_EMAIL_SUBDOMAIN} allowed to login with Google.`;
         toast.error(error_msg);
         this.props.history.push('/login');
       }
