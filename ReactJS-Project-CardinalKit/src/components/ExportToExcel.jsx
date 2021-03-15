@@ -1,13 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import ReactExport from 'react-data-export';
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 
 import { getQuestions, getSurveys } from '../api/getAllUsers';
-
-const ExcelFile = ReactExport.ExcelFile;
-const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
-const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
-const ExcelRow = ReactExport.ExcelFile.ExcelRow;
 
 const ExportToExcel = ({ uid }) => {
   const [surveyQuestions, setSurveyQuestions] = useState([]);
@@ -42,13 +36,13 @@ const ExportToExcel = ({ uid }) => {
     return choiceAnswers.join(', ');
   };
 
-  const convertBooleanAnswerToYesOrNo = (boolAswer) => {
-    if(boolAswer === true) {
-      return 'Yes'
+  const convertBooleanAnswerToYesOrNo = boolAswer => {
+    if (boolAswer === true) {
+      return 'Yes';
     } else {
-      return 'No'
+      return 'No';
     }
-  }
+  };
 
   const setQuestionAndResponseToState = () => {
     let temprorySurvey = [];
@@ -110,32 +104,7 @@ const ExportToExcel = ({ uid }) => {
     setDataExtracted(true);
   };
 
-  // const renderDownloadButton = () => {
-  //   if (dataExtracted) {
-  //     return (
-  //       <button>
-  //         <span className="px-1 py-1 ml-2 font-semibold bg-blue-200 leading-tight shadow-lg dark:bg-blue-700 dark:text-blue-100">
-  //           Response
-  //           <i className="ml-1 fas fa-cloud-download-alt  text-gray-700	animate-bounce ease-out hover:scale-50" />
-  //         </span>
-  //       </button>
-  //     );
-  //   } else {
-  //     return null;
-  //   }
-  // };
-
   return (
-    // <ExcelFile element={renderDownloadButton()} filename="Cardinal Kit survey Response">
-    //   {excelData.map((survey, i) => (
-    //     <ExcelSheet data={survey.data} name={survey.name} key={i}>
-    //       <ExcelColumn label="Question Number" value="questionNumber" widthPx={160} />
-    //       <ExcelColumn label="Question" value="text" wrapText={true} />
-    //       <ExcelColumn label="Answer" value={'answer'} />
-    //     </ExcelSheet>
-    //   ))}
-    // </ExcelFile>
-
     <div>
       <ReactHTMLTableToExcel
         id="test-table-xls-button"
