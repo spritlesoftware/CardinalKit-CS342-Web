@@ -77,6 +77,24 @@ class UserList extends Component<
     })
   }
 
+  renderSortIcon = () => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      className="h-5 w-5 ml-1"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"
+      />
+    </svg>
+  );
+
+
   updateTotalSurvey = snapshot => {
     // snapshot.docs.map(survey => {
     //   totalSurveys.push(survey.id.substring(0, 14));
@@ -155,8 +173,9 @@ class UserList extends Component<
     const columns = [
       {
         Header: () => (
-          <div className="text-sm text-center shadow-none font-semibold tracking-wide text-gray-500 uppercase dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
-            Name
+          <div className="flex justify-center text-sm text-center shadow-none font-semibold tracking-wide text-gray-500 uppercase dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+            <>Name</>
+            {this.renderSortIcon()}
           </div>
         ),
         accessor: 'name',
@@ -166,8 +185,9 @@ class UserList extends Component<
       },
       {
         Header: () => (
-          <div className="text-sm text-center font-semibold tracking-wide text-left text-gray-500 uppercase dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
-            User Id
+          <div className="flex justify-center text-sm text-center shadow-none font-semibold tracking-wide text-gray-500 uppercase dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+            <>User Id</>
+            {this.renderSortIcon()}
           </div>
         ),
         accessor: 'userID',
@@ -177,8 +197,9 @@ class UserList extends Component<
       },
       {
         Header: () => (
-          <div className="text-sm text-center font-semibold tracking-wide text-left text-gray-500 uppercase dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
-            Email
+          <div className="flex justify-center text-sm text-center shadow-none font-semibold tracking-wide text-gray-500 uppercase dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+            <>Email</>
+            {this.renderSortIcon()}
           </div>
         ),
         accessor: 'email',
@@ -188,13 +209,14 @@ class UserList extends Component<
       },
       {
         Header: () => (
-          <div className="text-sm text-center font-semibold tracking-wide text-left text-gray-500 uppercase dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
-            Submitted Date
+          <div className="flex justify-center text-sm text-center shadow-none font-semibold tracking-wide text-gray-500 uppercase dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+            <>Submitted Date</>
+            {this.renderSortIcon()}
           </div>
         ),
         accessor: 'endDate',
         className: 'px-4 py-3 text-sm',
-        // width: 150,
+        width: 170,
         Cell: row => <div className="text-center h-4">{row.value}</div>,
       },
       {
@@ -205,6 +227,7 @@ class UserList extends Component<
         ),
         accessor: 'view',
         filterable: false,
+        sortable: false,
         width: 250,
         Cell: row => <div className="text-center h-4">{row.value}</div>,
       },

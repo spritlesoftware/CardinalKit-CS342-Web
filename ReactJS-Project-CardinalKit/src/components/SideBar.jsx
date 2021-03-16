@@ -4,27 +4,35 @@ import { Link } from 'react-router-dom';
 const SideBar = () => {
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
 
+  useEffect(() => {
+    setCurrentPath(window.location.pathname);
+    console.log('here')
+  });
+
   const highLightActiveLink = path => {
     setCurrentPath(path);
   };
 
+  const renderActiveLinkHighlighter = path =>
+    currentPath === path && (
+      <span
+        className="absolute inset-y-0 left-0 w-1 bg-red-700 rounded-tr-lg rounded-br-lg"
+        aria-hidden="true"
+      />
+    );
+
   return (
     <div>
-      <aside className="z-20 hidden w-64 overflow-y-auto bg-white dark:bg-gray-800 md:block flex-shrink-0 h-screen">
+      <aside className="z-20 hidden w-64 sticky top-0 bg-white dark:bg-gray-800 md:block flex-shrink-0 h-screen">
         <div className="py-4 text-gray-500 dark:text-gray-400">
           <Link className="ml-6 text-lg font-bold text-gray-800 dark:text-gray-200" to="/users">
             Stanford Medicine
           </Link>
           <ul className="mt-6">
             <li className="relative px-6 py-3">
-              {currentPath === '/users' && (
-                <span
-                  className="absolute inset-y-0 left-0 w-1 bg-red-700 rounded-tr-lg rounded-br-lg"
-                  aria-hidden="true"
-                />
-              )}
+              {renderActiveLinkHighlighter('/users')}
               <Link
-                className="inline-flex items-center w-full text-sm font-semibold text-gray-500 transition-colors duration-150 hover:text-gray-800"
+                className={"inline-flex items-center w-full text-sm font-semibold duration-150 hover:text-gray-800" + ((currentPath === '/users') ? " text-gray-800" : "   text-gray-500")}
                 to="/users"
                 onClick={e => highLightActiveLink('/users')}
               >
@@ -54,14 +62,9 @@ const SideBar = () => {
           </ul>
           <ul className="mt-6">
             <li className="relative px-6 py-3 focus:text-gray-800">
-              {currentPath === '/manage_users' && (
-                <span
-                  className="absolute inset-y-0 left-0 w-1 bg-red-700 rounded-tr-lg rounded-br-lg"
-                  aria-hidden="true"
-                />
-              )}
+              {renderActiveLinkHighlighter('/manage_users')}
               <Link
-                className="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 "
+                className={"inline-flex items-center w-full text-sm font-semibold duration-150 hover:text-gray-800" + ((currentPath === '/manage_users') ? " text-gray-800" : "   text-gray-500")}
                 to="/manage_users"
                 onClick={e => highLightActiveLink('/manage_users')}
               >
@@ -85,14 +88,9 @@ const SideBar = () => {
           </ul>
           <ul className="mt-6">
             <li className="relative px-6 py-3">
-              {currentPath === '/manage_surveys' && (
-                <span
-                  className="absolute inset-y-0 left-0 w-1 bg-red-700 rounded-tr-lg rounded-br-lg"
-                  aria-hidden="true"
-                />
-              )}
+              {renderActiveLinkHighlighter('/manage_surveys')}
               <Link
-                className="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+                className={"inline-flex items-center w-full text-sm font-semibold duration-150 hover:text-gray-800" + ((currentPath === '/manage_surveys') ? " text-gray-800" : "   text-gray-500")}
                 to="/manage_surveys"
                 onClick={e => highLightActiveLink('/manage_surveys')}
               >
