@@ -36,14 +36,6 @@ const ExportToExcel = ({ uid }) => {
     return choiceAnswers.join(', ');
   };
 
-  const convertBooleanAnswerToYesOrNo = boolAswer => {
-    if (boolAswer === true) {
-      return 'Yes';
-    } else {
-      return 'No';
-    }
-  };
-
   const setQuestionAndResponseToState = () => {
     let temprorySurvey = [];
     let temproryResponse = [];
@@ -88,7 +80,7 @@ const ExportToExcel = ({ uid }) => {
           .results[0];
 
         if (matchedResponse?.booleanAnswer !== undefined) {
-          answer = convertBooleanAnswerToYesOrNo(matchedResponse?.booleanAnswer);
+          answer = matchedResponse?.booleanAnswer === true ? 'Yes' : 'No';
         } else if (matchedResponse?.scaleAnswer) {
           answer = matchedResponse?.scaleAnswer.toString();
         } else if (matchedResponse?.choiceAnswers) {
@@ -115,39 +107,41 @@ const ExportToExcel = ({ uid }) => {
         buttonText="Response"
       />
       <table id={uid} className="hidden">
-        <tr />
+        <tbody>
+          <tr />
 
-        <tr>
-          <th>User Id:</th>
-          <td>{uid}</td>
-        </tr>
+          <tr>
+            <th>User Id:</th>
+            <td>{uid}</td>
+          </tr>
 
-        <tr />
+          <tr />
 
-        {excelData.map(survey => (
-          <>
-            <tr>
-              <th>Survey Name:</th>
-              <td>{survey?.name}</td>
-            </tr>
-            <tr />
-
-            <tr>
-              <th>SNO</th>
-              <th>Question</th>
-              <th>Answer</th>
-            </tr>
-            {survey?.data?.map(data => (
+          {excelData.map(survey => (
+            <>
               <tr>
-                <td className="text-center">{data?.questionNumber}</td>
-                <td>{data?.text}</td>
-                <td>{data?.answer}</td>
+                <th>Survey Name:</th>
+                <td>{survey?.name}</td>
               </tr>
-            ))}
-            <tr />
-            <tr />
-          </>
-        ))}
+              <tr />
+
+              <tr>
+                <th>SNO</th>
+                <th>Question</th>
+                <th>Answer</th>
+              </tr>
+              {survey?.data?.map((data, i) => (
+                <tr key={i}>
+                  <td className="text-center">{data?.questionNumber}</td>
+                  <td>{data?.text}</td>
+                  <td>{data?.answer}</td>
+                </tr>
+              ))}
+              <tr />
+              <tr />
+            </>
+          ))}
+        </tbody>
       </table>
     </div>
   );
