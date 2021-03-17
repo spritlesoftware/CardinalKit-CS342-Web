@@ -7,11 +7,34 @@ import { LogOut } from 'react-feather';
 import { logoutUser } from '../actions/loginActions';
 import { Store } from '../reducers/rootReducer';
 import Firebase from './Firebase';
+import app from 'firebase/app'
 
-class Header extends React.Component<HeaderProps> {
-  state = {
-    collapsed: false,
-  };
+
+interface State {
+  currentUser: any
+  collapsed: any
+}
+
+class Header extends React.Component<HeaderProps, State> {
+  constructor(props){
+    super(props)
+    this.state = {
+      collapsed: false,
+      currentUser: null
+    };
+  }
+
+
+  componentDidMount() {
+    app.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.setState({
+          currentUser: user
+        })
+      }
+    });
+  }
+
   toggle = () => {
     this.setState({
       collapsed: !this.state.collapsed,
@@ -35,6 +58,7 @@ class Header extends React.Component<HeaderProps> {
               <div className="relative w-full max-w-xl mr-6 focus-within:text-purple-500" />
             </div>
             <ul className="flex items-center flex-shrink-0 space-x-6">
+              <span className="text-gray-500">{this.state.currentUser?.email}</span>
               <div className="h-16 p-2 mr-2 flex flex-col justify-center" onClick={this.signOut}>
                 <LogOut color="black" />
               </div>
