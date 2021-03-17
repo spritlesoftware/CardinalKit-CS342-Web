@@ -1,8 +1,10 @@
 import * as React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 
+const isLoggedIn = window.localStorage.getItem('isLoggedIn');
 
-const PublicRoute = ({ isLoggedIn, component: Component, ...rest }) => (
+
+const PublicRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
     render={props =>
