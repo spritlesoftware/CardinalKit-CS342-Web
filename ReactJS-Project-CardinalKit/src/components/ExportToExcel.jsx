@@ -8,7 +8,6 @@ const ExportToExcel = ({ uid }) => {
   const [response, setResponse] = useState([]);
   const [loading, setLoading] = useState(false);
   const [excelData, setExcelData] = useState([]);
-  const [dataExtracted, setDataExtracted] = useState(false);
 
   useEffect(() => {
     loading && setExportData();
@@ -29,7 +28,7 @@ const ExportToExcel = ({ uid }) => {
     const choiceAnswers = [];
 
     //user choices contain the indexes of the actual array of choices from the question
-    userChoices.map(choiceIndx => {
+    userChoices.forEach(choiceIndx => {
       choiceAnswers.push(allChoices[choiceIndx]);
     });
 
@@ -41,7 +40,7 @@ const ExportToExcel = ({ uid }) => {
     let temproryResponse = [];
 
     getSurveys(uid).then(querySnapshot => {
-      querySnapshot.docs.map(doc => {
+      querySnapshot.docs.forEach(doc => {
         var questionId = doc.data().payload.identifier;
 
         temproryResponse.push({ response: doc.data().payload.results, questionId });
@@ -71,7 +70,7 @@ const ExportToExcel = ({ uid }) => {
     var description = '';
     var answer = '';
 
-    surveyQuestions.map((survey, i) => {
+    surveyQuestions.forEach((survey, i) => {
       questionId = survey.questionId;
       name = survey.name;
       description = survey.description;
@@ -93,7 +92,6 @@ const ExportToExcel = ({ uid }) => {
       });
     });
     setExcelData([...excelData, { data: temporaryData, questionId, name, description }]);
-    setDataExtracted(true);
   };
 
   return (
