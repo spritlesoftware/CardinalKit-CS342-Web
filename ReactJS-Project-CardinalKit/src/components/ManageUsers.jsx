@@ -2,6 +2,7 @@ import * as React from 'react';
 import firebase from 'firebase/app';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { secondaryApp } from './Firebase/firebase';
 
 toast.configure();
 class ManageUsers extends React.Component {
@@ -20,16 +21,7 @@ class ManageUsers extends React.Component {
     return value.match(letters) || fieldName === 'email' || fieldName === 'password';
   };
 
-  validatePassword = passwordValue => {
-    // const passwordRegex = /^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8,}|(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8,}|(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,}|(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[a-z]).{8,}|(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9]).{8,}$/;
-    console.log('this is a function to validate password');
-  };
-
   handleChange = (name, value) => {
-    if (name === 'password') {
-      this.validatePassword(value);
-    }
-
     this.checkForNumericInName(name, value)
       ? this.setState({ [name]: value })
       : toast.warning('Only alphabets are allowed in First Name and Last Name.');
@@ -43,7 +35,7 @@ class ManageUsers extends React.Component {
   onSubmit = () => {
     const { firstName, lastName, email, password } = this.state;
     if (firstName && lastName && email && password) {
-      firebase
+      secondaryApp
         .auth()
         .createUserWithEmailAndPassword(email, password)
         .then(cred => {

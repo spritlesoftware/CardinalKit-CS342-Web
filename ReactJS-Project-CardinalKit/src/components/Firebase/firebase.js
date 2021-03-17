@@ -110,5 +110,8 @@ class Firebase {
   allSurveys = () => this.db.collection(`survey_lists`);
 }
 
-export { db };
+const secondaryApp = app.initializeApp(config, "secondary");
+
+
+export { db , secondaryApp};
 export default Firebase;
