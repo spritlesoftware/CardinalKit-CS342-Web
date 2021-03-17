@@ -41,9 +41,16 @@ const ViewResponse = ({ match }) => {
     return choiceAnswers.join(', ');
   };
 
-  const capitalizeFirstCharacter = answer =>
-    answer?.toString().replace(/\b\w/g, l => l.toUpperCase());
-
+  const capitalizeFirstCharacter = answer => {
+    if(answer === true) {
+      //checking foor boolean answers
+      return 'Yes'
+    } else if(answer === false){
+      return  'No'
+    } else {
+      return answer?.toString().replace(/\b\w/g, l => l.toUpperCase());
+    }
+  }
   const renderAnswer = questionNumber => {
     const result = response.payload.results.filter(res => res.identifier == questionNumber)[0]
       ?.results[0];
@@ -54,9 +61,9 @@ const ViewResponse = ({ match }) => {
           <div className="flex">
             <b className="mx-3"> Answer: </b>
             <div className="text-gray-900	self-center mx-3">
-              { capitalizeFirstCharacter(result?.booleanAnswer) }
-              { result?.scaleAnswer?.toString() }
-              { choiceAnswers }
+              { capitalizeFirstCharacter(result?.booleanAnswer) || null}
+              { result?.scaleAnswer?.toString() || null}
+              { choiceAnswers || null}
               { capitalizeFirstCharacter(result?.textAnswer) || null }
               { result?.emailAnswer || null }
               { result?.validatedTextAnswer || null }
