@@ -62,7 +62,7 @@ class UserList extends Component<
 
   filterUsers = (e) => {
     const filteredUsers = this.state.users.filter(
-      (user) => user.name.toLowerCase().includes(e.target.value)
+      (user) => user.name.toLowerCase().includes(e.target.value.trim())
     )
 
     this.setState({
