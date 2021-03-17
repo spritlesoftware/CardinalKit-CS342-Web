@@ -19,26 +19,9 @@ import { isAuthenticated } from './selectors/loginSelectors';
 interface AppProps {
   isAuth: boolean;
 }
-
-class App extends React.Component<AppProps, { isLoggedIn: any }> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLoggedIn: false,
-    };
-  }
-
-  componentWillMount() {
-    if (window.localStorage.getItem('isLoggedIn') !== null) {
-      var isLoggedIn: any = window.localStorage.getItem('isLoggedIn');
-      this.setState({
-        isLoggedIn
-      });
-    }
-  }
+class App extends React.Component<AppProps> {
 
   render() {
-    const { isLoggedIn } = this.state;
 
     return (
       <Router>
@@ -47,54 +30,51 @@ class App extends React.Component<AppProps, { isLoggedIn: any }> {
             exact
             path={['/', '/users']}
             component={UsersPage}
-            isLoggedIn={isLoggedIn}
           />
 
           <PrivateRoute
             exact
             path="/manage_users"
             component={ManageUsers}
-            isLoggedIn={isLoggedIn}
           />
 
           <PrivateRoute
             exact
             path="/users/:userID"
             component={(props: any) => <UserPage {...props} />}
-            isLoggedIn={isLoggedIn}
           />
 
           <PrivateRoute
             exact
             path="/manage_surveys"
             component={ManageSurveys}
-            isLoggedIn={isLoggedIn}
           />
 
           <PrivateRoute
             exact
             path="/create_survey"
             component={CreateSurvey}
-            isLoggedIn={isLoggedIn}
           />
 
           <PrivateRoute
             exact
             path="/users/:userID/:surveyId"
             component={(props: any) => <ViewResponse {...props} />}
-            isLoggedIn={isLoggedIn}
           />
 
-          <PublicRoute exact path="/login" component={LoginPage} isLoggedIn={isLoggedIn} />
+          <PublicRoute 
+            exact 
+            path="/login" 
+            component={LoginPage} 
+          />
 
           <PublicRoute
             exact
             path="/verify_code"
             component={VerificationPage}
-            isLoggedIn={isLoggedIn}
           />
 
-          <PrivateRoute component={NotFoundPage} isLoggedIn={isLoggedIn} />
+          <PrivateRoute component={NotFoundPage} />
         </Switch>
       </Router>
     );
